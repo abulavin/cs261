@@ -1,0 +1,353 @@
+\documentclass[8pt]{extarticle}
+\usepackage{extsizes}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage[margin=1cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{helvet}
+\usepackage{enumitem}
+\setlength{\footskip}{0.5cm}
+\renewcommand\familydefault{\sfdefault} 
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+
+\title{Requirements Analysis}
+\author{Group 28}
+\date{February 2020}
+
+\begin{document}
+
+\maketitle
+
+\section*{Preface}
+\hrule
+\vspace{9pt}
+
+This document describes and justifies the derivative trade monitoring system we are developing for our client, Deutsche Bank, and specific features of the software that must be implemented to satisfy the client.
+This document will be used to keep track of the project throughout its implementation and act as a point of reference for later updates and adjustments. It is intended to be viewed by representatives of the client, as well as the software development team. 
+
+ 
+
+\section*{Introduction}
+\hrule
+\vspace{9pt}
+
+Derivatives are financial securities that derive their value from an underlying asset or benchmark. These are traded, with the buyer agreeing to purchase the asset on a specific date at a specific price, and each trade must be reported to the European Securities and Markets Authority. Entering this data into reports incorrectly is costly and leads to unwanted financial and reputational impacts.  
+\\ \\
+Our software aims to simplify the storage and reporting of derivative data, and to automatically detect and correct data entry errors. 
+
+\section*{Intended Users}
+\hrule
+\vspace{9pt}
+
+The system is intended to be used by the client’s employees with an understanding of the financial data being entered and basic knowledge of computer use. Technical knowledge will not be required; training and documentation are provided as part of the deliverable. 
+
+\section*{Glossary}
+\hrule
+\vspace{9pt}
+
+\begin{tabularx}{\linewidth}{| c | X |}
+\hline
+\textbf{Term} & \textbf{Definition} \\
+\hline
+Client & Deutsche Bank \\
+\hline
+Deliverable & The derivative trading monitoring software system being developed by our team, to be delivered to the client.  \\
+\hline
+Derivative trade/Trade & A contract between two (2) or more parties whose value is based on an agreed-upon underlying financial asset or set of assets. \\
+\hline
+EMIR & European Market Infrastructure Regulation \\
+\hline
+ESMA & European Securities and Markets Authority \\
+\hline
+Fat-finger error & Errors that occur during data entry as a result of typos or accidental button presses. \\
+\hline
+PDF & Portable Document Format, a digital file standard developed by Adobe Inc. for storing documents.  \\
+\hline
+UI & User interface – a component of the deliverable that the user interacts with. Consists of a set of elements that perform a variety of functions, such as displaying data or other elements and reading input. \\
+\hline
+Unit test & Software testing procedure where individual components of a system are tested. \\
+\hline
+User & An employee of Deutsche Bank who will be using the system, assumed to have enough technical knowledge in order to perform basic computer operation such as mouse navigation, keyboard input and web browser use. It is also assumed the user has enough trading knowledge to understand, interpret and evaluate derivative trade data as it is presented by the deliverable. \\
+\hline
+\end{tabularx}
+
+\section*{User Requirements}
+\hrule
+\vspace{9pt}
+
+Several assumptions will be made about the user requirements to reduce ambiguity and inform decisions surrounding specific details. This is due to the client not being present to comment on such ambiguities at the time of writing. It is assumed that: 
+
+\begin{itemize}
+\item Usage of the system occurs in the United Kingdom, and the time zone of date information is Greenwich Mean Time (GMT). 
+
+\item The system will be used by users fluent in English. Translations of the system to other languages will not be provided. 
+
+\item An internet connection is granted to users wishing to use the software, as the software is not intended to run offline. 
+
+\item The technical competency of the user will remain the same during the development of the project. The software will not include the option to add extra help information or interactions to reflect any changes in the profile of the user. 
+
+\item The refresh rate of the data displayed to the user is one (1) minute. 
+
+\item Reports should be compiled at 00:00 GMT daily, including weekends and holidays. 
+
+\item The reporting frequency and derivative trade details set out in the EMIR will not change during the development of the project. 
+
+\item The period after which the ESMA (or other relevant trade regulator) will not request changes to report data is one (1) week. 
+
+\item The main stakeholder remains to be the client, Deutsche Bank, as the requirements do not cover usage outside the client’s domain or aim to make the software redistributable to other parties. 
+\end{itemize}
+
+\newpage
+
+The deliverable system will provide the user with the ability to: 
+
+\begin{enumerate}[label=C\arabic*]
+\item Enter the details of a derivative trade into an entry, where the attributes of the entry encapsulate the details of the trade. Details include:  
+
+\begin{itemize}
+\item Date and time of the trade (GMT). 
+
+\item Name and number of units of the asset traded. 
+
+\item Names of the buying and selling parties. 
+
+\item Notional value of the trade and its respective currency. 
+
+\item Maturity date of the derivative (GMT). 
+
+\item Underlying and strike prices and their respective currency.  
+\end{itemize}
+
+\item Upon completing data entry, submit the derivative trade details to be error-checked. If potential fat-finger errors or large deviations from historical market values are detected, the user will be prompted to correct any visually flagged mistakes and submit again until no errors are detected. The user has the option of overriding any incorrect changes. 
+
+\item View the most recently created trades in an interactive table, which allows for sorting, searching and filtering based on table attributes. 
+
+\item Edit the details of a previously created trade, provided the edit date is not later than one (1) week from the day of creation of the derivative trade. Editing details is subject to the error checking described in C2. 
+
+\item Delete a previously created trade, provided the delete date is not later than one (1) week from the day of creation of the derivative trade. Upon deleting a trade created in a previous reporting cycle (i.e. one included in a previously compiled report), the user will enter if the deletion is due to termination of the contract or a cancellation of a mistakenly submitted entry. 
+
+\item View all derivative trade entries that contain potentially erroneous parameter values. 
+\item Enable automatic correction of potential errors in derivative data, with the ability to review and undo automatic changes through the user interface. 
+
+\item View, search and filter an archive of daily reports compiled automatically or upon a manual user request. Reports will contain a subset of the details for each derivative trade that took place in the 24 hours preceding 23:59 GMT of the same day. If the report is requested manually the details are taken from 00:00 GMT to the time of request. Manual reports are not stored and clearly state they are for internal use only. 
+
+\item Download the compiled reports locally in PDF format from the deliverable’s archive. 
+
+\item Update the automatic correction performed through feedback by approving, overriding or rejecting changes.
+\end{enumerate}
+
+Additionally, the deliverable will satisfy the following non-functional requirements: 
+
+\begin{enumerate}[label=C\arabic*]
+\setcounter{enumi}{10}
+\item Upon full completion of a tutorial, a non-technical user will be able to perform the following without external help: 
+
+\begin{itemize}
+\item Create an entry for a derivative trade. 
+
+\item Use the interactive table to find, edit or delete a previous entry. 
+
+\item Reject or accept a correction suggested by the deliverable’s correction module. 
+
+\item View and download the latest report automatically compiled by the deliverable. 
+
+\item View and download a report present in the deliverable’s archive. 
+\end{itemize}
+
+Further support will be provided by the usage manual. 
+
+\item Data processing periods will take a reasonable time from the user initiating the processing to the completion of the process, defined as when the user can initiate another processing period. 
+
+\item Actions performed by the user interacting with the UI shall be processed in a reasonable time. 
+
+\item The data available to a user at any given time will be updated every minute from the start of the user's session to reflect changes made by other users during the session. The user can also manually request an update. 
+
+\item The performance of the system during the delay periods described in C12 and C13 will be validated with benchmark tests to ensure timing constraints are satisfied.
+
+\end{enumerate}
+
+\newpage
+\section*{Developer Requirements}
+\hrule
+\vspace{9pt}
+
+In order to achieve the user requirements, the deliverable must: 
+
+\begin{enumerate}[label=C\arabic*]
+\item \\\
+\begin{enumerate}[label=D1.\arabic*]
+\item Present the user with an interactive, web-based user interface (UI), accessible via Google Chrome version 79.0.0.0 or later from a computer with an internet connection. The user’s computer system is subject to the hardware requirements of Chrome. 
+
+\item Allow the user to interact with and enter data into the UI through mouse and keyboard input. 
+
+\item Contain a clickable UI element for a derivative creation view which contains the following input elements: 
+
+\begin{itemize}
+\item Mini-calendar elements for selecting date values for derivative trade and maturity date, where a user cycles through months of a particular year and selects a day. 
+
+\item A time entry element for derivative trade and maturity time, where a user can only enter numerical values that conform to 24-hour time format. 
+
+\item Text entry elements for asset and party names, with the length of input not exceeding 200 characters. 
+
+\item Decimal entry elements for notional, underlying and strike prices, must be greater than 0.
+
+\item Integer entry elements for asset quantity, must be greater than 0. 
+
+\item Drop-down menus for selecting the currency ISO 4217 code from the set of currencies given in the test data.
+\end{itemize}
+
+\item Contain two clickable UI elements in the derivative view, where one confirms that the user has finished entering all details and the entry is ready to be submitted for error-checking, and the other cancels the entry creation process. 
+\end{enumerate}
+ 
+
+\item \\\
+\begin{enumerate}[label=D2.\arabic*]
+\item Implement a system that can decide whether entered values are considered anomalous based on historical inputs and trade data or deviation from the allowable values. 
+
+\item Ensure any input elements described in D1.3 that were found to contain errors will be highlighted, through use of colour and prominent UI elements which indicate to the user that the field requires a different value from the previously submitted to be entered.  The value can only be submitted if a new value that is accepted by the error correction module is entered instead, or the value is marked as correct as per requirement D2.3. 
+
+\item Present an additional clickable UI element by each highlighted field that will allow the user to indicate that the value previously entered was not a mistake and override the correction module. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D3.\arabic*]
+\item Store the derivative data entered by users in a long-term table-like storage structure. 
+
+\item Present a derivative view containing a table feature, with table attributes being the set of derivative attributes. 
+
+\item Each column must include a data entry element - a search field - with the data type corresponding to the data type of the table attribute. 
+
+\item The entries currently present in the table will be compared against values entered in the search field to show entries in order of edit distance from the input, in ascending order. Searching can only be done by one table attribute at any time. 
+
+\item A UI element representing a “Sort By” drop-down menu will allow the user to select a table ordering. The orderings will sort the table based on: Most recent trades, Notional Value, Currency, Strike Price, Underlying value. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D4.\arabic*]
+\item Include a drop-down options menu for each entry in the table described in C3, containing an option for ‘Edit Trade’. This is only available to click if the current date $d$ and the creation date of the trade $t$ satisfy $d < t + 7$ days. 
+
+\item Display an instance of the derivative creation view to the user upon clicking ‘Edit Trade’, where input fields are completed with data supplied from initial creation or a previous edit. 
+
+\item Confirm the user has completed any amendments to the trade entry with a clickable ‘Save Edit’ element, which closes the view and submits the entry for error checking as detailed by C2. 
+
+\item Update the entry in storage when changes are made. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D5.\arabic*]
+\item Include an additional option in the menu described in D4.1, labelled ‘Delete’, only available to click if the same date constraint as D4.1 is satisfied. 
+
+\item Display a selection element where the user selects ‘Termination’ if the deletion is due to termination of the contract or ‘Error’ if it is due to accidental creation. 
+
+\item Not display entries in the table described in C3 once the entry has been deleted.
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D6.\arabic*]
+\item Flag entries that contain data fields with overridden mistakes or mistakes that may have not yet been corrected with a warning flag in the table, indicating that they may require review. 
+
+\item Display all flagged derivatives. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D7.\arabic*]
+\item Extend the error correction module described in C2 to suggest a range of corrected values for incorrectly entered values, based off values entered previously by the user and past and present market data. 
+
+\item Contain a global settings panel, with a toggle for enabling the functionality of the error correction module. Setting the toggle to ‘Off’ results in edited or created entries being accepted without being submitted for error correction. 
+
+\item Display an ‘Undo’ element that reverts a derivative attribute value to the original value entered by the user. 
+\end{enumerate}
+
+\newpage
+\item \\\
+\begin{enumerate}[label=D8.\arabic*]
+\item Present the user with a report table view of compiled reports in order of compilation. 
+
+\item Include an element in the report table for every entry which displays the report in a separate browser window when clicked.  
+
+\item Generate daily reports at 00:00 GMT on day $T$ that contain a table view of entries created in the 24 hours preceding 23:59 GMT of the day $T-1$.  
+
+\item The table attributes in the compiled reports are a subset of the EMIR Counterparty and Common Data fields: 
+
+\begin{itemize}
+\item Parties of the contract, including Legal Identifiers. 
+\item Trade ID. 
+\item Notional value. 
+\item Notional currency. 
+\item Name of the asset traded. 
+\item Price multiplier. 
+\item Maturity Date. 
+\item Strike Price. 
+\item Action type (‘new’, ‘modify’, ‘error’ or ‘cancel’). 
+\item Strike currency. 
+\end{itemize}
+
+\item Implement sorting and searching functionality as described in D3.4 and D3.5 for the report table. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D9.\arabic*]
+\item Include an element in the report table view for every entry that triggers PDF generation when clicked, and then downloads the PDF to the user’s computer.
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D10.\arabic*]
+\item Send an indication to the error correction module that a user has chosen to undo an automatic change or override the error detection module as per requirement D2.3.  This feedback should be used to reduce the number of times the same error is flagged for its respective field in future derivative creations or entries. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D11.\arabic*]
+\item Include a ‘Help’ button in the UI which will display a set of actions the user can perform in the system, as described in C11. 
+
+\item Guide the user through performing an action selected from D11.1 using a sequence of annotations describing the user inputs required in order to complete the action. Annotations should be placed on UI elements relevant to the action being performed. Once one of the inputs in the sequence has been performed, the current annotation is hidden and the next annotation is displayed, until the action is complete. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D12.\arabic*]
+\item Minimise the algorithmic complexity and running time of algorithms and processes executed when handling derivative trade data. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D13.\arabic*]
+\item Utilise a framework for developing the UI which is verified in minimising the response time of UI elements, where response time is defined as the time between user interaction and feedback to the user.  
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D14.\arabic*]
+\item Periodically retrieve data that has been added or modified from the entry store and update the set of entries displayed to the user to maintain consistency between the system and entries available to the user. 
+
+\item Include a UI button that triggers the update in D14.1 when clicked. 
+\end{enumerate}
+
+\item \\\
+\begin{enumerate}[label=D15.\arabic*]
+\item Utilise unit tests for the validity of output from the error detection module and table sort functions which complete within reasonable time (approximately 2000ms), but do not exceed 10 seconds. Exceeding 10 seconds fails the test. 
+
+\item Utilise unit tests for the validity of information and data displayed to the user which complete within reasonable time (approximately 1000ms), but do not exceed 10 seconds. Exceeding 10 seconds fails the test. 
+\end{enumerate}
+\end{enumerate}
+
+In order to achieve the requirements described above, the system is also subject to the hardware and operating system constraints of the deployment environment: 
+
+\begin{enumerate}[label=]
+\begin{enumerate}[label=D16.\arabic*]
+\item Any server software that is part of the system will operate on a computer with the following specifications or above: 
+
+\begin{itemize}
+\item CentOS Linux 7 (Core)
+\item Intel(R) Xeon(R) CPU E5-2660 v3 @ 2.60GHz
+\item 4GB RAM
+\end{itemize}
+\end{enumerate}
+\end{enumerate}
+
+
+\section{Future Changes and Maintenance}
+
+It is likely that the requirements for the system will change after the product has been delivered.  In order to account for this, the software will be designed in a modular manner, allowing other business logic processes or interface methods to be added later. Where possible, components of the system will interact with each other using industry standard protocols, facilitating the easy integration of new modules. The software will also be implemented using platform independent technologies, allowing it to be redeployed on different hardware or operating systems as needed. 
+
+\end{document}
+
+
