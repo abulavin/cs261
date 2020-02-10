@@ -3,7 +3,7 @@
 
 ## Web Server Installation Instructions
 prerequisite:
- - Python 3
+ - Python 3.6 or above
  - PIP (https://pip.pypa.io/en/stable/installing/)
  - Virtualenv (https://virtualenv.pypa.io/en/latest/installation.html <- require PIP to install)
  
