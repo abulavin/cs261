@@ -3,7 +3,8 @@ from rest_framework.generics import (
 )
 from django.views.decorators.http import require_POST
 from rest_framework.response import Response
-from rest_framework import status, filters
+from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import DerivataveTradeSerializer, ReportSerializer
 from .models import DerivataveTrade, DerivataveTradeHistory, Report
@@ -15,8 +16,8 @@ class ListCreateDerivataveTrade(ListCreateAPIView):
     """
     serializer_class = DerivataveTradeSerializer
     queryset = DerivataveTrade.objects.all()
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['trade_id', 'product', 'buying_party', 'selling_party']
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = '__all__'
 
     def create(self, request, *args, **kwargs):
         """
