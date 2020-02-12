@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 
 
@@ -66,3 +68,13 @@ class DerivataveTradeHistory(models.Model):
     modified_trade = models.ForeignKey(DerivataveTrade, on_delete=models.CASCADE)
     date_modified = models.DateTimeField(auto_now_add=True)
     added_to_report = models.BooleanField(default=False)
+
+class Report(models.Models):
+    """
+    Model to store a report along with the date it was generated.
+    """
+    def get_upload_path(self, filename):
+        return os.path.join('reports/', self.date_generated, '.pdf')
+
+    date_generated = models.DateTimeField(auto_now_add=True)
+    report = models.FileField(upload_to=get_upload_path)

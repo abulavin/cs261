@@ -1,6 +1,8 @@
 from rest_framework.generics import (
-    ListCreateAPIView, RetrieveUpdateDestroyAPIView
+    ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
 )
+from rest_framework.response import Response
+from rest_framework import status
 
 from .serializers import DerivataveTradeSerializer
 from .models import DerivataveTrade, DerivataveTradeHistory
@@ -54,3 +56,16 @@ class RetrieveUpdateDestroyDerivataveTrade(RetrieveUpdateDestroyAPIView):
         """
         self._log_change()
         return super().delete(request, *args, **kwargs)
+
+class RetriveReport(RetrieveAPIView):
+    """
+    Retrieve a Report from a given date.
+    """
+    pass
+
+
+def generate_report(request):
+    """
+    This view will generat a real time report and return it to the user. 
+    """
+    pass
