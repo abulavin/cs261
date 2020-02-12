@@ -55,3 +55,14 @@ class DerivataveTrade(models.Model):
     underlying_price = models.FloatField()
     underlying_currency = models.CharField(max_length=200)
     strike_price = models.FloatField()
+
+class DerivataveTradeHistory(models.Model):
+    """
+    This model tracks the history of a DerivataveTrade model if it has been 
+    edited or deleted. A DerivataveTrade model may have no DerivataveTradeHistory's
+    or it may have serveral depending on how many changes have been made.
+    """
+    originial_trade = models.ForeignKey(DerivataveTrade, on_delete=models.CASCADE, related_name='history')
+    modified_trade = models.ForeignKey(DerivataveTrade, on_delete=models.CASCADE)
+    date_modified = models.DateTimeField(auto_now_add=True)
+    added_to_report = models.BooleanField(default=False)
