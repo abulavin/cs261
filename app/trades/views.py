@@ -3,7 +3,7 @@ from rest_framework.generics import (
 )
 from django.views.decorators.http import require_POST
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, filters
 
 from .serializers import DerivataveTradeSerializer, ReportSerializer
 from .models import DerivataveTrade, DerivataveTradeHistory, Report
@@ -15,15 +15,23 @@ class ListCreateDerivataveTrade(ListCreateAPIView):
     """
     serializer_class = DerivataveTradeSerializer
     queryset = DerivataveTrade.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['trade_id', 'product', 'buying_party', 'selling_party']
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
         """
         This method is called when the data provided is valid and before the new 
         DerivataveTrade is created in the database. The Error Detection Module
         will be called in this method.
         """
-        # Error Detection Module Called Upon.
-        super().perform_create(serializer)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Call the Error Detection Module
+
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class RetrieveUpdateDestroyDerivataveTrade(RetrieveUpdateDestroyAPIView):
     """
@@ -34,13 +42,27 @@ class RetrieveUpdateDestroyDerivataveTrade(RetrieveUpdateDestroyAPIView):
     queryset = DerivataveTrade.objects.all()
     lookup_field = 'trade_id'
 
-    def _log_change(self):
+    def _log_change(self, history_type, trade):
         """
         This method will create a DerivataveTradeHistory to log a change to the 
         given DerivataveTrade.
         """
-        # DerivataveTradeHistory.objects.create()
-        pass
+        DerivataveTradeHistory.objects.create(
+            history_type=history_type,
+            up_to_date_trade=trade if history_type == 'E' else None,
+            date_of_trade=trade.date_of_trade,
+            trade_id=trade.trade_id,
+            product=trade.product,
+            buying_party=trade.buying_party,
+            selling_party=trade.selling_party,
+            notational_amount=trade.notational_amount,
+            quantity=trade.quantity,
+            notational_currency=trade.notational_currency,
+            maturity_date=trade.maturity_date,
+            underlying_price=trade.underlying_price,
+            underlying_currency=trade.underlying_currency,
+            strike_price=trade.strike_price
+        )
 
     def update(self, request, *args, **kwargs):
         """
@@ -48,14 +70,14 @@ class RetrieveUpdateDestroyDerivataveTrade(RetrieveUpdateDestroyAPIView):
         Detection Module and then log any changes made to the DerivataveTrade.
         """
         # Error Detection Module Called Upon.
-        self._log_change()
+        self._log_change('E', self.get_object())
         return super().update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         """
         This methods handles the logging and deleteing of a DerivataveTrade.
         """
-        self._log_change()
+        self._log_change('D', self.get_object())
         return super().delete(request, *args, **kwargs)
 
 class RetriveReports(ListAPIView):

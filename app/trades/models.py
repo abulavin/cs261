@@ -66,14 +66,37 @@ class DerivataveTradeHistory(models.Model):
     This model tracks the history of a DerivataveTrade model if it has been 
     edited or deleted. A DerivataveTrade model may have no DerivataveTradeHistory's
     or it may have serveral depending on how many changes have been made.
+
+    Edit: the history stores the FK to the up-to-date version of the DerivataveTrade
+    as well as the previous data.
+    Delete: the history has a null FK but stores the data of the DerivataveTrade
+    before it was deleted.
     """
-    originial_trade = models.ForeignKey(DerivataveTrade, on_delete=models.CASCADE, related_name='history')
-    modified_trade = models.ForeignKey(DerivataveTrade, on_delete=models.CASCADE)
+    HISTORY_TYPE = (
+        ('E', 'Edit'),
+        ('D', 'Delete'),
+    )
+
+    history_type = models.CharField(max_length=1, choices=HISTORY_TYPE)
+    up_to_date_trade = models.ForeignKey(DerivataveTrade, on_delete=models.SET_NULL, related_name='history', null=True)
     date_modified = models.DateTimeField(auto_now_add=True)
     added_to_report = models.BooleanField(default=False)
+    # store fields from DerivataveTrade
+    date_of_trade = models.DateField()
+    trade_id = models.CharField(max_length=200)
+    product = models.CharField(max_length=200)
+    buying_party = models.CharField(max_length=200) 
+    selling_party = models.CharField(max_length=200)
+    notational_amount = models.FloatField()
+    quantity = models.FloatField()
+    notational_currency = models.CharField(max_length=200)
+    maturity_date = models.DateField()
+    underlying_price = models.FloatField()
+    underlying_currency = models.CharField(max_length=200)
+    strike_price = models.FloatField()
     
     class Meta:
-        ordering = ['-date_modified']
+        ordering = ['-date_modified', '-id']
 
 class Report(models.Model):
     """
