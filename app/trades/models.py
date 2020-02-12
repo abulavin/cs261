@@ -58,6 +58,9 @@ class DerivataveTrade(models.Model):
     underlying_currency = models.CharField(max_length=200)
     strike_price = models.FloatField()
 
+    class Meta:
+        ordering = ['-date_of_trade']
+
 class DerivataveTradeHistory(models.Model):
     """
     This model tracks the history of a DerivataveTrade model if it has been 
@@ -68,6 +71,9 @@ class DerivataveTradeHistory(models.Model):
     modified_trade = models.ForeignKey(DerivataveTrade, on_delete=models.CASCADE)
     date_modified = models.DateTimeField(auto_now_add=True)
     added_to_report = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['-date_modified']
 
 class Report(models.Models):
     """
@@ -78,3 +84,6 @@ class Report(models.Models):
 
     date_generated = models.DateTimeField(auto_now_add=True)
     report = models.FileField(upload_to=get_upload_path)
+
+    class Meta:
+        ordering = ['-date_generated']
