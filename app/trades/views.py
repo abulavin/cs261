@@ -1,10 +1,11 @@
 from rest_framework.generics import (
-    ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
+    ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 )
+from django.views.decorators.http import require_POST
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import DerivataveTradeSerializer
+from .serializers import DerivataveTradeSerializer, ReportSerializer
 from .models import DerivataveTrade, DerivataveTradeHistory
 
 
@@ -57,13 +58,35 @@ class RetrieveUpdateDestroyDerivataveTrade(RetrieveUpdateDestroyAPIView):
         self._log_change()
         return super().delete(request, *args, **kwargs)
 
-class RetriveReport(RetrieveAPIView):
+class RetriveReports(ListAPIView):
     """
-    Retrieve a Report from a given date.
+    Retrieve Reports from a given date or given date range.
     """
-    pass
+    serializer_class = ReportSerializer
 
+    def get_queryset(self):
+        """
+        Get filter params and use to filter down the reports that match the 
+        query. The reports can be filtered by a single day or a range of days.
+        """
+        reports = Report.objects.all()
+        filtered_reports = None
+        # If date param is passed, get reports from that exact date.
+        exact_date = request.query_params.get('date')
+        if exact_date is not None:
+            filtered_reports = reports.filter(date_generated=exact_date)
+        # If date_gt and date_lt passed then reports from range of dates to be returned.
+        date_gt = request.query_params.get('date_gt')
+        date_lt = request.query_params.get('date_lt')
+        if date_gt is not None and date_lt is not None:
+            filtered_reports =  reports.filter(
+                date_generated__gte=date_gt,
+                date_generated__lte=date_lt
+            ) 
 
+        return filtered_reports
+
+@require_POST
 def generate_report(request):
     """
     This view will generat a real time report and return it to the user. 
