@@ -5,5 +5,5 @@ from .models import DerivataveTrade
 class DerivataveTradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = DerivataveTrade
-        excluded = []
+        fields = '__all__'
 
