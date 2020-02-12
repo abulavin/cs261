@@ -49,5 +49,8 @@ class RetrieveUpdateDestroyDerivataveTrade(RetrieveUpdateDestroyAPIView):
         return super().update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
+        """
+        This methods handles the logging and deleteing of a DerivataveTrade.
+        """
         self._log_change()
         return super().delete(request, *args, **kwargs)
