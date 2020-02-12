@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import DerivataveTradeSerializer, ReportSerializer
-from .models import DerivataveTrade, DerivataveTradeHistory
+from .models import DerivataveTrade, DerivataveTradeHistory, Report
 
 
 class ListCreateDerivataveTrade(ListCreateAPIView):
@@ -71,17 +71,17 @@ class RetriveReports(ListAPIView):
         """
         reports = Report.objects.all()
         filtered_reports = None
-        # If date param is passed, get reports from that exact date.
-        exact_date = request.query_params.get('date')
+        query_params = self.request.query_params
+        # If date param passed, get reports from that exact date.
+        exact_date = query_params.get('date')
         if exact_date is not None:
             filtered_reports = reports.filter(date_generated=exact_date)
-        # If date_gt and date_lt passed then reports from range of dates to be returned.
-        date_gt = request.query_params.get('date_gt')
-        date_lt = request.query_params.get('date_lt')
-        if date_gt is not None and date_lt is not None:
-            filtered_reports =  reports.filter(
-                date_generated__gte=date_gt,
-                date_generated__lte=date_lt
+        # If start_date and end_date passed, get reports from range of dates.
+        start_date = query_params.get('start_date')
+        end_date = query_params.get('end_date')
+        if start_date is not None and end_date is not None:
+            filtered_reports = reports.filter(
+                date_generated__range=(start_date, end_date)
             ) 
 
         return filtered_reports
@@ -89,6 +89,7 @@ class RetriveReports(ListAPIView):
 @require_POST
 def generate_report(request):
     """
-    This view will generat a real time report and return it to the user. 
+    This view will generat a real time report and return the url of it  to the
+    user. 
     """
     pass

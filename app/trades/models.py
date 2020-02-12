@@ -75,7 +75,7 @@ class DerivataveTradeHistory(models.Model):
     class Meta:
         ordering = ['-date_modified']
 
-class Report(models.Models):
+class Report(models.Model):
     """
     Model to store a report along with the date it was generated.
     """
