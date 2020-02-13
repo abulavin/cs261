@@ -1,6 +1,7 @@
 """
 Tests for the REST API views.
 """
-from django.test import TestCase
+from rest_framework.test import APITestCase
 
-# Create your tests here.
+class ListCreateDerivataveTradeTestCase(APITestCase):
+    def test_list_deriative

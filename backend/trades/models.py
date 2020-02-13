@@ -41,7 +41,7 @@ class CurrencyValue(models.Model):
     currency = models.CharField(max_length=200)
     value_in_usd = models.FloatField()
 
-class DerivataveTrade(models.Model):
+class DerivativeTrade(models.Model):
     """
     Model to store a Derivative Trade.
     """
@@ -61,15 +61,15 @@ class DerivataveTrade(models.Model):
     class Meta:
         ordering = ['-date_of_trade']
 
-class DerivataveTradeHistory(models.Model):
+class DerivativeTradeHistory(models.Model):
     """
-    This model tracks the history of a DerivataveTrade model if it has been 
-    edited or deleted. A DerivataveTrade model may have no DerivataveTradeHistory's
+    This model tracks the history of a DerivativeTrade model if it has been 
+    edited or deleted. A DerivativeTrade model may have no DerivativeTradeHistory's
     or it may have serveral depending on how many changes have been made.
 
-    Edit: the history stores the FK to the up-to-date version of the DerivataveTrade
+    Edit: the history stores the FK to the up-to-date version of the DerivativeTrade
     as well as the previous data.
-    Delete: the history has a null FK but stores the data of the DerivataveTrade
+    Delete: the history has a null FK but stores the data of the DerivativeTrade
     before it was deleted.
     """
     HISTORY_TYPE = (
@@ -78,10 +78,10 @@ class DerivataveTradeHistory(models.Model):
     )
 
     history_type = models.CharField(max_length=1, choices=HISTORY_TYPE)
-    up_to_date_trade = models.ForeignKey(DerivataveTrade, on_delete=models.SET_NULL, related_name='history', null=True)
+    up_to_date_trade = models.ForeignKey(DerivativeTrade, on_delete=models.SET_NULL, related_name='history', null=True)
     date_modified = models.DateTimeField(auto_now_add=True)
     added_to_report = models.BooleanField(default=False)
-    # store fields from DerivataveTrade
+    # store fields from DerivativeTrade
     date_of_trade = models.DateField()
     trade_id = models.CharField(max_length=200)
     product = models.CharField(max_length=200)
