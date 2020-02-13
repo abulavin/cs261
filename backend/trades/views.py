@@ -10,6 +10,7 @@ from .serializers import DerivativeTradeSerializer, ReportSerializer
 from .models import DerivativeTrade, DerivativeTradeHistory, Report
 from .filters import ReportFilter
 
+
 class ListCreateDerivativeTrade(ListCreateAPIView):
     """
     View to list all trades as well as handle the creating of the new trades.

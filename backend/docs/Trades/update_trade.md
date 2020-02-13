@@ -127,4 +127,4 @@
 
 * **Notes:**
 
-  When a trade is updated, a copy of the old data is kept so that it can be report in future reports if neccesary.
+  When a trade is updated, a copy of the old data is kept (in the DerivativeTradeHistory table) so that it can be reported in future reports if neccesary.
