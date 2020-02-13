@@ -3,13 +3,13 @@ Tests for the REST API views.
 """
 from rest_framework.test import APITestCase
 
-from trades.models import DerivativeTrade
+from trades.models import DerivativeTrade, Report
 
 
 class ListCreateDerivativeTradeTest(APITestCase):
     def test_list_derivative_trades(self):
         """Test that all trades from the database are listed."""
-        # Create some trades.
+        # Create 5 trades.
         for i in range(1, 6):
             DerivativeTrade.objects.create(
                 date_of_trade='2020-02-13',
@@ -102,3 +102,17 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
         """Test the deleting of a derivative trade."""
         response = self.client.delete('/trades/1/')
         self.assertEqual(204, response.status_code)
+
+class RetriveReportsTest(APITestCase):
+    def setUp(self):
+        # Create 5 Reports.
+        for i in range(1, 6):
+            Report.objects.create(date='2020-02-13')
+
+    def test_list_reports(self):
+        """Test the reponse and listing of reports."""
+        response = self.client.get('/reports/')
+        # Test the response status code is correct
+        self.assertEqual(200, response.status_code)
+        # Test there are 5 DerivativeTrade in the response
+        self.assertEqual(5, len(response.data))
