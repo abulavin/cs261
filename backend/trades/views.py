@@ -8,7 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import DerivativeTradeSerializer, ReportSerializer
 from .models import DerivativeTrade, DerivativeTradeHistory, Report
-
+from .filters import ReportFilter
 
 class ListCreateDerivativeTrade(ListCreateAPIView):
     """
@@ -86,28 +86,31 @@ class RetriveReports(ListAPIView):
     Retrieve Reports from a given date or given date range.
     """
     serializer_class = ReportSerializer
+    queryset = Report.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ReportFilter
 
-    def get_queryset(self):
-        """
-        Get filter params and use to filter down the reports that match the 
-        query. The reports can be filtered by a single day or a range of days.
-        """
-        reports = Report.objects.all()
-        filtered_reports = None
-        query_params = self.request.query_params
-        # If date param passed, get reports from that exact date.
-        exact_date = query_params.get('date')
-        if exact_date is not None:
-            filtered_reports = reports.filter(date_generated=exact_date)
-        # If start_date and end_date passed, get reports from range of dates.
-        start_date = query_params.get('start_date')
-        end_date = query_params.get('end_date')
-        if start_date is not None and end_date is not None:
-            filtered_reports = reports.filter(
-                date_generated__range=(start_date, end_date)
-            ) 
+    # def get_queryset(self):
+    #     """
+    #     Get filter params and use to filter down the reports that match the 
+    #     query. The reports can be filtered by a single day or a range of days.
+    #     """
+    #     reports = Report.objects.all()
+    #     filtered_reports = None
+    #     query_params = self.request.query_params
+    #     # If date param passed, get reports from that exact date.
+    #     exact_date = query_params.get('date')
+    #     if exact_date is not None:
+    #         filtered_reports = reports.filter(date_generated=exact_date)
+    #     # If start_date and end_date passed, get reports from range of dates.
+    #     start_date = query_params.get('start_date')
+    #     end_date = query_params.get('end_date')
+    #     if start_date is not None and end_date is not None:
+    #         filtered_reports = reports.filter(
+    #             date_generated__range=(start_date, end_date)
+    #         ) 
 
-        return filtered_reports
+    #     return filtered_reports
 
 @require_POST
 def generate_report(request):
