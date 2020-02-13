@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
-from .models import DerivataveTrade, Report
+from .models import DerivativeTrade, Report
 
-class DerivataveTradeSerializer(serializers.ModelSerializer):
+class DerivativeTradeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DerivataveTrade
+        model = DerivativeTrade
         exclude = ['id']
 
 class ReportSerializer(serializers.ModelSerializer):
