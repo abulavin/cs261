@@ -105,7 +105,7 @@ class Report(models.Model):
     def get_upload_path(self, filename):
         return os.path.join('reports/', self.date_generated, '.pdf')
 
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
     report = models.FileField(upload_to=get_upload_path)
 
     class Meta:
