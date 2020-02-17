@@ -1,7 +1,5 @@
-from rest_framework.generics import (
-    ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
-)
-from django.views.decorators.http import require_POST
+from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
@@ -9,6 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import ReportSerializer
 from .filters import ReportFilter
 from .models import Report
+from .report import generate_report
 
 
 class RetriveReports(ListAPIView):
@@ -20,10 +19,13 @@ class RetriveReports(ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = ReportFilter
 
-@require_POST
-def generate_report(request):
+class GenerateReport(APIView):
     """
-    This view will generat a real time report and return the url of it  to the
-    user. 
+    This view will generate a real time report and return the url of it to the
+    user.
     """
-    pass
+    serializer_class = ReportSerializer
+
+    def post(self, report, format=None):
+        report = generate_report()
+        return Response(report, status=status.HTTP_200_OK)

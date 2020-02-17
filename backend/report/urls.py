@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.RetriveReports.as_view()),
-    path('generate/', views.generate_report),
+    path('generate/', views.GenerateReport.as_view()),
 ]

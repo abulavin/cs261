@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="report.css" media="print" rel="stylesheet">
+    <title>Report</title>
+</head>
+
+<style>
+    body {
+        font-family: "Helvetica", serif;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    table {
+        width: 100%;
+    }
+</style>
+
+<body>
+    <h1>Trade Report</h1>
+    <h3>%s</h3>
+
+    {% if modified_trades %}
+        <h5>Modified Trades</h5>
+        <table>
+            <th></th>
+            {% for trade in modified_trades %}
+
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if new_trades %}
+        <h5>New Trades</h5>
+        <table>
+            <th></th>
+            {% for trade in new_trades %}
+        
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
