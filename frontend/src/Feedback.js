@@ -1,13 +1,13 @@
 import React, { Component } from "react";
  
-class Guide extends Component {
+class Feedback extends Component {
   render() {
     return (
       <div>
-        <h2> This will be the user guide page!</h2>
+        <h2> This will be the feedback page!</h2>
       </div>
     );
   }
 }
  
-export default Guide;
+export default Feedback;

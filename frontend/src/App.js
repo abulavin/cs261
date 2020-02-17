@@ -8,7 +8,10 @@ import Home from "./Home";
 import NewTrade from "./NewTrade";
 import Trades from "./Trades";
 import Reports from "./Reports";
-import NavButtons from "./Components/NavButtons.js";
+import Settings from "./Settings";
+import Feedback from "./Feedback";
+import Guide from "./Guide";
+import NavButtons from "./NavButtons.js";
 
 // import logo from './logo.svg';
 import './App.css';
@@ -31,6 +34,10 @@ function App() {
           <Route path="/NewTrade" component={NewTrade}/>
           <Route path="/Trades" component={Trades}/>
           <Route path="/Reports" component={Reports}/>
+
+          <Route path="/Settings" component={Settings}/>
+          <Route path="/Feedback" component={Feedback}/>
+          <Route path="/Guide" component={Guide}/>
         </div>
       </div>
     </HashRouter>
