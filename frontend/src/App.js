@@ -8,6 +8,7 @@ import Home from "./Home";
 import NewTrade from "./NewTrade";
 import Trades from "./Trades";
 import Reports from "./Reports";
+import NavButtons from "./Components/NavButtons.js";
 
 // import logo from './logo.svg';
 import './App.css';
@@ -16,12 +17,7 @@ function App() {
   return (
     <HashRouter>
       <div className="App">
-        {/* <ul className = "iconsnav">
-          <li><NavLink exact to="/">Global Settings</NavLink></li>
-          <li><NavLink exact to="/">Submit Feedback</NavLink></li>
-          <li><NavLink exact to="/">User Guide</NavLink></li>
-        </ul> */}
-
+        <NavButtons/>
         <h1>Derivative Trade Monitoring System</h1>
         <ul className = "header">
           <li><NavLink exact to="/">Home</NavLink></li>
