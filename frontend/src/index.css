@@ -14,7 +14,7 @@ body {
 }
 
 ul.header {
-  overflow: auto;
+  /* overflow: auto; */
   list-style-type: none;
   display: inline-block;
   background-color: #e0e0e0;
@@ -22,11 +22,11 @@ ul.header {
 }
  
 li {
-  height: 18px;
+  height: 20px;
   float: left;
   margin-right: 0px;
   border-right: 1px solid #aaa;
-  padding: 18px; 
+  padding: 25px; 
 }
  
 li:last-child {
@@ -50,21 +50,9 @@ li a:hover {
   color: rgb(175, 174, 174);
 }
 
-.active {
+li .active {
   font-weight: bold;
   font-size: 19px;
   color: #111;
   border-bottom: 1px solid currentColor;
 }
-
-/* 
-ul.iconsnav {
-  overflow: auto;
-  list-style-type: none;
-}
-
-ul.iconsnav li {
-  float: left;
-  margin-right: 0px;
-  padding: 18px;
-} */
