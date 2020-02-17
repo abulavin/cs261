@@ -1,14 +1,10 @@
-from rest_framework.generics import (
-    ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
-)
-from django.views.decorators.http import require_POST
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import DerivativeTradeSerializer, ReportSerializer
-from .models import DerivativeTrade, DerivativeTradeHistory, Report
-from .filters import ReportFilter
+from .serializers import DerivativeTradeSerializer
+from .models import DerivativeTrade, DerivativeTradeHistory
 
 
 class ListCreateDerivativeTrade(ListCreateAPIView):
@@ -81,20 +77,3 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         """
         self._log_change('D', self.get_object())
         return super().delete(request, *args, **kwargs)
-
-class RetriveReports(ListAPIView):
-    """
-    Retrieve Reports from a given date or given date range.
-    """
-    serializer_class = ReportSerializer
-    queryset = Report.objects.all()
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = ReportFilter
-
-@require_POST
-def generate_report(request):
-    """
-    This view will generat a real time report and return the url of it  to the
-    user. 
-    """
-    pass

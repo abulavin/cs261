@@ -3,7 +3,7 @@ Tests for the report generating.
 """
 from rest_framework.test import APITestCase
 
-from trades.models import DerivativeTrade, Report
+from report.models import Report
 
 
 class RetriveReportsTest(APITestCase):

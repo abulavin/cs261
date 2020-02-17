@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django_filters',
 
     'trades',
+    'report',
+    'core'
 ]
 
 MIDDLEWARE = [
