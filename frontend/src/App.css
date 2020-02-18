@@ -38,4 +38,12 @@
 }
 .NavBtns {
   display: flex;
+  position: fixed;
 }
+
+.header {
+  min-height: 100px;
+  min-width: 1000px;
+  background-color: white;
+}
+
