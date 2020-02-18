@@ -4,7 +4,7 @@ This file will handle the generating of reports.
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from weasyprint import HTML
+# from weasyprint import HTML
 
 from trades.models import DerivativeTrade, DerivativeTradeHistory
 from .models import Report
