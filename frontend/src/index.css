@@ -12,7 +12,9 @@ body {
 .content {
   background-color: grey;
   height: 1000px;
-  margin: 10px 30px ;
+  width: 100%;
+  margin: 0;
+  position:fixed;
 }
 
 .App {

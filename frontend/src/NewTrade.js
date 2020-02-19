@@ -19,6 +19,7 @@ class NewTrade extends Component {
     strike_price: ""
   };
 
+  // this was me trying to get the API interaction to work 
   componentDidMount() {
     if (this.props.trade) {
       const { date_of_trade, trade_id, product, buying_party, selling_party, notational_amount, quantity,notational_currency,maturity_date,underlying_price,underlying_currency,strike_price} = this.props.trade;
@@ -52,28 +53,113 @@ class NewTrade extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.props.trade ? this.editTrade : this.createTrade}>
-        <FormGroup>
-          <Label for="date">Date of Trade:</Label>
-          <Input
-            type="text"
-            name="date"
-            onChange={this.onChange}
-            value={this.defaultIfEmpty(this.state.date_of_trade)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="id">Trade ID:</Label>
-          <Input
-            type="text"
-            name="id"
-            onChange={this.onChange}
-            value={this.defaultIfEmpty(this.state.trade_id)}
-            maxLength="200"
-          />
-        </FormGroup>
-        <Button>Submit for checking</Button>
-      </Form>
+      <React.Fragment>
+        <div className="tradeform">
+          <Form onSubmit={this.props.trade ? this.editTrade : this.createTrade}>
+            <FormGroup>
+              <Label for="date">Date of Trade: </Label>
+              <Input
+                type="date"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="time">Time of Trade: </Label>
+              <Input
+                type="time"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="id">Trade ID: </Label>
+              <Input
+                type="text"
+                maxLength="200"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="product">Product: </Label>
+              <Input
+                type="text"
+                name="product"
+                maxLength="200"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="buying">Buying Party: </Label>
+              <Input
+                type="text"
+                name="buying"
+                maxLength="200"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="selling">Selling Party: </Label>
+              <Input
+                type="text"
+                name="selling"
+                maxLength="200"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="currency">Notional Currency: </Label>
+              <select id="currency" name="currency">
+                <option value="GBP">GBP</option>
+              </select>
+            </FormGroup>
+            <FormGroup>
+              <Label for="notational">Notional Amount: </Label>
+              <Input
+                type="number"
+                name="notational"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="quantity">Quantity: </Label>
+              <Input
+                type="number"
+                name="quantity"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="maturity">Maturity Date: </Label>
+              <Input
+                type="date"
+                name="maturity"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="underc">Underlying Currency: </Label>
+              <select id="undercurr" name="undercurr">
+                <option value="GBP">GBP</option>
+              </select>
+            </FormGroup>
+            <FormGroup>
+              <Label for="underprice">Underlying Price: </Label>
+              <Input
+                type="number"
+                name="underprice"
+                
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="strike">Strike Price: </Label>
+              <Input
+                type="number"
+                name="strike"
+                
+              />
+            </FormGroup>
+            <input type="submit" value="Submit for Checking"/>
+            <input type="reset" value = "Reset all values"/>
+          </Form>
+        </div>
+        
+        <div className="errorbox"> 
+          <h3>This is where highlighted errors will be displayed</h3> 
+          <Button>Next Trade</Button>
+        </div>
+
+        
+      </React.Fragment>
     );
   }
 }

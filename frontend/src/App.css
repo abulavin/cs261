@@ -47,3 +47,20 @@
   background-color: white;
 }
 
+.tradeform {
+  margin-top: 35px;
+  position: absolute;
+  margin-left: 300px;
+}
+.errorbox{
+  margin-top: 20px;
+  margin-left: 800px;
+  width: 200px;
+  background-color:darkgrey;
+  min-height: 300px;
+}
+
+h3 {
+  margin: 10px;
+}
+
