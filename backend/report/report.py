@@ -6,7 +6,10 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.conf import settings
 
-from weasyprint import HTML
+try:
+    from weasyprint import HTML                   
+except ImportError:
+    pass
 
 from .models import Report
 from trades.models import DerivativeTrade, DerivativeTradeHistory
