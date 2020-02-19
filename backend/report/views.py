@@ -27,6 +27,5 @@ class GenerateReport(APIView):
     serializer_class = ReportSerializer
 
     def post(self, request, format=None):
-        report = generate_report(is_daily_report=False)
-        return Response(report, status=status.HTTP_200_OK)
+        return generate_report(is_daily_report=False)
         
