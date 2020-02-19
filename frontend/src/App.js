@@ -13,7 +13,6 @@ import Feedback from "./Feedback";
 import Guide from "./Guide";
 import NavButtons from "./NavButtons.js";
 
-// import logo from './logo.svg';
 import './App.css';
 
 function App() {
