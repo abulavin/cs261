@@ -43,18 +43,19 @@
 
 .header {
   min-height: 100px;
-  min-width: 1000px;
+  min-width: 100%;
+  display: center;
   background-color: white;
 }
 
 .tradeform {
   margin-top: 35px;
-  position: absolute;
-  margin-left: 300px;
+  width: 60%;
+  float: left;
 }
 .errorbox{
   margin-top: 20px;
-  margin-left: 800px;
+  margin-left: 65%;
   width: 200px;
   background-color:darkgrey;
   min-height: 300px;
@@ -64,3 +65,80 @@ h3 {
   margin: 10px;
 }
 
+.tabs {
+  width: 90%;
+  height: 100%;
+  display: inline-block;
+  padding: 15px;
+  vertical-align: top;
+  background-color: darkgrey;
+}
+
+.tab-link {
+  padding: 0 15px;
+  cursor: pointer;
+  border: 1px solid black;
+  background: transparent;
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  line-height: 41px;
+  /* top: -4px;
+  left: -1px; */
+  outline: none;
+  background-color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.tab-link:hover{
+  color: #666464;
+}
+
+.tab-link-active, .tab-link-active:hover, .tab-link-active:focus {
+  color: black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: white;
+  font-weight: normal;
+}
+
+.tab-content {
+  padding: 15px;
+  border-top: 1px solid transparent;
+}
+
+.NavBtns {
+  margin-left: 30px;
+}
+
+.NavBtns button {
+  text-decoration: none;
+  background-color: #e0e0e0;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+  font: 14px/1 Helvetica, Verdana, sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+ 
+  display: inline-block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 8px;
+  margin-left: 5px;
+}
+
+.NavBtns button:hover {
+  background-color: darkgrey; /* Green */
+  text-decoration: none;
+  box-shadow: 0 8px 10px 0 rgba(0,0,0,0.24), 0 10px 14px 0 rgba(0,0,0,0.19);
+}
+
+.NavBtns button:focus {
+  text-decoration: none;
+  background-color:black;
+}
+
+.guidecontents {
+  padding: 10px;
+}

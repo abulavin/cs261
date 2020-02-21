@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Route,
-  NavLink,
   HashRouter
 } from "react-router-dom";
 import Home from "./Home";
@@ -30,7 +29,6 @@ function App() {
           <Route path="/NewTrade" component={NewTrade}/>
           <Route path="/Trades" component={Trades}/>
           <Route path="/Reports" component={Reports}/>
-
           <Route path="/Settings" component={Settings}/>
           <Route path="/Feedback" component={Feedback}/>
           <Route path="/Guide" component={Guide}/>

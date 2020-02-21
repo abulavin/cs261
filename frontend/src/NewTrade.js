@@ -54,6 +54,10 @@ class NewTrade extends Component {
   render() {
     return (
       <React.Fragment>
+        <div className="tradetitles">
+          <h2> Use this page to enter details of a derivative trade.</h2>
+          <h5> Upon entry, all details will be error-checked and any issues will be highlighted.</h5>
+        </div>
         <div className="tradeform">
           <Form onSubmit={this.props.trade ? this.editTrade : this.createTrade}>
             <FormGroup>
