@@ -142,7 +142,12 @@ h3 {
   padding: 10px;
 }
 
-.tradetable {
+.tradeoptions, .reportoptions {
+  display: center;
+  padding: 10px;
+}
+
+.tradetable, .reporttable {
   display: inline-block;
   background-color: white;
 }

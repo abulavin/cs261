@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Label } from "reactstrap";
  
 class Trades extends Component {
   constructor(props){
@@ -27,6 +28,12 @@ class Trades extends Component {
           <h2> This will be the editing/deleting/viewing trades page!</h2>
         </div>
 
+        <div className="tradeoptions"> 
+          <Label>Filter by: </Label>
+                <select id="heading" name="heading">
+                  <option value="heading">Heading1</option>
+                </select>
+        </div>
         <div className="tradetable">
           <table>
             <thead>
@@ -37,6 +44,8 @@ class Trades extends Component {
             </tbody>
           </table>
         </div>
+
+
       </React.Fragment>
     );
   }
