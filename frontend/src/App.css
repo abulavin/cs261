@@ -136,9 +136,25 @@ h3 {
 
 .NavBtns button:focus {
   text-decoration: none;
-  background-color:black;
 }
 
 .guidecontents {
   padding: 10px;
+}
+
+.tradetable {
+  display: inline-block;
+  background-color: white;
+}
+thead {
+  color:green;
+}
+tbody {
+  color:blue;
+}
+table, th, td {
+ border: 1px solid black;
+}
+td, th{
+ padding: 5px;
 }
