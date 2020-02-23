@@ -46,7 +46,7 @@ class DerivativeTrade(models.Model):
     Model to store a Derivative Trade.
     """
     date_of_trade = models.DateField()
-    trade_id = models.CharField(max_length=200)
+    trade_id = models.CharField(max_length=200, unique=True)
     product = models.CharField(max_length=200)
     buying_party = models.CharField(max_length=200) 
     selling_party = models.CharField(max_length=200)
