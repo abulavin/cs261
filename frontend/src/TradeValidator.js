@@ -2,7 +2,7 @@
  * Utility module for validating trades
  * @module TradeValidator
  */
-import currencyCodes from './currencyCodes';
+import {currencyCodes} from './currencyCodes';
 
 export const TradeValidator = {
 
@@ -32,14 +32,14 @@ export const TradeValidator = {
             if (trade !== undefined) {
                 this.tradeHasAllNecessaryProperties(trade);
                 this.tradeHasNoUndefinedProperties(trade);
-                if (!this.tradeIDisNumerical(trade.trade_id))
+                if (!this.tradeIDisValid(trade.trade_id))
                     this.throwError("Invalid Trade ID: " + trade.trade_id);
 
                 if (!this.dateOfTradeIsValid(trade.date_of_trade))
                     this.throwError("Invalid trade date: " + trade.date_of_trade);
 
                 if (!this.dateOfTradeIsValid(trade.maturity_date))
-                    this.throwError("Invalid trade date: " + trade.maturity_date);
+                    this.throwError("Invalid maturity trade date: " + trade.maturity_date);
 
                 if (!this.stringLengthIsValid(trade.buying_party))
                     this.throwError("Invalid buying party: ", + trade.buying_party);
@@ -156,13 +156,14 @@ export const TradeValidator = {
     },
 
     /**
-     * Returns true if the trade ID matches a set of digits [0-9].
+     * Returns true if the trade ID matches a set of capital letters
+     * [A-Z] followed by a set of digits [0-9].
      * Does not check if the trade ID exists in the database
      * @param {number} tradeID Trade ID number
      * @alias module:TradeValidator
      */
-    tradeIDisNumerical: function (tradeID) {
-        const regex = /^[0-9]+$/;
+    tradeIDisValid: function (tradeID) {
+        const regex = /^[A-Z]+[0-9]+$/;
         return regex.test(tradeID);
     },
 
@@ -209,7 +210,7 @@ export const TradeValidator = {
 
     /**
      * Returns true if the input code is included in the set of currencies 
-     * provided in the test data.
+     * provided by the test data.
      * @param {string} code 3 Letter ISO currency code
      * @alias module:TradeValidator
      */

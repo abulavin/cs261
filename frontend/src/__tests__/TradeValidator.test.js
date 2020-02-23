@@ -1,9 +1,9 @@
-import TradeValidator from '../TradeValidator';
-import currencyCodes from '../currencyCodes';
+import {TradeValidator} from '../TradeValidator';
+import {currencyCodes, companyCodes} from '../currencyCodes';
 
 const exampleTrade = {
     date_of_trade: "2020-02-02",
-    trade_id: "1",
+    trade_id: "DILF10",
     product: "1",
     buying_party: "1",
     selling_party: "1",
@@ -41,20 +41,17 @@ const badTrades = [
 ]
 
 test('TradeValidator identifies valid IDs', () => {
-    const maxIDRange = 20000000;
-    for (let i = 0; i < 10000; i++) {
-        let rand = Math.ceil(Math.random() * maxIDRange);
-        expect(TradeValidator.tradeIDisNumerical(rand)).toBeTruthy();
-        expect(TradeValidator.tradeIDisNumerical(rand + "")).toBeTruthy();
+    for(code in companyCodes) {
+        expect(TradeValidator.tradeIDisValid(code)).toBeTruthy();
     }
 });
 
 test('TradeValidator identifies invalid IDs', () => {
-    expect(TradeValidator.tradeIDisNumerical("")).toBeFalsy();
-    expect(TradeValidator.tradeIDisNumerical("Forty two")).toBeFalsy();
-    expect(TradeValidator.tradeIDisNumerical(true)).toBeFalsy();
-    expect(TradeValidator.tradeIDisNumerical(3.141)).toBeFalsy();
-    expect(TradeValidator.tradeIDisNumerical(undefined)).toBeFalsy();
+    expect(TradeValidator.tradeIDisValid("")).toBeFalsy();
+    expect(TradeValidator.tradeIDisValid("Forty two")).toBeFalsy();
+    expect(TradeValidator.tradeIDisValid(true)).toBeFalsy();
+    expect(TradeValidator.tradeIDisValid(3.141)).toBeFalsy();
+    expect(TradeValidator.tradeIDisValid(undefined)).toBeFalsy();
 });
 
 test('TradeValidator proxy identifies a complete trade object', () => {

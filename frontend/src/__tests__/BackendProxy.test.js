@@ -1,11 +1,11 @@
-import { CreateTradeProxy, DeleteTradeProxy, GetTradeProxy, T } from '../BackendProxy';
+import { CreateTradeProxy, DeleteTradeProxy, GetTradeProxy } from '../BackendProxy';
 
 const testCreateTradeProxy = new CreateTradeProxy();
 const testDeleteTradeProxy = new DeleteTradeProxy();
 const testGetTradeProxy = new GetTradeProxy();
 
 test('Creation proxy has the correct URL', () => {
-    expect(testCreateTradeProxy.url).toBe(window.location.host + '/trades/');
+    expect(testCreateTradeProxy.url).toBe(window.location.origin + '/trades/');
 });
 
 test('DeleteTradeProxy throws exception on an invalid ID', () => {
@@ -13,13 +13,17 @@ test('DeleteTradeProxy throws exception on an invalid ID', () => {
     testStrings.forEach(string => {
         expect(() => {
             testDeleteTradeProxy.deleteTrade(testStrings);
-        }).toThrow('Expected tradeID to be a number, got:' + string);
+        }).toThrow('Invalid trade ID; got: ' + string);
 
     })
 });
 
-test('can get a list of trades', () => {
-    let trades = testGetTradeProxy.getListOfTrades();
-    console.log(trades);
-    expect(trades).toBe(expect.anything());
+test('GetTradeProxy throws exception on an invalid ID', () => {
+    const testStrings = ["forty two", ""];
+    testStrings.forEach(string => {
+        expect(() => {
+            testGetTradeProxy.getTradeByID(testStrings);
+        }).toThrow('Invalid trade ID; got: ' + string);
+
+    })
 });
