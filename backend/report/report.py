@@ -9,7 +9,7 @@ from django.conf import settings
 try:
     from weasyprint import HTML                   
 except ImportError:
-    pass
+    print('Weasyprint not installed correctly')
 
 from .models import Report
 from trades.models import DerivativeTrade, DerivativeTradeHistory
