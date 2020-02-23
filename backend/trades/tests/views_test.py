@@ -29,7 +29,7 @@ class ListCreateDerivativeTradeTest(APITestCase):
         response = self.client.get('/trades/')
         # Test the response status code is correct
         self.assertEqual(200, response.status_code)
-        # Test there are 5 DerivativeTrade in the response
+        # Test there are 4 DerivativeTrade in the response
         self.assertEqual(4, len(response.data))
 
     def test_create_derivative_trades(self):

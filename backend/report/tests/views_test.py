@@ -17,5 +17,5 @@ class RetriveReportsTest(APITestCase):
         response = self.client.get('/reports/')
         # Test the response status code is correct
         self.assertEqual(200, response.status_code)
-        # Test there are 5 DerivativeTrade in the response
+        # Test there are 4 DerivativeTrade in the response
         self.assertEqual(4, len(response.data))
