@@ -21,7 +21,7 @@
    **Optional:**
    <br />Examples:
    * `buying_party=google`
-   * `notational_amount=5&notational_currency=GDP`
+   * `notional_amount=5&notional_currency=GDP`
 
 * **Data Params**
 
@@ -45,9 +45,9 @@
               "product": "1",
               "buying_party": "1",
               "selling_party": "1",
-              "notational_amount": 1.0,
+              "notional_amount": 1.0,
               "quantity": 1.0,
-              "notational_currency": "1",
+              "notional_currency": "1",
               "maturity_date": "2020-02-20",
               "underlying_price": 1.0,
               "underlying_currency": "1",

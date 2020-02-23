@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -53,9 +55,9 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
             product=trade.product,
             buying_party=trade.buying_party,
             selling_party=trade.selling_party,
-            notational_amount=trade.notational_amount,
+            notional_amount=trade.notional_amount,
             quantity=trade.quantity,
-            notational_currency=trade.notational_currency,
+            notional_currency=trade.notional_currency,
             maturity_date=trade.maturity_date,
             underlying_price=trade.underlying_price,
             underlying_currency=trade.underlying_currency,
@@ -67,6 +69,11 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         PUT and UPDATE requests handled by this method. It will run the Error 
         Detection Module and then log any changes made to the DerivativeTrade.
         """
+        # Check the trade is not more than x days old.
+        if self.get_object().date_of_trade + datetime.timedelta(days=7) < datetime.datetime.today().date():
+            pass
+            #return error.
+
         # Error Detection Module Called Upon.
         self._log_change('E', self.get_object())
         return super().update(request, *args, **kwargs)

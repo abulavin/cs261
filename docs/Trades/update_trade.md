@@ -26,9 +26,9 @@
         "product": "1",
         "buying_party": "1",
         "selling_party": "1",
-        "notational_amount": 1.0,
+        "notional_amount": 1.0,
         "quantity": 1.0,
-        "notational_currency": "1",
+        "notional_currency": "1",
         "maturity_date": "2020-02-20",
         "underlying_price": 1.0,
         "underlying_currency": "1",
@@ -39,7 +39,7 @@
   </br> You only need to provide the fields that change: 
   ``` json
     {
-        "notational_amount": 1.0,
+        "notional_amount": 1.0,
         "quantity": 1.0,
     }
     ```
@@ -57,9 +57,9 @@
         "product": "1",
         "buying_party": "1",
         "selling_party": "1",
-        "notational_amount": 1.0,
+        "notional_amount": 1.0,
         "quantity": 1.0,
-        "notational_currency": "1",
+        "notional_currency": "1",
         "maturity_date": "2020-02-20",
         "underlying_price": 1.0,
         "underlying_currency": "1",
@@ -88,9 +88,9 @@
     "product": "1",
     "buying_party": "1",
     "selling_party": "1",
-    "notational_amount": 1.0,
+    "notional_amount": 1.0,
     "quantity": 1.0,
-    "notational_currency": "1",
+    "notional_currency": "1",
     "maturity_date": "2020-02-20",
     "underlying_price": 1.0,
     "underlying_currency": "1",
