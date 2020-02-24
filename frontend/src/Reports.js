@@ -35,6 +35,8 @@ class Reports extends Component {
               </select>
       </div>
       <div className="reporttable">
+        {/* onkeyup search for item function */}
+        <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
         <table>
           <thead>
             <tr>Headings from backend{this.getHeader()}</tr>

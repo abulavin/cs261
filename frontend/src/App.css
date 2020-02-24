@@ -99,7 +99,7 @@ h3 {
   color: black;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  background-color: white;
+  background-color: lightgrey;
   font-weight: normal;
 }
 
@@ -162,4 +162,63 @@ table, th, td {
 }
 td, th{
  padding: 5px;
+}
+
+#searchinput {
+  background-image: url(search.png); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 1px 12px 30px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+#tableview {
+  width: 100%; 
+  font-size: 16px;
+}
+
+#tableview thead, #tableview tbody {
+  text-align: left; 
+  padding: 12px;
+  border-bottom: 1px solid black; 
+}
+
+#tableview tr {
+  border-bottom: 1px solid black; 
+}
+
+#tableview thead, #tableview tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #f1f1f1;
+  border-bottom: 1px solid black; 
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-main {
+  position:fixed;
+  background: white;
+  width: 80%;
+  height: auto;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
 }
