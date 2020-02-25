@@ -8,7 +8,6 @@ import NewTrade from "./NewTrade";
 import Trades from "./Trades";
 import Reports from "./Reports";
 import Settings from "./Settings";
-import Feedback from "./Feedback";
 import Guide from "./Guide";
 import NavButtons from "./NavButtons.js";
 import NavBar from "./NavBar.js";
@@ -30,7 +29,6 @@ function App() {
           <Route path="/Trades" component={Trades}/>
           <Route path="/Reports" component={Reports}/>
           <Route path="/Settings" component={Settings}/>
-          <Route path="/Feedback" component={Feedback}/>
           <Route path="/Guide" component={Guide}/>
         </div>
       </div>

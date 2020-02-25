@@ -13,10 +13,6 @@ const Buttons = () => (
             </button>
 
             <button>
-                <NavLink to="/Feedback">Submit Feedback</NavLink>            
-            </button>
-
-            <button>
                 <NavLink to="/Guide">User Guide</NavLink>            
             </button>
             
