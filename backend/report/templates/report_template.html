@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="report.css" media="print" rel="stylesheet">
+    <title>Report</title>
+</head>
+
+<style>
+    body {
+        font-family: "Helvetica", serif;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    @page {
+        size: A4 landscape;
+    }
+</style>
+
+<body>
+    <h1>Trade Report</h1>
+
+    {% if modified_trades %}
+        <h5>Modified Trades</h5>
+        <table>
+            <thead>
+                <th>Date Of Trade</th>
+                <th>Trade ID</th>
+                <th>Product</th>
+                <th>Buying Party</th>
+                <th>Selling Party</th>
+                <th>notional Amount</th>
+                <th>Quantity</th>
+                <th>notional Quantity</th>
+                <th>Maturity Date</th>
+                <th>Underlying Price</th>
+                <th>Underlying Currency</th>
+                <th>Strike Price</th>
+            </thead>
+            <tbody>
+                {% for trade in modified_trades %}
+                <tr>
+                    <td>{{ trade.date_of_trade }}</td>
+                    <td>{{ trade.trade_id }}</td>
+                    <td>{{ trade.product }}</td>
+                    <td>{{ trade.buying_party }}</td>
+                    <td>{{ trade.selling_party }}</td>
+                    <td>{{ trade.notional_amount }}</td>
+                    <td>{{ trade.quantity }}</td>
+                    <td>{{ trade.notional_currency }}</td>
+                    <td>{{ trade.maturity_date }}</td>
+                    <td>{{ trade.underlying_price }}</td>
+                    <td>{{ trade.underlying_currency }}</td>
+                    <td>{{ trade.strike_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if new_trades %}
+        <h4>New Trades</h4>
+        <table>
+            <thead>
+                <th>Date Of Trade</th>
+                <th>Trade ID</th>
+                <th>Product</th>
+                <th>Buying Party</th>
+                <th>Selling Party</th>
+                <th>notional Amount</th>
+                <th>Quantity</th>
+                <th>notional Quantity</th>
+                <th>Maturity Date</th>
+                <th>Underlying Price</th>
+                <th>Underlying Currency</th>
+                <th>Strike Price</th>
+            </thead>
+            <tbody>
+                {% for trade in new_trades %}
+                    <tr>
+                        <td>{{ trade.date_of_trade }}</td>
+                        <td>{{ trade.trade_id }}</td>
+                        <td>{{ trade.product }}</td>
+                        <td>{{ trade.buying_party }}</td>
+                        <td>{{ trade.selling_party }}</td>
+                        <td>{{ trade.notional_amount }}</td>
+                        <td>{{ trade.quantity }}</td>
+                        <td>{{ trade.notional_currency }}</td>
+                        <td>{{ trade.maturity_date }}</td>
+                        <td>{{ trade.underlying_price }}</td>
+                        <td>{{ trade.underlying_currency }}</td>
+                        <td>{{ trade.strike_price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>
