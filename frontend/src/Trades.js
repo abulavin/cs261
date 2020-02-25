@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {Label } from "reactstrap";
 import Clock from 'react-live-clock';
 import Table from './Components/Table.js';
-import EditModal from './Components/EditModal.js';
  
 class Trades extends Component {
   render() {
@@ -27,7 +26,6 @@ class Trades extends Component {
           {/* this component accepts the JSON data */}
           <Table/>
         </div>
-        <EditModal/>
 
       </React.Fragment>
     );

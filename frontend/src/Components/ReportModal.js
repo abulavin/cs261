@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class EditModal extends Component {
+class ReportModal extends Component {
   state = { 
       show: false 
     };
@@ -17,11 +17,11 @@ class EditModal extends Component {
     return (
       <main>
         <Modal show={this.state.show} handleClose={this.hideModal}>
-          <p>Modal</p>
+          <p>View Report</p>
           <p>Data</p>
         </Modal>
         <button type="button" onClick={this.showModal}>
-          Edit Trade
+          View Report
         </button>
       </main>
     );
@@ -41,4 +41,4 @@ const Modal = ({ handleClose, show, children }) => {
   );
 };
 
-export default EditModal;
+export default ReportModal;

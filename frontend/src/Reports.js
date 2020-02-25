@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {Label } from "reactstrap";
+import ReportModal from './Components/ReportModal.js';
  
 class Reports extends Component {
   constructor(props){
@@ -25,7 +26,7 @@ class Reports extends Component {
       
       <React.Fragment>
       <div>
-        <h2> This will be the reports page!</h2>
+        <h2> Use this page to view and download reports.</h2>
       </div>
 
       <div className="reportoptions"> 
@@ -39,11 +40,22 @@ class Reports extends Component {
         <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
         <table>
           <thead>
-            <tr>Headings from backend{this.getHeader()}</tr>
-          </thead>
-          <tbody>
-            Rows from backend{this.getRowsData()}
-          </tbody>
+            <tr>Headings from backend{this.getHeader()}
+                <th>View</th>
+                <th>Download</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>Rows from backend{this.getRowsData()}
+                    <td> 
+                        <ReportModal/>
+                        {/* if trade is editable, render edit button */}
+                    </td>
+                    <td> 
+                        <button > Download</button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
       </div>
 

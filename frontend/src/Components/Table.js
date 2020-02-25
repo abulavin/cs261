@@ -1,5 +1,7 @@
 import React, { Component } from "react";
- 
+import EditModal from './EditModal.js';
+import DeleteModal from './DeleteModal.js';
+
 export default class Table extends Component {
 // pass json as property to the component to display data in table form
   constructor(props){
@@ -25,8 +27,11 @@ export default class Table extends Component {
 
   // create function that deletes a row from the table
 
-  // open modal view for editing trades
+  // render drop down menu for each row with delete function
 
+  // IF trade is editable, then add EDIT option in the drop down menu
+  
+ 
   render() {
     return (
       <React.Fragment>
@@ -35,13 +40,25 @@ export default class Table extends Component {
             <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
             <table id="tableview">
             <thead>
-                <tr>Headings from backend{this.getHeader()}</tr>
+                <tr>Headings from backend{this.getHeader()}
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
             </thead>
             <tbody>
-                <tr>Rows from backend{this.getRowsData()}</tr>
+                <tr>Rows from backend{this.getRowsData()}
+                    <td> 
+                        <EditModal/>
+                        {/* if trade is editable, render edit button */}
+                    </td>
+                    <td> 
+                        <DeleteModal/>
+                    </td>
+                </tr>
             </tbody>
             </table>
         </div>
+       
       </React.Fragment>
     );
   }
