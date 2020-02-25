@@ -78,10 +78,14 @@ export class GetTradeProxy extends BackendProxy {
         super('/trades');
     }
 
-    getListOfTrades() {
+    getListOfTrades(page = 1) {
+        page = page < 1 ? 1 : page;
+        const pageParam = '?page=' + page;
         return new Promise((resolve, reject) => {
-            this.getRequest()
-                .then(response => resolve(response.data))
+            this.getRequest(pageParam)
+                .then(response => {
+                    resolve(response.data)
+                })
                 .catch(error => { throw error });
         });
     }
