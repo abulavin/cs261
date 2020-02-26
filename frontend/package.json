@@ -25,6 +25,23 @@
     "test": "jest",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "globals": {
+      "NODE_ENV": "test"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src/frontend"
+    ]
+  },
   "transform": {
     "\\.js$": "<rootDir>/node_modules/babel-jest"
   },

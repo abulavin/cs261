@@ -2,11 +2,14 @@ import React from 'react';
 import NewTrade from '../NewTrade.js';
 import { render } from 'react-testing-library'
 import App from '../App';
+import {EditModal} from '../Components/EditModal.js'
 
-describe('New Trade', () => {
-  
-it('renders the component', () => {
-    const container = shallow(<NewTrade />)
-    expect(container.exists()).toBe(true);
-  })
+describe('Modal', () => {
+  it('renders nothing when closed', () => {
+    expect(shallow(
+      <EditModal onClose={jest.fn()}/>
+    )).toMatchSnapshot();
+  });
 });
+
+

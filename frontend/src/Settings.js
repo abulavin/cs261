@@ -6,7 +6,7 @@ class Settings extends Component {
       <React.Fragment>
         <div>
           <h2> Use this page to change settings.</h2>
-          <h4 id="settingsname">Error Correction Module:  </h4>
+          <h4 id="settingsname">Error Correction Module:</h4>
           <div class="toggle-switch">
             <input type="checkbox" class="toggle-switch-checkbox" name="toggleSwitch" id="toggleSwitch" />
             <label class="toggle-switch-label" for="toggleSwitch">

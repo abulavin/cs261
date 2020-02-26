@@ -141,7 +141,6 @@ class NewTrade extends Component {
               <Input
                 type="number"
                 name="underprice"
-                
               />
             </FormGroup>
             <FormGroup>

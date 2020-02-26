@@ -17,7 +17,7 @@ class EditModal extends Component {
     return (
       <main>
         <Modal show={this.state.show} handleClose={this.hideModal}>
-          <p>Modal</p>
+          
           <p>Data</p>
         </Modal>
         <button type="button" onClick={this.showModal}>
