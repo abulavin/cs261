@@ -21,25 +21,16 @@ class Trades extends Component {
       .catch(error => { throw error });
   }
 
-  getTradesByID = (tradeID) => {
-    let id = this.ref.tradeID.value;
-    console.log(id);
-    // this.props.getProxy.getTradeByID(id)
-    //   .then(trade => console.log(trade));
-  }
-
-  deleteTradeByID = (tradeID) => {
-    let id = this.ref.tradeID.value;
-    this.props.deleteProxy.deleteTrade(id);
+  getTradeByID = (tradeID) => {
+    tradeID = 'TEST101'
+    this.props.getProxy.getTradeByID(tradeID)
+      .then(trade => console.log(trade));
   }
 
   render() {
     return (
       <div>
         <h2> This will be the editing/deleting/viewing trades page!</h2>
-        <button onClick={this.getTrades}>Get Trades</button>
-        <button onClick={this.getTradesByID}>Get Trade</button>
-        <button onClick={this.deleteTradeByID}>Delete</button>
       </div>
     );
   }
