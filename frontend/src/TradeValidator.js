@@ -12,9 +12,9 @@ export const TradeValidator = {
         'product',
         'buying_party',
         'selling_party',
-        'notational_amount',
+        'notional_amount',
         'quantity',
-        'notational_currency',
+        'notional_currency',
         'maturity_date',
         'underlying_price',
         'underlying_currency',
@@ -50,8 +50,8 @@ export const TradeValidator = {
                 if (!this.stringLengthIsValid(trade.product))
                     this.throwError("Invalid product description: " + trade.product);
 
-                if (!this.productPriceIsValid(trade.notational_amount))
-                    this.throwError("Invalid notional amount: " + trade.notational_amount);
+                if (!this.productPriceIsValid(trade.notional_amount))
+                    this.throwError("Invalid notional amount: " + trade.notional_amount);
 
                 if (!this.productPriceIsValid(trade.underlying_price))
                     this.throwError("Invalid underlying price amount: " + trade.underlying_price);
@@ -62,8 +62,8 @@ export const TradeValidator = {
                 if (!this.productQuantityIsValid(trade.quantity))
                     this.throwError("Invalid trade quantity: " + trade.quantity);
 
-                if (!this.currencyCodeIsValid(trade.notational_currency))
-                    this.throwError("Invalid notional currency code: " + trade.notational_currency);
+                if (!this.currencyCodeIsValid(trade.notional_currency))
+                    this.throwError("Invalid notional currency code: " + trade.notional_currency);
 
                 if (!this.currencyCodeIsValid(trade.underlying_currency))
                     this.throwError("Invalid underlying currency code: " + trade.underlying_currency);
