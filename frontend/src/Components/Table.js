@@ -12,11 +12,14 @@ export default class Table extends Component {
   }
   // use this function to get the table heading values
   getKeys = function(){
-
+    // return Object.keys(this.props.data[0]);
   }
   // use this function to populate header with headings
   getHeader = function(){
-  
+    // var keys = this.getKeys();
+    // return keys.map((key, index)=>{
+    // return <th key={key}>{key.toUpperCase()}</th>
+    // })
   }
   // use this function to iterate through the json and return body part of the table
   getRowsData = function(){

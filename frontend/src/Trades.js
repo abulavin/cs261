@@ -8,12 +8,12 @@ class Trades extends Component {
 
   constructor(props) {
     super(props);
-    this.props.getProxy = new GetTradeProxy();
-    this.props.deleteProxy = new DeleteTradeProxy();
+    this.getProxy = new GetTradeProxy();
+    this.deleteProxy = new DeleteTradeProxy();
   }
 
   getTrades = () => {
-    this.props.getProxy.getListOfTrades()
+    this.getProxy.getListOfTrades()
       .then(trades => console.log(trades))
       .catch(error => { throw error });
   }
@@ -37,6 +37,8 @@ class Trades extends Component {
         <div className = "tradetitle">
           <h2> Use this page to edit, delete and view trades.</h2>
           <h5> Trades are only editable if they are not older than a week.</h5>
+          <div>{JSON.stringify(this.getTrades())}</div>
+
           <h4 className = "datetime"> Current Date and Time (GMT):
             <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true} timezone={'UK/GMT'} />
           </h4>
@@ -50,6 +52,7 @@ class Trades extends Component {
         </div>
         <div className="tradetable">
           {/* this component accepts the JSON data */}
+          
           <Table/>
         </div>
 
