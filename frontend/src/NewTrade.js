@@ -2,8 +2,16 @@ import React, { Component } from "react";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import axios from "axios";
 import { API_URL } from "./index.js";
+import {CreateTradeProxy} from "./BackendProxy";
 
 class NewTrade extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.props.createProxy = new CreateTradeProxy();
+  }
+
   state = {
     date_of_trade: "",
     trade_id: "",
@@ -19,7 +27,7 @@ class NewTrade extends Component {
     strike_price: ""
   };
 
-  // this was me trying to get the API interaction to work 
+  // this was me trying to get the API interaction to work
   componentDidMount() {
     if (this.props.trade) {
       const { date_of_trade, trade_id, product, buying_party, selling_party, notational_amount, quantity,notational_currency,maturity_date,underlying_price,underlying_currency,strike_price} = this.props.trade;
@@ -54,6 +62,7 @@ class NewTrade extends Component {
   render() {
     return (
       <React.Fragment>
+        <button className='NavBtn' onClick={this.sendTrade}>Send</button>
         <div className="tradetitles">
           <h2> Use this page to enter details of a derivative trade.</h2>
           <h5> Upon entry, all details will be error-checked and any issues will be highlighted.</h5>
@@ -148,20 +157,20 @@ class NewTrade extends Component {
               <Input
                 type="number"
                 name="strike"
-                
+
               />
             </FormGroup>
             <input type="submit" value="Submit for Checking"/>
             <input type="reset" value = "Reset all values"/>
           </Form>
         </div>
-        
-        <div className="errorbox"> 
-          <h3>This is where highlighted errors will be displayed</h3> 
+
+        <div className="errorbox">
+          <h3>This is where highlighted errors will be displayed</h3>
           <Button>Next Trade</Button>
         </div>
 
-        
+
       </React.Fragment>
     );
   }

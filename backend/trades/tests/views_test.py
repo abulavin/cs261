@@ -17,9 +17,9 @@ class ListCreateDerivativeTradeTest(APITestCase):
                 product='1',
                 buying_party='a', 
                 selling_party='b',
-                notational_amount='1',
+                notional_amount='1',
                 quantity='1',
-                notational_currency='c',
+                notional_currency='c',
                 maturity_date='2020-02-20',
                 underlying_price='1',
                 underlying_currency='d',
@@ -29,8 +29,8 @@ class ListCreateDerivativeTradeTest(APITestCase):
         response = self.client.get('/trades/')
         # Test the response status code is correct
         self.assertEqual(200, response.status_code)
-        # Test there are 5 DerivativeTrade in the response
-        self.assertEqual(5, len(response.data))
+        # Test there are 4 DerivativeTrade in the response
+        self.assertEqual(4, len(response.data))
 
     def test_create_derivative_trades(self):
         """Test the creation of a trade."""
@@ -40,9 +40,9 @@ class ListCreateDerivativeTradeTest(APITestCase):
             'product': '1',
             'buying_party': '1',
             'selling_party': '1',
-            'notational_amount': 1.0,
+            'notional_amount': 1.0,
             'quantity': 1.0,
-            'notational_currency': '1',
+            'notional_currency': '1',
             'maturity_date': '2020-02-20',
             'underlying_price': 1.0,
             'underlying_currency': '1',
@@ -60,9 +60,9 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
             product='a',
             buying_party='b',
             selling_party='c',
-            notational_amount=1,
+            notional_amount=1,
             quantity=1,
-            notational_currency='GDP',
+            notional_currency='GDP',
             maturity_date='2020-02-20',
             underlying_price=1,
             underlying_currency='USD',
@@ -86,9 +86,9 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
             'product': '3',
             'buying_party': '1',
             'selling_party': '1',
-            'notational_amount': 6.0,
+            'notional_amount': 6.0,
             'quantity': 1.0,
-            'notational_currency': '1',
+            'notional_currency': '1',
             'maturity_date': '2020-02-20',
             'underlying_price': 1.0,
             'underlying_currency': '1',

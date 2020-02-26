@@ -12,7 +12,6 @@ import Guide from "./Guide";
 import NavButtons from "./NavButtons.js";
 import NavBar from "./NavBar.js";
 
-// import logo from './logo.svg';
 import './App.css';
 
 function App() {
