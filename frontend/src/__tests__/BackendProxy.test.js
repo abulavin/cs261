@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import {CreateTradeProxy } from '../BackendProxy';
-
-const testProxy = new CreateTradeProxy();
-
-test('Proxy has the correct URL', () => {
-    expect(testProxy.url).toBe(window.location.host + '/trades');
-});
-=======
 import { CreateTradeProxy, DeleteTradeProxy, GetTradeProxy } from '../BackendProxy';
 
 const testCreateTradeProxy = new CreateTradeProxy();
@@ -36,4 +27,3 @@ test('GetTradeProxy throws exception on an invalid ID', () => {
 
     })
 });
->>>>>>> backend-proxy
