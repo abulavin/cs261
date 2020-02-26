@@ -1,5 +1,3 @@
-import datetime
-
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import DerivativeTradeSerializer
 from .models import DerivativeTrade, DerivativeTradeHistory
+from .helper import check_trade_editable
 
 
 class ListCreateDerivativeTrade(ListCreateAPIView):
@@ -69,12 +68,12 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         PUT and UPDATE requests handled by this method. It will run the Error 
         Detection Module and then log any changes made to the DerivativeTrade.
         """
-        # Check the trade is not more than x days old.
-        if self.get_object().date_of_trade + datetime.timedelta(days=7) < datetime.datetime.today().date():
-            pass
-            #return error.
+        # Check the trade is not more than 7 days old.
+        if not check_trade_editable(self.get_object()):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         # Error Detection Module Called Upon.
+        
         self._log_change('E', self.get_object())
         return super().update(request, *args, **kwargs)
 

@@ -76,6 +76,13 @@
 
   OR
 
+  If the trade is older than 7 days old, it is not available to be edited. 
+
+  * **Code:** 401 <br />
+    **Content:** `{ error : "Unauthorized" }`
+
+  OR
+
   * **Code:** TODO: Error Detection Module Codes <br />
     **Content:** `{ error : "Email Invalid" }`
 
