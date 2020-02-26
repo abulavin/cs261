@@ -51,6 +51,7 @@ class Trades extends Component {
       <div>
         <h2> This will be the editing/deleting/viewing trades page!</h2>
         <button onClick={this.updateTrade}>Update TEST101</button>
+        <button onClick={this.getTrades}>Get Trades</button>
       </div>
     );
   }
