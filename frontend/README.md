@@ -3,12 +3,14 @@
 Running the files locally using `npm start` does not provide access to the backend. The backend server must be running and all interaction
 should be done using the front-end that is served by it.
 
+To run the server, refer to the README in the root directory that has server installation instructions.
+
 After making any changes to files in `frontend/src`, run `npm run build`. After a few seconds the build should be done if there are no
 compilation errors.
 
-To run the server, refer to the README in the root directory that has server installation instructions.
+After this, go to `localhost:8000` to view the page. Again, to see any changes you must run `npm build` and refresh.
 
-After this, go to `localhost:8000` to view the page. Again, to see any changes you must run `npm build`.
+You do not have to restart the server each time you build, just make sure server is running then after any significant change run `npm run build`.
 
 ## Available Scripts
 
