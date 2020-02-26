@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import { GetTradeProxy, DeleteTradeProxy } from "./BackendProxy";
 import {Label } from "reactstrap";
 import Clock from 'react-live-clock';
 import Table from './Components/Table.js';
-import { GetTradeProxy, DeleteTradeProxy } from "./BackendProxy";
 
 class Trades extends Component {
 
