@@ -10,6 +10,8 @@ To run the server, refer to the README in the root directory that has server ins
 
 After this, go to `localhost:8000` to view the page. Again, to see any changes you must run `npm build`.
 
+You do not have to restart the server each time you build, just make sure server is running then after any significant change run `npm run build`.
+
 ## Available Scripts
 
 In the project directory, you can run:
