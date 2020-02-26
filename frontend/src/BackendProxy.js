@@ -39,9 +39,18 @@ class BackendProxy {
     }
 
     putRequest(data, parameters = "") {
-        const putURL = this.url + parameters;
+        let putURL;
+        if (parameters)
+            putURL = this.url + parameters + '/';
+        else 
+            putURL = this.url;
+
         axios.put(putURL, data)
-            .then(response => console.log(response.status))
+            .then(response => {
+                console.log("Put Status: " + response.status);
+                console.log("Updated Object:");
+                console.log(response.data);
+            })
             .catch(error => { throw error });
     }
 }
@@ -124,5 +133,21 @@ export class GetTradeProxy extends BackendProxy {
                     .catch(error => { throw error });
             });
         }
+    }
+}
+export class UpdateTradeProxy extends BackendProxy {
+
+    constructor() {
+        super('/trades');
+    }
+
+    partiallyUpdateTrade(tradeID, updates) {
+
+    }
+
+    updateTrade(updatedTrade) {
+        TradeValidator.validateTrade(updatedTrade);
+        const tradeID = updatedTrade.trade_id;
+        this.putRequest(updatedTrade, tradeID)
     }
 }
