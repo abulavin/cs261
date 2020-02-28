@@ -121,9 +121,8 @@ export class GetTradeProxy extends BackendProxy {
      * @param {number} page Page number of derivative trade list
      */
     getListOfTrades(page = 1) {
-        page = page < 1 ? 1 : page;
         const pageParam = '?page=' + page;
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.getRequest(pageParam)
                 .then(response => {
                     resolve(response.data)
@@ -173,8 +172,8 @@ export class UpdateTradeProxy extends BackendProxy {
             strike_price: TradeValidator.productPriceIsValid
         }
         for (const prop in updates) {
-            const checkerFunc = checkerFunctions[prop];
-            if (!checkerFunc(updates[prop]))
+            const checkerFunction = checkerFunctions[prop];
+            if (!checkerFunction(updates[prop]))
                 throw new Error("Invalid update to property " + prop + ": " + updates[prop]);
         }
         this.patchRequest(updates, tradeID)
@@ -193,37 +192,42 @@ export class GetReportProxy extends BackendProxy {
         super('/reports');
     }
 
-    getListOfReports() {
-        return this.makeGetRequestPromise();
+    getListOfReports(page = 1) {
+        return this.makeGetRequestPromise("?page=" + page);
     }
 
-    getReportsAfter(date) {
+    getReportsAfter(date, page = 1) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
 
-        return this.makeGetRequestPromise("?date__gte=" + date);
+        const urlParameters = `?date__gte=${date}&page=${page}`;
+        return this.makeGetRequestPromise(urlParameters);
     }
 
-    getReportsBefore(date) {
+    getReportsBefore(date, page = 1) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
 
-        return this.makeGetRequestPromise("?date__lte=" + date);
+        const urlParameters = `?date__lte=${date}&page=${page}`;
+        return this.makeGetRequestPromise(urlParameters);
     }
 
-    getReportsOn(date) {
+    getReportsOn(date, page = 1) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
 
-        return this.makeGetRequestPromise("?date=" + date);
+        const urlParameters = `?date=${date}&page=${page}`;
+        return this.makeGetRequestPromise(urlParameters);
     }
 
     makeGetRequestPromise(urlParameter) {
         return new Promise(resolve => {
-            this.getRequest(urlParameter).then(response => {
+            this.getRequest(urlParameter)
+                .then(response => {
                 console.log(response.status + " " + response.statusText);
                 resolve(response.data);
-            })
+                })
+                .catch(error => { throw error });
         })
     }
 
