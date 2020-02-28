@@ -100,9 +100,7 @@ export class GetTradeProxy extends BackendProxy {
         const pageParam = '?page=' + page;
         return new Promise((resolve, reject) => {
             this.getRequest(pageParam)
-                .then(response => {
-                    resolve(response.data)
-                })
+                .then(response => resolve(response.data))
                 .catch(error => { throw error });
         });
     }

@@ -6,16 +6,28 @@ import Table from './Components/Table.js';
 
 class Trades extends Component {
 
+  state = {
+    tr: []
+  }
+
   constructor(props) {
     super(props);
     this.getProxy = new GetTradeProxy();
     this.deleteProxy = new DeleteTradeProxy();
   }
 
-  getTrades = () => {
+  componentDidMount() {
     this.getProxy.getListOfTrades()
       .then(trades => console.log(trades))
+        
+        // this.setState({tr: trades.results})
+        // console.log(this.state.tr)
+      // })
       .catch(error => { throw error });
+  }
+
+  getTrades = () => {
+    
   }
 
   getTradesByPage = (page) => {
@@ -33,14 +45,13 @@ class Trades extends Component {
   render() {
     return (
       <React.Fragment>
-
         <div className = "tradetitle">
           <h2> Use this page to edit, delete and view trades.</h2>
           <h5> Trades are only editable if they are not older than a week.</h5>
-          <div>{JSON.stringify(this.getTrades())}</div>
-
+         
           <h4 className = "datetime"> Current Date and Time (GMT):
-            <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true} timezone={'UK/GMT'} />
+            <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true}/>
+            {/* timezone={} */}
           </h4>
         </div>
 
@@ -52,8 +63,7 @@ class Trades extends Component {
         </div>
         <div className="tradetable">
           {/* this component accepts the JSON data */}
-          
-          <Table/>
+          <Table data={this.state.tr}/>
         </div>
 
       </React.Fragment>

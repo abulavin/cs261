@@ -23,7 +23,13 @@ export default class Table extends Component {
   }
   // use this function to iterate through the json and return body part of the table
   getRowsData = function(){
-  
+    // var items = this.props.data;
+    // var keys = this.getKeys();
+    // return items.map((row, index)=>{
+    // return <tr key={index}>
+    //   <RenderRow key={index} data={row} keys={keys}/>
+    // </tr>
+    // })
   }
 
   // create function so if trade date to current date is within a week, then render edit button
@@ -43,11 +49,24 @@ export default class Table extends Component {
             <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
             <table id="tableview">
             <thead>
-                <tr>Headings from backend{this.getHeader()}
+                <tr>
+                    <th>Date of Trade</th>
+                    <th>Trade ID</th>
+                    <th>Product</th>
+                    <th>Buying Party</th>
+                    <th>Selling Party</th>
+                    <th>Notional Amount</th>
+                    <th>Quantity</th>
+                    <th>Notional Currency</th>
+                    <th>Maturity Date</th>
+                    <th>Underlying Price</th>
+                    <th>Underlying Currency</th>
+                    <th>Strike Price</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
+          
             <tbody>
                 <tr>Rows from backend{this.getRowsData()}
                     <td> 
@@ -61,6 +80,8 @@ export default class Table extends Component {
             </tbody>
             </table>
         </div>
+        
+        <button onClick={console.log(this.props.data[0])}>Hello</button>
        
       </React.Fragment>
     );
@@ -69,7 +90,9 @@ export default class Table extends Component {
 }
 // use this to return individual rows of the table
 const RenderRow = (props) =>{
-  
+  return props.keys.map((key, index)=>{
+    return <td key={props.data[key]}>{props.data[key]}</td>
+    })
 }
 
 
