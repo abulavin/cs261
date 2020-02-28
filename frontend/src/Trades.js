@@ -49,7 +49,7 @@ class Trades extends Component {
     return (
       <React.Fragment>
         <div className = "tradetitle">     
-          <h3 className = "datetime"> Use this page to edit, delete and view trades.        Current Date and Time (GMT):
+          <h3 className = "datetime"> Use this page to edit, delete and view trades. Current Date and Time (GMT):
             <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true}/>
             {/* timezone={} */}
           </h3>

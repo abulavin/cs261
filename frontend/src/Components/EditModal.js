@@ -14,10 +14,20 @@ class EditModal extends Component {
   };
 
   render() {
+    // if current date is equal to or greater than the creation date + 7 then return modal with error message
+    if (true) return (
+      <main>
+        <button type="button" onClick={this.showModal}>
+          Edit Trade
+        </button>
+        <Modal show={this.state.show} handleClose={this.hideModal}>
+          <h1>ERROR</h1>
+        </Modal>
+      </main>
+    )
     return (
       <main>
         <Modal show={this.state.show} handleClose={this.hideModal}>
-          
           <p>Data</p>
         </Modal>
         <button type="button" onClick={this.showModal}>
