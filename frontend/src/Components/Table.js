@@ -9,10 +9,11 @@ export default class Table extends Component {
     this.getHeader = this.getHeader.bind(this);
     this.getRowsData = this.getRowsData.bind(this);
     this.getKeys = this.getKeys.bind(this);
+    
   }
   // use this function to get the table heading values
   getKeys = function(){
-    // return Object.keys(this.props.data[0]);
+    return Object.keys(this.props.data[0]);
   }
   // use this function to populate header with headings
   getHeader = function(){
@@ -23,13 +24,15 @@ export default class Table extends Component {
   }
   // use this function to iterate through the json and return body part of the table
   getRowsData = function(){
-    // var items = this.props.data;
-    // var keys = this.getKeys();
-    // return items.map((row, index)=>{
-    // return <tr key={index}>
-    //   <RenderRow key={index} data={row} keys={keys}/>
-    // </tr>
-    // })
+    var items = this.props.data;
+    var keys = this.getKeys();
+    return items.map((row, index)=>{
+    return <tr key={index}>
+      <RenderRow key={index} data={row} keys={keys}/>
+      <td><EditModal/></td>
+      <td><DeleteModal/></td>      
+    </tr>
+    })
   }
 
   // create function so if trade date to current date is within a week, then render edit button
@@ -40,10 +43,11 @@ export default class Table extends Component {
 
   // IF trade is editable, then add EDIT option in the drop down menu
   
- 
   render() {
+    if (!this.props.data[0]) return null;
     return (
       <React.Fragment>
+        {/* {console.log(this.props.data)} */}
         <div className="tradetable">
             {/* onkeyup search for item function */}
             <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
@@ -68,20 +72,11 @@ export default class Table extends Component {
             </thead>
           
             <tbody>
-                <tr>Rows from backend{this.getRowsData()}
-                    <td> 
-                        <EditModal/>
-                        {/* if trade is editable, render edit button */}
-                    </td>
-                    <td> 
-                        <DeleteModal/>
-                    </td>
-                </tr>
+                {this.getRowsData()}
+                    
             </tbody>
             </table>
         </div>
-        
-        <button onClick={console.log(this.props.data[0])}>Hello</button>
        
       </React.Fragment>
     );

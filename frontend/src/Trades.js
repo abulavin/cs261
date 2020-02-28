@@ -7,7 +7,8 @@ import Table from './Components/Table.js';
 class Trades extends Component {
 
   state = {
-    tr: []
+    tr: [],
+    count: 2
   }
 
   constructor(props) {
@@ -18,22 +19,24 @@ class Trades extends Component {
 
   componentDidMount() {
     this.getProxy.getListOfTrades()
-      .then(trades => console.log(trades))
-        
-        // this.setState({tr: trades.results})
-        // console.log(this.state.tr)
-      // })
+      .then(trades => {
+        this.setState({tr: trades.results})
+        console.log(this.state.tr)
+      })
       .catch(error => { throw error });
   }
 
-  getTrades = () => {
-    
-  }
-
-  getTradesByPage = (page) => {
-    this.props.getListOfTrades(page)
-      .then(trades => console.log(trades))
-      .catch(error => { throw error });
+  getTradesByPage = () => {
+    this.setState({ 
+      tr: [],
+      count: this.state.count + 1 })
+    console.log(this.state.count)
+    this.getProxy.getListOfTrades(this.state.count)
+        .then(trades => {
+          this.setState({tr: trades.results})
+          console.log(this.state.tr)
+        })
+        .catch(error => { throw error });
   }
 
   getTradeByID = (tradeID) => {
@@ -45,27 +48,25 @@ class Trades extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className = "tradetitle">
-          <h2> Use this page to edit, delete and view trades.</h2>
-          <h5> Trades are only editable if they are not older than a week.</h5>
-         
-          <h4 className = "datetime"> Current Date and Time (GMT):
+        <div className = "tradetitle">     
+          <h3 className = "datetime"> Use this page to edit, delete and view trades.        Current Date and Time (GMT):
             <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true}/>
             {/* timezone={} */}
-          </h4>
+          </h3>
         </div>
 
         <div className="tradeoptions">
+          <button onClick={this.getTradesByPage}> next page </button>
           <Label>Filter by: </Label>
                 <select id="heading" name="heading">
                   <option value="heading">Heading1</option>
                 </select>
         </div>
         <div className="tradetable">
-          {/* this component accepts the JSON data */}
-          <Table data={this.state.tr}/>
+          {this.state.tr ? <Table data={this.state.tr}/> : null }
+          <button onClick={this.getTradesByPage}> next page </button>
         </div>
-
+        
       </React.Fragment>
     );
   }

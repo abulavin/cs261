@@ -11,10 +11,10 @@ body {
 
 .content {
   background-color: grey;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   margin: 0;
-  position:fixed;
+  position: absolute;
 }
 
 .App {
