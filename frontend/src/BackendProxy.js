@@ -42,10 +42,26 @@ class BackendProxy {
         let putURL;
         if (parameters)
             putURL = this.url + parameters + '/';
-        else 
+        else
             putURL = this.url;
 
         axios.put(putURL, data)
+            .then(response => {
+                console.log("Put Status: " + response.status);
+                console.log("Updated Object:");
+                console.log(response.data);
+            })
+            .catch(error => { throw error });
+    }
+
+    patchRequest(data, parameters = "") {
+        let putURL;
+        if (parameters)
+            putURL = this.url + parameters + '/';
+        else
+            putURL = this.url;
+
+        axios.patch(putURL, data)
             .then(response => {
                 console.log("Put Status: " + response.status);
                 console.log("Updated Object:");
@@ -141,8 +157,27 @@ export class UpdateTradeProxy extends BackendProxy {
         super('/trades');
     }
 
-    partiallyUpdateTrade(tradeID, updates) {
-
+    partiallyUpdateTrade(updates, tradeID) {
+        const checkerFunctions = {
+            date_of_trade: TradeValidator.dateOfTradeIsValid,
+            trade_id: TradeValidator.tradeIDisValid,
+            product: TradeValidator.productPriceIsValid,
+            buying_party: TradeValidator.stringLengthIsValid,
+            selling_party: TradeValidator.stringLengthIsValid,
+            notional_amount: TradeValidator.productPriceIsValid,
+            quantity: TradeValidator.productQuantityIsValid,
+            notional_currency: TradeValidator.currencyCodeIsValid,
+            maturity_date: TradeValidator.dateOfTradeIsValid,
+            underlying_price: TradeValidator.productPriceIsValid,
+            underlying_currency: TradeValidator.currencyCodeIsValid,
+            strike_price: TradeValidator.productPriceIsValid
+        }
+        for (const prop in updates) {
+            const checkerFunc = checkerFunctions[prop];
+            if (!checkerFunc(updates[prop]))
+                throw new Error("Invalid update to property " + prop + ": " + updates[prop]);
+        }
+        this.patchRequest(updates, tradeID)
     }
 
     updateTrade(updatedTrade) {
@@ -150,4 +185,57 @@ export class UpdateTradeProxy extends BackendProxy {
         const tradeID = updatedTrade.trade_id;
         this.putRequest(updatedTrade, tradeID)
     }
+}
+
+export class GetReportProxy extends BackendProxy {
+
+    constructor() {
+        super('/reports');
+    }
+
+    getListOfReports() {
+        return new Promise(resolve => {
+            this.getRequest().then(response => {
+                console.log(response.status + " " + response.statusText);
+                resolve(response.data);
+            });
+        })
+    }
+
+    getReportsAfter(date) {
+        if (!TradeValidator.dateOfTradeIsValid(date))
+            throw new Error("Invalid query date: " + date);
+
+        return new Promise(resolve => {
+            this.getRequest("?date__gte=" + date).then(response => {
+                console.log(response.status + " " + response.statusText);
+                resolve(response.data);
+            })
+        });
+    }
+
+    getReportsBefore(date) {
+        if (!TradeValidator.dateOfTradeIsValid(date))
+            throw new Error("Invalid query date: " + date);
+
+        return new Promise(resolve => {
+            this.getRequest("?date__lte=" + date).then(response => {
+                console.log(response.status + " " + response.statusText);
+                resolve(response.data);
+            })
+        });
+    }
+
+    getReportsOn(date) {
+        if (!TradeValidator.dateOfTradeIsValid(date))
+            throw new Error("Invalid query date: " + date);
+
+        return new Promise(resolve => {
+            this.getRequest("?date=" + date).then(response => {
+                console.log(response.status + " " + response.statusText);
+                resolve(response.data);
+            });
+        });
+    }
+
 }

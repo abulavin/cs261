@@ -46,11 +46,20 @@ class Trades extends Component {
     this.updateProxy.updateTrade(exampleTrade);
   }
 
+  partiallyUpdateTrade = (tradeID) => {
+    const update = {
+      buying_party: "7",
+      selling_party: "7",
+    }
+    this.updateProxy.partiallyUpdateTrade(update, "TEST101");
+  }
+
   render() {
     return (
       <div>
         <h2> This will be the editing/deleting/viewing trades page!</h2>
         <button onClick={this.updateTrade}>Update TEST101</button>
+        <button onClick={this.partiallyUpdateTrade}>Partially Update TEST101</button>
         <button onClick={this.getTrades}>Get Trades</button>
       </div>
     );
