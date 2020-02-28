@@ -194,48 +194,37 @@ export class GetReportProxy extends BackendProxy {
     }
 
     getListOfReports() {
-        return new Promise(resolve => {
-            this.getRequest().then(response => {
-                console.log(response.status + " " + response.statusText);
-                resolve(response.data);
-            });
-        })
+        return this.makeGetRequestPromise();
     }
 
     getReportsAfter(date) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
 
-        return new Promise(resolve => {
-            this.getRequest("?date__gte=" + date).then(response => {
-                console.log(response.status + " " + response.statusText);
-                resolve(response.data);
-            })
-        });
+        return this.makeGetRequestPromise("?date__gte=" + date);
     }
 
     getReportsBefore(date) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
 
-        return new Promise(resolve => {
-            this.getRequest("?date__lte=" + date).then(response => {
-                console.log(response.status + " " + response.statusText);
-                resolve(response.data);
-            })
-        });
+        return this.makeGetRequestPromise("?date__lte=" + date);
     }
 
     getReportsOn(date) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
 
+        return this.makeGetRequestPromise("?date=" + date);
+    }
+
+    makeGetRequestPromise(urlParameter) {
         return new Promise(resolve => {
-            this.getRequest("?date=" + date).then(response => {
+            this.getRequest(urlParameter).then(response => {
                 console.log(response.status + " " + response.statusText);
                 resolve(response.data);
-            });
-        });
+            })
+        })
     }
 
 }
