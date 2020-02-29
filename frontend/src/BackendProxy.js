@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios';
-import { TradeValidator } from './TradeValidator';
+import { TradeValidator, checkerFunctions } from './TradeValidator';
 
 /**
  * Base class to provide HTTP request functionality for
@@ -39,9 +39,34 @@ class BackendProxy {
     }
 
     putRequest(data, parameters = "") {
-        const putURL = this.url + parameters;
+        let putURL;
+        if (parameters)
+            putURL = this.url + parameters + '/';
+        else
+            putURL = this.url;
+
         axios.put(putURL, data)
-            .then(response => console.log(response.status))
+            .then(response => {
+                console.log("Put Status: " + response.status);
+                console.log("Updated Object:");
+                console.log(response.data);
+            })
+            .catch(error => { throw error });
+    }
+
+    patchRequest(data, parameters = "") {
+        let putURL;
+        if (parameters)
+            putURL = this.url + parameters + '/';
+        else
+            putURL = this.url;
+
+        axios.patch(putURL, data)
+            .then(response => {
+                console.log("Put Status: " + response.status);
+                console.log("Updated Object:");
+                console.log(response.data);
+            })
             .catch(error => { throw error });
     }
 }
@@ -59,7 +84,7 @@ export class CreateTradeProxy extends BackendProxy {
      * @alias module:BackendProxy
      */
     createTrade(trade) {
-        TradeValidator.validateTrade(trade)
+        TradeValidator.validateTrade(trade);
         this.postRequest(trade);
     }
 }
@@ -96,9 +121,8 @@ export class GetTradeProxy extends BackendProxy {
      * @param {number} page Page number of derivative trade list
      */
     getListOfTrades(page = 1) {
-        page = page < 1 ? 1 : page;
         const pageParam = '?page=' + page;
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.getRequest(pageParam)
                 .then(response => resolve(response.data))
                 .catch(error => { throw error });
@@ -124,6 +148,48 @@ export class GetTradeProxy extends BackendProxy {
         }
     }
 }
+export class UpdateTradeProxy extends BackendProxy {
+
+    constructor() {
+        super('/trades');
+    }
+
+    /**
+     * Partially update a derivative trade with ID `tradeID` by only specifying the attributes that change e.g
+     * ```js
+     * updates = {
+     *      buying_party = "ABC123",
+     *      selling_party = "BCD456"
+     * }
+     * ```
+     * Any invalid values will throw an error.
+     * @param {*} updates object containing `attribute: value` pairs to be updated for trade with id `tradeID`
+     * @param {string} tradeID ID of the updated trade
+     * @alias module:BackendProxy
+     */
+    partiallyUpdateTrade(updates, tradeID) {
+        for (const prop in updates) {
+            const checkerFunction = checkerFunctions[prop];
+            if (!checkerFunction(updates[prop]))
+                throw new Error("Invalid update to property " + prop + ": " + updates[prop]);
+        }
+        this.patchRequest(updates, tradeID)
+    }
+
+    /**
+     * Replace an existing trade with `updatedTrade`.
+     * The input trade must include all trade attributes.
+     * An invalid/incomplete trade will throw an error.
+     * @param {*} updatedTrade Object representing a complete derivative trade
+     * @alias module:BackendProxy
+     */
+    updateTrade(updatedTrade) {
+        TradeValidator.validateTrade(updatedTrade);
+        const tradeID = updatedTrade.trade_id;
+        this.putRequest(updatedTrade, tradeID)
+    }
+}
+
 export class GetReportProxy extends BackendProxy {
 
     constructor() {
