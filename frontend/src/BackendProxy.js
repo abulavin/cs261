@@ -84,7 +84,7 @@ export class CreateTradeProxy extends BackendProxy {
      * @alias module:BackendProxy
      */
     createTrade(trade) {
-        TradeValidator.validateTrade(trade)
+        TradeValidator.validateTrade(trade);
         this.postRequest(trade);
     }
 }
