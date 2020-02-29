@@ -52,7 +52,7 @@ class NewTrade extends Component {
           <button className='NavBtn' onClick={this.sendTrade}>Send</button>
         </div>
         <div className="tradeform">
-          <Form onSubmit={}>
+          <Form onSubmit={this.sendTrade}>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input

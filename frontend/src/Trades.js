@@ -85,7 +85,6 @@ class Trades extends Component {
           </h3>
           <button onClick={this.updateTrade}>Update TEST101</button>
           <button onClick={this.partiallyUpdateTrade}>Partially Update TEST101</button>
-          <button onClick={this.getTrades}>Get Trades</button>
         </div>
 
         <div className="tradeoptions">
