@@ -15,7 +15,7 @@ class Trades extends Component {
     super(props);
     this.getProxy = new GetTradeProxy();
     this.deleteProxy = new DeleteTradeProxy();
-    this.updateProxy = new UpdateTradeProxy();
+    
   }
 
   componentDidMount() {
@@ -37,41 +37,15 @@ class Trades extends Component {
           this.setState({tr: trades.results})
           console.log(this.state.tr)
         })
-        .catch(error => { throw error });
+        .catch(error => {
+          return null
+        });
   }
 
   getTradeByID = (tradeID) => {
     tradeID = 'TEST101'
     this.props.getProxy.getTradeByID(tradeID)
       .then(trade => console.log(trade));
-  }
-
-  updateTrade = (tradeID) => {
-      const exampleTrade = {
-          date_of_trade: "2020-02-29 12:30",
-          trade_id: "TEST101",
-          product: "1",
-          buying_party: "2",
-          selling_party: "1",
-          notional_amount: 1.0,
-          quantity: 1.0,
-          notional_currency: "USD",
-          maturity_date: "2020-02-20",
-          underlying_price: 1.0,
-          underlying_currency: "USD",
-          strike_price: 1.0
-      };
-      this.updateProxy.updateTrade(exampleTrade);
-  }
-
-  partiallyUpdateTrade = (tradeID) => {
-      tradeID = "TEST101"
-      const update = {
-          buying_party: "7",
-          selling_party: "7",
-          date_of_trade: "2020-02-29 12:30"
-      }
-      this.updateProxy.partiallyUpdateTrade(update, tradeID);
   }
 
 

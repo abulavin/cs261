@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { CreateTradeProxy } from "./BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import axios from "axios";
 
 class NewTrade extends Component {
 
