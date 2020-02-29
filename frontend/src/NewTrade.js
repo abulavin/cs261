@@ -10,6 +10,21 @@ class NewTrade extends Component {
       this.createProxy = new CreateTradeProxy();
   }
 
+  state = {
+    date_of_trade: "2020-02-29 12:30",
+    trade_id: "TEST101",
+    product: "1",
+    buying_party: "1",
+    selling_party: "1",
+    notional_amount: 1.0,
+    quantity: 1.0,
+    notional_currency: "USD",
+    maturity_date: "2020-02-20",
+    underlying_price: 1.0,
+    underlying_currency: "USD",
+    strike_price: 1.0
+  }
+
   sendTrade = () => {
       const exampleTrade = {
           date_of_trade: "2020-02-29 12:30",
@@ -37,7 +52,7 @@ class NewTrade extends Component {
           <button className='NavBtn' onClick={this.sendTrade}>Send</button>
         </div>
         <div className="tradeform">
-          <Form onSubmit={this.props.trade ? this.editTrade : this.createTrade}>
+          <Form onSubmit={}>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input

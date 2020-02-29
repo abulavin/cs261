@@ -17,6 +17,7 @@ class DeleteModal extends Component {
 
   hideModal = () => {
     this.setState({ show: false });
+    window.location.reload();
   };
 
   deleteTrade = () => {

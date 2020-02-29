@@ -29,7 +29,7 @@ export default class Table extends Component {
     return items.map((row, index)=>{
       return <tr key={index}>
         <RenderRow key={index} data={row} keys={keys}/>
-        <td><EditModal date={this.props.data[index].date_of_trade}/></td>
+        <td><EditModal date={this.props.data[index].date_of_trade} data={this.props.data[index]}/></td>
         <td><DeleteModal id={this.props.data[index].trade_id}/></td>      
       </tr>
     })

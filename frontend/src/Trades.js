@@ -103,5 +103,5 @@ class Trades extends Component {
       </React.Fragment>
     );
   }
-
+}
 export default Trades;

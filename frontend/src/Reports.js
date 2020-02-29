@@ -9,11 +9,7 @@ class Reports extends Component {
     this.getHeader = this.getHeader.bind(this);
     this.getRowsData = this.getRowsData.bind(this);
     this.getKeys = this.getKeys.bind(this);
-  }
-
-  constructor() {
-      super()
-      this.reportProxy = new GetReportProxy();
+    this.reportProxy = new GetReportProxy();
   }
 
   getListOfReports = () => {
