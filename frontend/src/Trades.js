@@ -47,11 +47,12 @@ class Trades extends Component {
   }
 
   partiallyUpdateTrade = (tradeID) => {
+    tradeID = "TEST101"
     const update = {
       buying_party: "7",
       selling_party: "7",
     }
-    this.updateProxy.partiallyUpdateTrade(update, "TEST101");
+    this.updateProxy.partiallyUpdateTrade(update, tradeID);
   }
 
   render() {
