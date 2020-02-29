@@ -13,15 +13,31 @@ class EditModal extends Component {
     this.setState({ show: false });
   };
 
+  checkEditable = () => {
+    var limit = new Date();
+    limit.setDate(limit.getDate()-7);
+    console.log("limit "+limit);
+    // var d = new Date(2020, 04, 20);
+    // var d = this.props.date.getDate();
+    console.log("date trade ");
+
+    if (limit) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
   render() {
     // if current date is equal to or greater than the creation date + 7 then return modal with error message
-    if (true) return (
+    if (this.checkEditable()) return (
       <main>
         <button type="button" onClick={this.showModal}>
           Edit Trade
         </button>
         <Modal show={this.state.show} handleClose={this.hideModal}>
-          <h1>ERROR</h1>
+          <h1>ERROR NOT EDITABLE</h1>
         </Modal>
       </main>
     )

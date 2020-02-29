@@ -27,11 +27,11 @@ export default class Table extends Component {
     var items = this.props.data;
     var keys = this.getKeys();
     return items.map((row, index)=>{
-    return <tr key={index}>
-      <RenderRow key={index} data={row} keys={keys}/>
-      <td><EditModal/></td>
-      <td><DeleteModal/></td>      
-    </tr>
+      return <tr key={index}>
+        <RenderRow key={index} data={row} keys={keys}/>
+        <td><EditModal date={this.props.data[index].date_of_trade}/></td>
+        <td><DeleteModal id={this.props.data[index].trade_id}/></td>      
+      </tr>
     })
   }
 
