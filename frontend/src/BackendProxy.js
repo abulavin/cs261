@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios';
-import { TradeValidator } from './TradeValidator';
+import { TradeValidator, checkerFunctions } from './TradeValidator';
 
 /**
  * Base class to provide HTTP request functionality for

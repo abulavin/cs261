@@ -222,3 +222,18 @@ export const TradeValidator = {
         throw new Error(message);
     }
 }
+
+export const checkerFunctions = {
+    date_of_trade: TradeValidator.dateOfTradeIsValid,
+    trade_id: TradeValidator.tradeIDisValid,
+    product: TradeValidator.productPriceIsValid,
+    buying_party: TradeValidator.stringLengthIsValid,
+    selling_party: TradeValidator.stringLengthIsValid,
+    notional_amount: TradeValidator.productPriceIsValid,
+    quantity: TradeValidator.productQuantityIsValid,
+    notional_currency: TradeValidator.currencyCodeIsValid,
+    maturity_date: TradeValidator.dateOfTradeIsValid,
+    underlying_price: TradeValidator.productPriceIsValid,
+    underlying_currency: TradeValidator.currencyCodeIsValid,
+    strike_price: TradeValidator.productPriceIsValid
+}
