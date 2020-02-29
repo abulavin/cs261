@@ -35,7 +35,7 @@ export const TradeValidator = {
                 if (!this.tradeIDisValid(trade.trade_id))
                     this.throwError("Invalid Trade ID: " + trade.trade_id);
 
-                if (!this.dateOfTradeIsValid(trade.date_of_trade))
+                if (!this.dateAndTimeOfTradeIsValid(trade.date_of_trade))
                     this.throwError("Invalid trade date: " + trade.date_of_trade);
 
                 if (!this.dateOfTradeIsValid(trade.maturity_date))
@@ -173,8 +173,18 @@ export const TradeValidator = {
      * @param {string} date Date string representation
      * @alias module:TradeValidator
      */
+    dateAndTimeOfTradeIsValid: function (date) {
+        // Matches strings: YYYY-MM-DD HH:MM
+        const regex = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31) ([01][0-9]|2[0-3]):([0-5][0-9])$/;
+        return !!Date.parse(date) && regex.test(date);
+    },
+
+    /**
+     * Check date string matches YYYY-MM-DD format/any other format that can be converted.
+     * @param {string} date date in YYYY-MM-DD format
+     */
     dateOfTradeIsValid: function (date) {
-        return !!Date.parse(date);
+        return !! Date.parse(date);
     },
 
     /**
@@ -221,4 +231,19 @@ export const TradeValidator = {
     throwError: function (message) {
         throw new Error(message);
     }
+}
+
+export const checkerFunctions = {
+    date_of_trade: TradeValidator.dateOfTradeIsValid,
+    trade_id: TradeValidator.tradeIDisValid,
+    product: TradeValidator.productPriceIsValid,
+    buying_party: TradeValidator.stringLengthIsValid,
+    selling_party: TradeValidator.stringLengthIsValid,
+    notional_amount: TradeValidator.productPriceIsValid,
+    quantity: TradeValidator.productQuantityIsValid,
+    notional_currency: TradeValidator.currencyCodeIsValid,
+    maturity_date: TradeValidator.dateOfTradeIsValid,
+    underlying_price: TradeValidator.productPriceIsValid,
+    underlying_currency: TradeValidator.currencyCodeIsValid,
+    strike_price: TradeValidator.productPriceIsValid
 }
