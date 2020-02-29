@@ -184,7 +184,7 @@ export const TradeValidator = {
      * @param {string} date date in YYYY-MM-DD format
      */
     dateOfTradeIsValid: function (date) {
-        return Date.parse(date);
+        return !! Date.parse(date);
     },
 
     /**
