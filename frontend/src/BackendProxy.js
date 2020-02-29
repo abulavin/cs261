@@ -192,10 +192,21 @@ export class GetReportProxy extends BackendProxy {
         super('/reports');
     }
 
+    /**
+     * Get a list of most recently generated reports
+     * @param {number} page Page number, default 1
+     * @alias module:BackendProxy
+     */
     getListOfReports(page = 1) {
         return this.makeGetRequestPromise("?page=" + page);
     }
 
+    /**
+     * Get the URLs of reports generated on or after `date`
+     * @param {string} date Generation date of report in YYYY-MM-DD format
+     * @param {number} page Results page number
+     * @alias module:BackendProxy
+     */
     getReportsAfter(date, page = 1) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
@@ -204,6 +215,12 @@ export class GetReportProxy extends BackendProxy {
         return this.makeGetRequestPromise(urlParameters);
     }
 
+    /**
+     * Get the URLs of report generated before or after `date`
+     * @param {string} date Generation date of report in YYYY-MM-DD format
+     * @param {number} page Results page number
+     * @alias module:BackendProxy
+     */
     getReportsBefore(date, page = 1) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
@@ -212,6 +229,12 @@ export class GetReportProxy extends BackendProxy {
         return this.makeGetRequestPromise(urlParameters);
     }
 
+    /**
+     * Get the URLs of reports generated on the same day as `date`
+     * @param {string} date Generation date of report in YYYY-MM-DD format 
+     * @param {number} page Page number of results
+     * @alias module:BackendProxy
+     */
     getReportsOn(date, page = 1) {
         if (!TradeValidator.dateOfTradeIsValid(date))
             throw new Error("Invalid query date: " + date);
@@ -224,8 +247,8 @@ export class GetReportProxy extends BackendProxy {
         return new Promise(resolve => {
             this.getRequest(urlParameter)
                 .then(response => {
-                console.log(response.status + " " + response.statusText);
-                resolve(response.data);
+                    console.log(response.status + " " + response.statusText);
+                    resolve(response.data);
                 })
                 .catch(error => { throw error });
         })
