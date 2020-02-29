@@ -8,6 +8,7 @@ class Trades extends Component {
     this.getProxy = new GetTradeProxy();
     this.deleteProxy = new DeleteTradeProxy();
     this.updateProxy = new UpdateTradeProxy();
+    this.deleteProxy = new DeleteTradeProxy();
   }
 
   getTrades = () => {
@@ -55,6 +56,10 @@ class Trades extends Component {
     this.updateProxy.partiallyUpdateTrade(update, tradeID);
   }
 
+  deleteTrade = (tradeID) => {
+      this.deleteProxy.deleteTrade("TEST101");
+  }
+
   render() {
     return (
       <div>
@@ -62,6 +67,7 @@ class Trades extends Component {
         <button onClick={this.updateTrade}>Update TEST101</button>
         <button onClick={this.partiallyUpdateTrade}>Partially Update TEST101</button>
         <button onClick={this.getTrades}>Get Trades</button>
+        <button onClick={this.deleteTrade}>DELETE TEST101</button>
       </div>
     );
   }
