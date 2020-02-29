@@ -156,6 +156,19 @@ export class UpdateTradeProxy extends BackendProxy {
         super('/trades');
     }
 
+    /**
+     * Partially update a derivative trade with ID `tradeID` by only specifying the attributes that change e.g
+     * ```js
+     * updates = {
+     *      buying_party = "ABC123",
+     *      selling_party = "BCD456"
+     * }
+     * ```
+     * Any invalid values will throw an error.
+     * @param {*} updates object containing `attribute: value` pairs to be updated for trade with id `tradeID`
+     * @param {string} tradeID ID of the updated trade
+     * @alias module:BackendProxy
+     */
     partiallyUpdateTrade(updates, tradeID) {
         for (const prop in updates) {
             const checkerFunction = checkerFunctions[prop];
@@ -165,6 +178,13 @@ export class UpdateTradeProxy extends BackendProxy {
         this.patchRequest(updates, tradeID)
     }
 
+    /**
+     * Replace an existing trade with `updatedTrade`.
+     * The input trade must include all trade attributes.
+     * An invalid/incomplete trade will throw an error.
+     * @param {*} updatedTrade Object representing a complete derivative trade
+     * @alias module:BackendProxy
+     */
     updateTrade(updatedTrade) {
         TradeValidator.validateTrade(updatedTrade);
         const tradeID = updatedTrade.trade_id;
@@ -202,7 +222,7 @@ export class GetReportProxy extends BackendProxy {
     }
 
     /**
-     * Get the URLs of report generated before or after `date`
+     * Get the URLs of report generated on or before `date`
      * @param {string} date Generation date of report in YYYY-MM-DD format
      * @param {number} page Results page number
      * @alias module:BackendProxy
