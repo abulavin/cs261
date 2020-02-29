@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios';
-import { TradeValidator } from './TradeValidator';
+import { TradeValidator, checkerFunctions } from './TradeValidator';
 
 /**
  * Base class to provide HTTP request functionality for
@@ -157,20 +157,6 @@ export class UpdateTradeProxy extends BackendProxy {
     }
 
     partiallyUpdateTrade(updates, tradeID) {
-        const checkerFunctions = {
-            date_of_trade: TradeValidator.dateOfTradeIsValid,
-            trade_id: TradeValidator.tradeIDisValid,
-            product: TradeValidator.productPriceIsValid,
-            buying_party: TradeValidator.stringLengthIsValid,
-            selling_party: TradeValidator.stringLengthIsValid,
-            notional_amount: TradeValidator.productPriceIsValid,
-            quantity: TradeValidator.productQuantityIsValid,
-            notional_currency: TradeValidator.currencyCodeIsValid,
-            maturity_date: TradeValidator.dateOfTradeIsValid,
-            underlying_price: TradeValidator.productPriceIsValid,
-            underlying_currency: TradeValidator.currencyCodeIsValid,
-            strike_price: TradeValidator.productPriceIsValid
-        }
         for (const prop in updates) {
             const checkerFunction = checkerFunctions[prop];
             if (!checkerFunction(updates[prop]))
