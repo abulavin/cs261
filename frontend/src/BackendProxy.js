@@ -125,4 +125,26 @@ export class GetTradeProxy extends BackendProxy {
             });
         }
     }
+
+    getFilteredTrades(filter) {
+        if(filter !== undefined) {
+            let urlParameters = '';
+            for(attribute in filter) {
+                if(attribute in TradeValidator.tradeProperties) {
+                    const checkerFunction = checkerFunctions[attribute];
+                    const value = filter[attribute]
+                    if(!checkerFunction(value)) {
+                        throw new Error(`Invalid filter value for attribute ${attribute}: ${value}`);
+                    }
+                    urlParameters += `${attribute}=${value}&`
+                }
+            }
+            if(urlParameters !== '') {
+                urlParameters = '?' + urlParameters.substring(0, urlParameters.length);
+                this.getRequest(urlParameters);
+            }
+        } else {
+            throw new Error("Invalid filter: " + filter);
+        }
+    }
 }
