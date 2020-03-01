@@ -12,7 +12,7 @@ class Trades extends Component {
     this.deleteProxy = new DeleteTradeProxy();
     this.state = {
       tr: [],
-      count: 2
+      count: 1
     }
   }
 
@@ -31,7 +31,7 @@ class Trades extends Component {
       count: this.state.count + 1 })
     console.log(this.state.count)
     
-    this.getProxy.getListOfTrades(this.state.count)
+    this.getProxy.getListOfTrades(this.state.count+1)
         .then(trades => {
           this.setState({tr: trades.results})
           console.log(this.state.tr)
@@ -41,20 +41,20 @@ class Trades extends Component {
         });
   }
 
-  // getPrevPageTrade = () => {
-  //   this.setState({
-  //     tr: [],
-  //     count: this.state.count - 1 })
-  //   console.log(this.state.count)
-  //   this.getProxy.getListOfTrades(this.state.count)
-  //       .then(trades => {
-  //         this.setState({tr: trades.results})
-  //         console.log(this.state.tr)
-  //       })
-  //       .catch(error => {
-  //         return null
-  //       });
-  // }
+  getPrevPageTrade = () => {
+    this.setState({
+      tr: [],
+      count: this.state.count - 1 })
+    console.log(this.state.count)
+    this.getProxy.getListOfTrades(this.state.count-1)
+        .then(trades => {
+          this.setState({tr: trades.results})
+          console.log(this.state.tr)
+        })
+        .catch(error => {
+          throw error;
+        });
+  }
 
   getTradeByID = (tradeID) => {
     tradeID = 'TEST101'
@@ -115,6 +115,7 @@ class Trades extends Component {
         </div>
         <div className="tradetable">
           {/* if page number == max page number then disable next page button */}
+          <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>
           {this.state.tr ? <Table data={this.state.tr}/> : null }
           <button onClick={this.getTradesByPage}> next page </button>
