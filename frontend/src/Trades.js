@@ -6,16 +6,14 @@ import Table from './Components/Table.js';
 
 class Trades extends Component {
 
-  state = {
-    tr: [],
-    count: 2
-  }
-
   constructor(props) {
     super(props);
     this.getProxy = new GetTradeProxy();
     this.deleteProxy = new DeleteTradeProxy();
-    
+    this.state = {
+      tr: [],
+      count: 2
+    }
   }
 
   componentDidMount() {

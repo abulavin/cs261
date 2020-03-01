@@ -44,7 +44,7 @@ class EditModal extends Component {
     var underlying_currency = this.state.underlying_currency
     var strike_price = this.state.strike_price
 
-    var date_of_trade = day + "T" + (time_of_trade + ":00")
+    var date_of_trade = day + " " + (time_of_trade)
     console.log(date_of_trade)
 
     const trade = {
@@ -114,7 +114,7 @@ class EditModal extends Component {
     var limit = new Date();
     limit.setDate(limit.getDate()-7);
     limit = moment(limit).format('MM/DD/YYYY hh:mm:ss')
-    console.log("limit "+limit);
+    // console.log("limit "+limit);
     var d = moment(this.props.date).format('MM/DD/YYYY hh:mm:ss');
 
     if (d > limit) {

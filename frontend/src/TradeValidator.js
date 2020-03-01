@@ -174,10 +174,10 @@ export const TradeValidator = {
      * @alias module:TradeValidator
      */
     dateAndTimeOfTradeIsValid: function (date) {
-        return true
+        // return true
         // Matches strings: YYYY-MM-DD HH:MM
-        // const regex = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31) ([01][0-9]|2[0-3]):([0-5][0-9])$/;
-        // return !!Date.parse(date) && regex.test(date);
+        const regex = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31) ([01][0-9]|2[0-3]):([0-5][0-9])$/;
+        return !!Date.parse(date) && regex.test(date);
     },
 
     /**
