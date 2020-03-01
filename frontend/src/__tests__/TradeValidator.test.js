@@ -2,7 +2,7 @@ import {TradeValidator} from '../TradeValidator';
 import {currencyCodes, companyCodes} from '../currencyCodes';
 
 const exampleTrade = {
-    date_of_trade: "2020-02-02",
+    date_of_trade: "2020-02-02 12:30",
     trade_id: "DILF10",
     product: "1",
     buying_party: "1",
