@@ -27,4 +27,4 @@ jobs:
         npm test
       working-directory: ./frontend
       env:
-        CI: true
+        CI: false
