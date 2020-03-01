@@ -21,9 +21,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Run unit tests
-    - run: npm install
-    - run: npm run build --if-present
-    - run: npm test
+      run: |
+        npm install
+        npm run build --if-present
+        npm test
       working-directory: ./frontend
       env:
         CI: true
