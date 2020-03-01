@@ -15,15 +15,12 @@ class BackendProxy {
         this.url = window.location.origin + url + "/";
     }
 
-    postRequest(data) {
+    postRequest(data, parameters = "") {
         // Data must be plain JS object (not a string) in order for
         // the Content-Type header to be set to application/json.
         // Otherwise server will return Bad Request
-        axios.post(this.url, data)
-            .then(response => {
-                console.log("Trade ID: " + response.data.trade_id + " created.");
-            })
-            .catch(error => { throw error });
+        const putURL = this.url + parameters;
+        return axios.post(putURL, data);
     }
 
     deleteRequest(parameters = "") {
@@ -85,7 +82,11 @@ export class CreateTradeProxy extends BackendProxy {
      */
     createTrade(trade) {
         TradeValidator.validateTrade(trade);
-        this.postRequest(trade);
+        this.postRequest(trade).then(response => {
+            console.log(response.status, response.statusText);
+            console.log("New trade created: ")
+            console.log(response.data);
+        });
     }
 }
 
@@ -233,6 +234,14 @@ export class GetReportProxy extends BackendProxy {
 
     constructor() {
         super('/reports');
+    }
+
+    generateDailyReport() {
+        return new Promise((resolve, reject) => {
+            this.postRequest({}, "generate/").then(response => {
+                resolve(response.data);
+            })
+        });
     }
 
     /**
