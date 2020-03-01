@@ -104,7 +104,7 @@ Any invalid values will throw an error.
 
 <a name="exp_module_BackendProxy--UpdateTradeProxy+updateTrade"></a>
 
-### UpdateTradeProxy#updateTrade(updatedTrade, tradeID) ÔÅÅ
+### UpdateTradeProxy#updateTrade(updatedTrade, tradeID)
 Replace an existing trade with `updatedTrade`.
 The input trade must include all trade attributes.
 An invalid/incomplete trade will throw an error.
