@@ -31,7 +31,7 @@ export default class ReportTable extends Component {
                 <div className="reporttable">
                     {/* onkeyup search for item function */}
                     <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
-                    <table>
+                    <table id="tableview">
                         <thead>
                             <tr>
                                 <th>Date</th>

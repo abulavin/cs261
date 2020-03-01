@@ -24,26 +24,46 @@ class Trades extends Component {
       })
       .catch(error => { throw error });
   }
-
+  
   getTradesByPage = () => {
     this.setState({
       tr: [],
       count: this.state.count + 1 })
     console.log(this.state.count)
+    
     this.getProxy.getListOfTrades(this.state.count)
         .then(trades => {
           this.setState({tr: trades.results})
           console.log(this.state.tr)
         })
         .catch(error => {
-          return null
+          throw error;
         });
   }
+
+  // getPrevPageTrade = () => {
+  //   this.setState({
+  //     tr: [],
+  //     count: this.state.count - 1 })
+  //   console.log(this.state.count)
+  //   this.getProxy.getListOfTrades(this.state.count)
+  //       .then(trades => {
+  //         this.setState({tr: trades.results})
+  //         console.log(this.state.tr)
+  //       })
+  //       .catch(error => {
+  //         return null
+  //       });
+  // }
 
   getTradeByID = (tradeID) => {
     tradeID = 'TEST101'
     this.props.getProxy.getTradeByID(tradeID)
       .then(trade => console.log(trade));
+  }
+
+  refreshPage () {
+    window.location.reload();
   }
 
   updateTrade = (tradeID) => {
@@ -70,7 +90,9 @@ class Trades extends Component {
           notional_currency: "USD"
       }
       this.getProxy.getFilteredTrades(filter)
-                   .then(filteredTrades => console.log(filteredTrades));
+                   .then(filteredTrades => {
+                    this.setState({tr: filteredTrades.results})
+                    console.log(filteredTrades.results) })
   }
 
   render() {
@@ -86,17 +108,19 @@ class Trades extends Component {
         </div>
 
         <div className="tradeoptions">
-          <button onClick={this.getTradesByPage}> next page </button>
           <Label>Filter by: </Label>
                 <select id="heading" name="heading">
                   <option value="heading">Heading1</option>
                 </select>
         </div>
         <div className="tradetable">
+          {/* if page number == max page number then disable next page button */}
+          <button onClick={this.getTradesByPage}> next page </button>
           {this.state.tr ? <Table data={this.state.tr}/> : null }
           <button onClick={this.getTradesByPage}> next page </button>
         </div>
-        <button onClick={this.getFilteredTrades}>Get Filtered Trades</button>
+        <button onClick={this.getFilteredTrades}>Filter to USD</button>
+        <button onClick={this.refreshPage}> Remove Filters </button>
       </React.Fragment>
     );
   }
