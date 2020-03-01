@@ -1,31 +1,35 @@
 import React, { Component } from "react";
-import { CreateTradeProxy } from "./BackendProxy";
+import moment from 'moment';
+import { UpdateTradeProxy } from "../BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 
-class NewTrade extends Component {
+class EditModal extends Component {
 
-  constructor() {
-    super();
-    this.createProxy = new CreateTradeProxy();
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+    this.updateTrade = this.updateTrade.bind(this)
+    this.updateProxy = new UpdateTradeProxy();
     this.state = { 
-      date_of_trade: "",
-      time_of_trade: "",
-      trade_id: "",
-      product: "",
-      buying_party: "",
-      selling_party: "",
-      notional_amount: 0,
-      quantity: 0,
-      notional_currency: "GBP",
-      maturity_date: "",
-      underlying_price: 0,
-      underlying_currency: "GBP",
-      strike_price: 0,
+      show: false,
+      date_of_trade: this.props.data.date_of_trade,
+      time_of_trade: this.props.data.time_of_trade,
+      trade_id: this.props.data.trade_id,
+      product: this.props.data.product,
+      buying_party: this.props.data.buying_party,
+      selling_party: this.props.data.selling_party,
+      notional_amount: this.props.data.notional_amount,
+      quantity: this.props.data.quantity,
+      notional_currency: this.props.data.notional_currency,
+      maturity_date: this.props.data.maturity_date,
+      underlying_price: this.props.data.underlying_price,
+      underlying_currency: this.props.data.underlying_currency,
+      strike_price: this.props.data.strike_price,
       error_message: ""
     }
   }
 
-  sendTrade = () => {
+  updateTrade = () => {
     var day = this.state.date_of_trade
     var time_of_trade = this.state.time_of_trade
     var trade_id = this.state.trade_id
@@ -39,35 +43,36 @@ class NewTrade extends Component {
     var underlying_price = this.state.underlying_price
     var underlying_currency = this.state.underlying_currency
     var strike_price = this.state.strike_price
-    var date_of_trade = day + " " + (time_of_trade)
 
+    var date_of_trade = day + " " + (time_of_trade)
     console.log(date_of_trade)
+
     const trade = {
-      date_of_trade,
-      trade_id,
-      product,
-      buying_party,
-      selling_party,
-      notional_amount,
-      quantity,
-      notional_currency,
-      maturity_date,
-      underlying_price,
-      underlying_currency,
-      strike_price
+        date_of_trade,
+        trade_id,
+        product,
+        buying_party,
+        selling_party,
+        notional_amount,
+        quantity,
+        notional_currency,
+        maturity_date,
+        underlying_price,
+        underlying_currency,
+        strike_price
     };
-    this.createProxy.createTrade(trade);
+    this.updateProxy.updateTrade(trade);
+    console.log(trade);
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.sendTrade();
-    alert("You are submitting "+this.state.trade_id+this.state.notional_currency);
-    // validation
-    // let age = this.state.age;
-    // if (!Number(age)) {
-    //   alert("Your age must be a number");
-    // }
+  partiallyUpdateTrade = (tradeID) => {
+    tradeID = "TEST101"
+    const update = {
+        buying_party: "7",
+        selling_party: "7",
+        date_of_trade: "2020-02-29 12:30"
+    }
+    this.updateProxy.partiallyUpdateTrade(update, tradeID);
   }
 
   handleChange = (event) => {
@@ -83,17 +88,59 @@ class NewTrade extends Component {
     // }
     // this.setState({errormessage: err});
     // 
+ 
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.updateTrade();
+    alert("You are submitting "+this.state.trade_id+this.state.notional_currency);
+    // validation
+    // let age = this.state.age;
+    // if (!Number(age)) {
+    //   alert("Your age must be a number");
+    // }
+  }
+  
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
+  };
+
+  checkEditable = () => {
+    var limit = new Date();
+    limit.setDate(limit.getDate()-7);
+    limit = moment(limit).format('MM/DD/YYYY hh:mm:ss')
+    // console.log("limit "+limit);
+    var d = moment(this.props.date).format('MM/DD/YYYY hh:mm:ss');
+
+    if (d > limit) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
   render() {
+    // if current date is equal to or greater than the creation date + 7 then return modal with error message
+    if (!this.checkEditable()) return (
+      <main>
+        <button type="button" onClick={this.showModal}>
+          Edit Trade
+        </button>
+        <Modal show={this.state.show} handleClose={this.hideModal}>
+          <h1>In order for a trade to be editable, the trade must be less than a week old.</h1>
+          <h3>This trade was created on {moment(this.props.date).format('MM/DD/YYYY hh:mm:ss')}</h3>
+        </Modal>
+      </main>
+    )
     return (
-      <React.Fragment>
-        <div className="tradetitles">
-          <h2> Use this page to enter details of a derivative trade.</h2>
-          <h5> Upon entry, all details will be error-checked and any issues will be highlighted.</h5>
-        </div>
-        <div className="tradeform">
-        <Form>
+      <main>
+        <Modal show={this.state.show} handleClose={this.hideModal}>
+        <Form onSubmit={this.handleSubmit}>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input
@@ -106,6 +153,7 @@ class NewTrade extends Component {
               <Label for="time">Time of Trade: </Label>
               <Input
                 type="time"
+                // step="1"
                 name="time_of_trade"
                 onChange={this.handleChange}
               />
@@ -150,7 +198,6 @@ class NewTrade extends Component {
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange}>
                 <option value="GBP" selected>GBP</option>
-                <option value="USD">USD</option>
               </select>
             </FormGroup>
             <FormGroup>
@@ -181,7 +228,7 @@ class NewTrade extends Component {
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange}>
                 <option value="GBP" selected>GBP</option>
-                <option value="USD">USD</option>                
+                
               </select>
             </FormGroup>
             <FormGroup>
@@ -200,18 +247,29 @@ class NewTrade extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
+            <input type="submit" value="Submit for Checking"/>
             <input type="reset" value = "Reset all values"/>
           </Form>
-          <button onClick={this.handleSubmit}> Submit</button>
-        </div>
-
-        <div className="errorbox">
-          <h3>This is where highlighted errors will be displayed</h3>
-          <Button>Next Trade</Button>
-        </div>
-      </React.Fragment>
+        </Modal>
+        <button type="button" onClick={this.showModal}>
+          Edit Trade
+        </button>
+      </main>
     );
   }
 }
 
-export default NewTrade;
+const Modal = ({ handleClose, show, children }) => {
+  const showHideClassName = show ? "modal display-block" : "modal display-none";
+
+  return (
+    <div className={showHideClassName}>
+      <section className="modal-main">
+        {children}
+        <button onClick={handleClose}>close</button>
+      </section>
+    </div>
+  );
+};
+
+export default EditModal;

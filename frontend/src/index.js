@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+export const API_URL = "http://localhost:8000/api";
+
+
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
