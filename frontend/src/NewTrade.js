@@ -16,66 +16,48 @@ class NewTrade extends Component {
       selling_party: "",
       notional_amount: 0,
       quantity: 0,
-      notional_currency: "",
+      notional_currency: "GBP",
       maturity_date: "",
       underlying_price: 0,
-      underlying_currency: "",
+      underlying_currency: "GBP",
       strike_price: 0,
       error_message: ""
     }
   }
 
   sendTrade = () => {
-    const exampleTrade = {
-        date_of_trade: "2020-02-29 12:30",
-        trade_id: "TEST101",
-        product: "1",
-        buying_party: "1",
-        selling_party: "1",
-        notional_amount: 1.0,
-        quantity: 1.0,
-        notional_currency: "USD",
-        maturity_date: "2020-02-20",
-        underlying_price: 1.0,
-        underlying_currency: "USD",
-        strike_price: 1.0
+    var day = this.state.date_of_trade
+    var time_of_trade = this.state.time_of_trade
+    var trade_id = this.state.trade_id
+    var product = this.state.product
+    var buying_party = this.state.buying_party
+    var selling_party = this.state.selling_party
+    var notional_amount = this.state.notional_amount
+    var quantity = this.state.quantity
+    var notional_currency = this.state.notional_currency
+    var maturity_date = this.state.maturity_date
+    var underlying_price = this.state.underlying_price
+    var underlying_currency = this.state.underlying_currency
+    var strike_price = this.state.strike_price
+    var date_of_trade = day + " " + (time_of_trade)
+
+    console.log(date_of_trade)
+    const trade = {
+      date_of_trade,
+      trade_id,
+      product,
+      buying_party,
+      selling_party,
+      notional_amount,
+      quantity,
+      notional_currency,
+      maturity_date,
+      underlying_price,
+      underlying_currency,
+      strike_price
     };
-    this.createProxy.createTrade(exampleTrade);
-}
-
-  // sendTrade = () => {
-  //   var day = this.state.date_of_trade
-  //   var time_of_trade = this.state.time_of_trade
-  //   var trade_id = this.state.trade_id
-  //   var product = this.state.product
-  //   var buying_party = this.state.buying_party
-  //   var selling_party = this.state.selling_party
-  //   var notional_amount = this.state.notional_amount
-  //   var quantity = this.state.quantity
-  //   var notional_currency = this.state.notional_currency
-  //   var maturity_date = this.state.maturity_date
-  //   var underlying_price = this.state.underlying_price
-  //   var underlying_currency = this.state.underlying_currency
-  //   var strike_price = this.state.strike_price
-  //   var date_of_trade = day + " " + (time_of_trade)
-
-  //   console.log(date_of_trade)
-  //   const trade = {
-  //     date_of_trade,
-  //     trade_id,
-  //     product,
-  //     buying_party,
-  //     selling_party,
-  //     notional_amount,
-  //     quantity,
-  //     notional_currency,
-  //     maturity_date,
-  //     underlying_price,
-  //     underlying_currency,
-  //     strike_price
-  //   };
-  //   this.createProxy.createTrade(trade);
-  // }
+    this.createProxy.createTrade(trade);
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -109,10 +91,9 @@ class NewTrade extends Component {
         <div className="tradetitles">
           <h2> Use this page to enter details of a derivative trade.</h2>
           <h5> Upon entry, all details will be error-checked and any issues will be highlighted.</h5>
-          <button className='NavBtn' onClick={this.sendTrade}>Send</button>
         </div>
         <div className="tradeform">
-        <Form onSubmit={this.handleSubmit}>
+        <Form>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input
@@ -169,6 +150,7 @@ class NewTrade extends Component {
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange}>
                 <option value="GBP" selected>GBP</option>
+                <option value="USD">USD</option>
               </select>
             </FormGroup>
             <FormGroup>
@@ -199,7 +181,7 @@ class NewTrade extends Component {
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange}>
                 <option value="GBP" selected>GBP</option>
-                
+                <option value="USD">USD</option>                
               </select>
             </FormGroup>
             <FormGroup>
@@ -218,17 +200,15 @@ class NewTrade extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
-            <input type="submit" value="Submit for Checking"/>
             <input type="reset" value = "Reset all values"/>
           </Form>
+          <button onClick={this.handleSubmit}> Submit</button>
         </div>
 
         <div className="errorbox">
           <h3>This is where highlighted errors will be displayed</h3>
           <Button>Next Trade</Button>
         </div>
-
-
       </React.Fragment>
     );
   }
