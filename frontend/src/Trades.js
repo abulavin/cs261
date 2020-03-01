@@ -29,6 +29,14 @@ class Trades extends Component {
             .then(trade => console.log(trade));
     }
 
+    getFilteredTrades = (filter) => {
+        filter = {
+            notional_currency: "USD"
+        }
+        this.getProxy.getFilteredTrades(filter)
+                     .then(filteredTrades => console.log(filteredTrades));
+    }
+
     updateTrade = (tradeID) => {
         tradeID = "TEST101";
         const updatedTrade = {
@@ -69,6 +77,7 @@ class Trades extends Component {
                 <button onClick={this.updateTrade}>Update TEST101</button>
                 <button onClick={this.partiallyUpdateTrade}>Partially Update TEST101</button>
                 <button onClick={this.getTrades}>Get Trades</button>
+                <button onClick={this.getFilteredTrades}>Get Filtered Trades</button>
                 <button onClick={this.deleteTrade}>DELETE TEST101</button>
             </div>
         );
