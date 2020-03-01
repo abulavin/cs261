@@ -12,6 +12,12 @@ class Reports extends Component {
     this.reportProxy = new GetReportProxy();
   }
 
+  generateDailyReport = () => {
+    this.reportProxy.generateDailyReport().then(reports => {
+      console.log(reports);
+    })
+  }
+
   getListOfReports = () => {
       this.reportProxy.getListOfReports()
           .then(reports => console.log(reports));
@@ -32,14 +38,19 @@ class Reports extends Component {
   }
 
   // use this function to get the table heading values
-  getKeys = function(){
+  getKeys = () => {
 
   }
 
   // use this function to iterate through the json and return body part of the table
-  getRowsData = function(){
+  getRowsData = () => {
 
   }
+
+  getHeader = () => {
+    
+  }
+
   render() {
     return (
 
@@ -50,6 +61,7 @@ class Reports extends Component {
         <button onClick={this.getReportsAfter}>Get After 2020-02-28</button>
         <button onClick={this.getReportsBefore}>Get reports before 2020-02-28</button>
         <button onClick={this.getReportsOn}>Get reports on 2020-02-28</button>
+        <button onClick={this.generateDailyReport}>Generate reports</button>
       </div>
 
       <div className="reportoptions">
