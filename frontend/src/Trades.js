@@ -30,7 +30,8 @@ class Trades extends Component {
     }
 
     updateTrade = (tradeID) => {
-        const exampleTrade = {
+        tradeID = "TEST101";
+        const updatedTrade = {
             date_of_trade: "2020-02-29 12:30",
             trade_id: "TEST101",
             product: "1",
@@ -44,7 +45,7 @@ class Trades extends Component {
             underlying_currency: "USD",
             strike_price: 1.0
         };
-        this.updateProxy.updateTrade(exampleTrade);
+        this.updateProxy.updateTrade(updatedTrade, tradeID);
     }
 
     partiallyUpdateTrade = (tradeID) => {
