@@ -46,6 +46,25 @@ class Trades extends Component {
       .then(trade => console.log(trade));
   }
 
+  updateTrade = (tradeID) => {
+      tradeID = "TEST101";
+      const updatedTrade = {
+          date_of_trade: "2020-02-29 12:30",
+          trade_id: "TEST101",
+          product: "1",
+          buying_party: "2",
+          selling_party: "1",
+          notional_amount: 1.0,
+          quantity: 1.0,
+          notional_currency: "USD",
+          maturity_date: "2020-02-20",
+          underlying_price: 1.0,
+          underlying_currency: "USD",
+          strike_price: 1.0
+      };
+      this.updateProxy.updateTrade(updatedTrade, tradeID);
+  }
+
   getFilteredTrades = (filter) => {
       filter = {
           notional_currency: "USD"

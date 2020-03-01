@@ -218,11 +218,13 @@ export class UpdateTradeProxy extends BackendProxy {
      * The input trade must include all trade attributes.
      * An invalid/incomplete trade will throw an error.
      * @param {*} updatedTrade Object representing a complete derivative trade
+     * @param {string} tradeID ID of the derivative trade to be edited.
      * @alias module:BackendProxy
      */
-    updateTrade(updatedTrade) {
+    updateTrade(updatedTrade, tradeID) {
+        if (!TradeValidator.tradeIDisValid(tradeID))
+            throw new Error('Invalid trade ID; got: ' + tradeID);
         TradeValidator.validateTrade(updatedTrade);
-        const tradeID = updatedTrade.trade_id;
         this.putRequest(updatedTrade, tradeID)
     }
 }
