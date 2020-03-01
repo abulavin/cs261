@@ -129,7 +129,7 @@ export class GetTradeProxy extends BackendProxy {
     getFilteredTrades(filter) {
         if(filter !== undefined) {
             let urlParameters = '';
-            for(attribute in filter) {
+            for(const attribute in filter) {
                 if(attribute in TradeValidator.tradeProperties) {
                     const checkerFunction = checkerFunctions[attribute];
                     const value = filter[attribute]
@@ -137,6 +137,8 @@ export class GetTradeProxy extends BackendProxy {
                         throw new Error(`Invalid filter value for attribute ${attribute}: ${value}`);
                     }
                     urlParameters += `${attribute}=${value}&`
+                } else {
+                    console.error("Unknown trade attribute: " + attribute);
                 }
             }
             if(urlParameters !== '') {
