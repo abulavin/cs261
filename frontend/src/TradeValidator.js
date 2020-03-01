@@ -32,42 +32,19 @@ export const TradeValidator = {
             if (trade !== undefined) {
                 this.tradeHasAllNecessaryProperties(trade);
                 this.tradeHasNoUndefinedProperties(trade);
-                if (!this.tradeIDisValid(trade.trade_id))
-                    this.throwError("Invalid Trade ID: " + trade.trade_id);
 
-                if (!this.dateAndTimeOfTradeIsValid(trade.date_of_trade))
-                    this.throwError("Invalid trade date: " + trade.date_of_trade);
-
-                if (!this.dateOfTradeIsValid(trade.maturity_date))
-                    this.throwError("Invalid maturity trade date: " + trade.maturity_date);
-
-                if (!this.stringLengthIsValid(trade.buying_party))
-                    this.throwError("Invalid buying party: ", + trade.buying_party);
-
-                if (!this.stringLengthIsValid(trade.selling_party))
-                    this.throwError("Invalid selling party: " + trade.selling_party);
-
-                if (!this.stringLengthIsValid(trade.product))
-                    this.throwError("Invalid product description: " + trade.product);
-
-                if (!this.productPriceIsValid(trade.notional_amount))
-                    this.throwError("Invalid notional amount: " + trade.notional_amount);
-
-                if (!this.productPriceIsValid(trade.underlying_price))
-                    this.throwError("Invalid underlying price amount: " + trade.underlying_price);
-
-                if (!this.productPriceIsValid(trade.strike_price))
-                    this.throwError("Invalid strike price amount: " + trade.strike_price);
-
-                if (!this.productQuantityIsValid(trade.quantity))
-                    this.throwError("Invalid trade quantity: " + trade.quantity);
-
-                if (!this.currencyCodeIsValid(trade.notional_currency))
-                    this.throwError("Invalid notional currency code: " + trade.notional_currency);
-
-                if (!this.currencyCodeIsValid(trade.underlying_currency))
-                    this.throwError("Invalid underlying currency code: " + trade.underlying_currency);
-
+                let errorMessage = '';
+                for (const tradeAttribute in trade) {
+                    const attributeIsCorrect = checkerFunctions[tradeAttribute];
+                    const attributeValue = trade[tradeAttribute];
+                    if (!attributeIsCorrect(attributeValue)) {
+                        errorMessage += `Invalid value for attribute ${tradeAttribute}: ${attributeValue} \n`;
+                    }
+                }
+                if (errorMessage.length > 0) {
+                    errorMessage = "Trade has invalid attributes. \n" + errorMessage;
+                    this.throwError(errorMessage);
+                }
                 return true;
             } else {
                 this.throwError("Input trade is undefined.");

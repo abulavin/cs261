@@ -147,6 +147,43 @@ export class GetTradeProxy extends BackendProxy {
             });
         }
     }
+
+    /**
+     * Get trades filtered by a set of attributes e.g
+     * ```js
+     * filter = {
+     *      notional_currency: "USD",
+     *      buying_party: "Google"
+     * }
+     * ```
+     * will return all trade entries where `notional_currency` is "USD" and `buying_party` is "Google".
+     * An empty or undefined filter will return a list of most recent trades, analogously to getListOfTrades.
+     * Any attribute-value pairs where the attribute is not a known trade attribute or the value is invalid are ignored in the query.
+     * @param {*} filter attribute-value pairs for sorting derivative trade entries
+     * @param {number} page Results page number
+     * @alias module:BackendProxy
+     */
+    getFilteredTrades(filter, page = 1) {
+        let urlParameters = '?page=' + page;
+        if (filter !== undefined) {
+            for (const attribute in filter) {
+                if (TradeValidator.tradeProperties.includes(attribute)) {
+                    const checkerFunction = checkerFunctions[attribute];
+                    const value = filter[attribute];
+                    if (!checkerFunction(value)) {
+                        console.error(`Invalid filter value for attribute ${attribute}: ${value}. Ignoring`);
+                    } else {
+                        urlParameters += `&${attribute}=${value}`;
+                    }
+                } else {
+                    console.error(`Unknown trade attribute ${attribute}. Ignoring`);
+                }
+            }
+        }
+        return new Promise(resolve => {
+            this.getRequest(urlParameters).then(response => resolve(response.data));
+        });
+    }
 }
 export class UpdateTradeProxy extends BackendProxy {
 

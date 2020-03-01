@@ -46,6 +46,13 @@ class Trades extends Component {
       .then(trade => console.log(trade));
   }
 
+  getFilteredTrades = (filter) => {
+      filter = {
+          notional_currency: "USD"
+      }
+      this.getProxy.getFilteredTrades(filter)
+                   .then(filteredTrades => console.log(filteredTrades));
+  }
 
   render() {
     return (
@@ -70,7 +77,7 @@ class Trades extends Component {
           {this.state.tr ? <Table data={this.state.tr}/> : null }
           <button onClick={this.getTradesByPage}> next page </button>
         </div>
-
+        <button onClick={this.getFilteredTrades}>Get Filtered Trades</button>
       </React.Fragment>
     );
   }
