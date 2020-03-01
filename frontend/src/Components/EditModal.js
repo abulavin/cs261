@@ -110,7 +110,6 @@ class EditModal extends Component {
     var limit = new Date();
     limit.setDate(limit.getDate()-7);
     limit = moment(limit).format('MM/DD/YYYY hh:mm:ss')
-    // console.log("limit "+limit);
     var d = moment(this.props.date).format('MM/DD/YYYY hh:mm:ss');
 
     if (d > limit) {
@@ -199,6 +198,7 @@ class EditModal extends Component {
             <FormGroup>
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange} defaultValue={this.props.data.notional_currency}>
+                <option> - </option>
                 <option value="GBP" >GBP</option>
                 <option value="USD">USD</option>
               </select>
@@ -233,6 +233,7 @@ class EditModal extends Component {
             <FormGroup>
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange} defaultValue={this.props.data.underlying_currency}>
+                <option> - </option>
                 <option value="GBP">GBP</option>
                 <option value="USD">USD</option>
               </select>
@@ -256,7 +257,6 @@ class EditModal extends Component {
               />
             </FormGroup>
             <input type="submit" value="Submit for Checking"/>
-            <input type="reset" value = "Reset all values"/>
           </Form>
         </Modal>
         <button type="button" onClick={this.showModal}>

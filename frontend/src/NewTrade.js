@@ -149,7 +149,8 @@ class NewTrade extends Component {
             <FormGroup>
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
+                <option> - </option>
+                <option value="GBP" >GBP</option>
                 <option value="USD">USD</option>
               </select>
             </FormGroup>
@@ -180,7 +181,8 @@ class NewTrade extends Component {
             <FormGroup>
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
+                <option> - </option>
+                <option value="GBP" >GBP</option>
                 <option value="USD">USD</option>                
               </select>
             </FormGroup>

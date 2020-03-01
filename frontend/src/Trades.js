@@ -66,25 +66,6 @@ class Trades extends Component {
     window.location.reload();
   }
 
-  updateTrade = (tradeID) => {
-      tradeID = "TEST101";
-      const updatedTrade = {
-          date_of_trade: "2020-02-29 12:30",
-          trade_id: "TEST101",
-          product: "1",
-          buying_party: "2",
-          selling_party: "1",
-          notional_amount: 1.0,
-          quantity: 1.0,
-          notional_currency: "USD",
-          maturity_date: "2020-02-20",
-          underlying_price: 1.0,
-          underlying_currency: "USD",
-          strike_price: 1.0
-      };
-      this.updateProxy.updateTrade(updatedTrade, tradeID);
-  }
-
   getFilteredTrades = (filter) => {
       filter = {
           notional_currency: "USD"
@@ -103,15 +84,14 @@ class Trades extends Component {
             <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true}/>
             {/* timezone={} */}
           </h3>
-          <button onClick={this.updateTrade}>Update TEST101</button>
-          <button onClick={this.partiallyUpdateTrade}>Partially Update TEST101</button>
         </div>
 
         <div className="tradeoptions">
-          <Label>Filter by: </Label>
-                <select id="heading" name="heading">
-                  <option value="heading">Heading1</option>
-                </select>
+          <Label>Filter by currency: </Label>
+          <select id="heading" name="heading" onChange={this.getFilteredTrades}>
+            <option> - </option>
+            <option value="heading" >USD</option>
+          </select>
         </div>
         <div className="tradetable">
           {/* if page number == max page number then disable next page button */}
