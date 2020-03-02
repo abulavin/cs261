@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import moment from 'moment';
 import { UpdateTradeProxy } from "../BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import {currencyCodes} from "../currencyCodes";
 
 class EditModal extends Component {
 
@@ -199,8 +200,11 @@ class EditModal extends Component {
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange} defaultValue={this.props.data.notional_currency}>
                 <option> - </option>
-                <option value="GBP" >GBP</option>
-                <option value="USD">USD</option>
+                {currencyCodes.map((text,i) => (
+                <option key={i} value={text}>
+                    {text}
+                </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>
@@ -234,8 +238,11 @@ class EditModal extends Component {
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange} defaultValue={this.props.data.underlying_currency}>
                 <option> - </option>
-                <option value="GBP">GBP</option>
-                <option value="USD">USD</option>
+                {currencyCodes.map((text,i) => (
+                <option key={i} value={text}>
+                    {text}
+                </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>

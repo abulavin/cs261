@@ -203,7 +203,7 @@ export const TradeValidator = {
      * @alias module:TradeValidator
      */
     currencyCodeIsValid: function (code) {
-        return currencyCodes.has(code);
+        return currencyCodes.includes(code);
     },
 
     throwError: function (message) {

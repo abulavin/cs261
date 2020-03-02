@@ -3,6 +3,7 @@ import { GetTradeProxy, DeleteTradeProxy, UpdateTradeProxy } from "./BackendProx
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import Clock from 'react-live-clock';
 import Table from './Components/Table.js';
+import { currencyCodes } from "./currencyCodes";
 
 class Trades extends Component {
 
@@ -87,21 +88,35 @@ class Trades extends Component {
   getFilteredTrades = (filter) => {
       this.getProxy.getFilteredTrades(filter)
                    .then(filteredTrades => {
-                    this.setState({tr: []})
-                    this.setState({tr: filteredTrades.results})
-                    this.setState({searchinput: ""})
-                    console.log(filteredTrades.results) })
+                    if (filteredTrades.results.length == 0) {
+                      alert("No trades found")
+                    }
+                    else {
+                      this.setState({tr: []})
+                      this.setState({tr: filteredTrades.results})
+                      console.log(filteredTrades.results) 
+                    }
+                  })
+                    
   }
 
-  getFilterCurrency = (filter) => {
+  getFilterCurrency = (event,filter) => {
     filter = {
-      notional_currency: "USD"
+      [event.target.name]: event.target.value
     }
+    console.log(filter)
+    
     this.getProxy.getFilteredTrades(filter)
                  .then(filteredTrades => {
-                  this.setState({tr: []})
-                  this.setState({tr: filteredTrades.results})
-                  console.log(filteredTrades.results) })
+                  if (filteredTrades.results.length == 0) {
+                    alert("No trades found")
+                  }
+                  else {
+                    this.setState({tr: []})
+                    this.setState({tr: filteredTrades.results})
+                    console.log(filteredTrades.results) 
+                  }
+                })
 }
 
   handleChange = (event) => {
@@ -112,6 +127,7 @@ class Trades extends Component {
   }
 
   handleSubmit = (event) => {
+    // this.setState({tr: []})
     event.preventDefault();
     console.log(this.state.chosen, this.state.searchinput)
     console.log(this.state.filter)
@@ -131,10 +147,23 @@ class Trades extends Component {
         </div>
 
         <div className="tradeoptions">
-          <Label>Filter by currency: </Label>
-          <select id="currfilter" name="chosen" onChange={this.getFilterCurrency}>
+          <Label>Filter notional currency: </Label>
+          <select id="currfilter" name="notional_currency" onChange={this.getFilterCurrency}>
             <option> - </option>
-            <option value="USD" >USD</option>
+            {currencyCodes.map((text,i) => (
+                <option key={i} value={text}>
+                    {text}
+                </option>
+            ))}
+          </select>
+          <Label>Filter underlying currency: </Label>
+          <select id="currfilter" name="underlying_currency" onChange={this.getFilterCurrency}>
+            <option> - </option>
+            {currencyCodes.map((text,i) => (
+                <option key={i} value={text}>
+                    {text}
+                </option>
+            ))}
           </select>
           <button onClick={this.refreshPage}> Remove Filters </button>
         </div>
@@ -152,6 +181,9 @@ class Trades extends Component {
                 <option value="notional_amount" >Notional Amount</option>
                 <option value="quantity" >Quantity</option>
                 <option value="notional_currency" >Notional Currency</option>
+                <option value="maturity_date" >Maturity Date</option>
+                <option value="underlying_price" >Underlying Price</option>
+                <option value="strike_price" >Strike Price</option>
               </select>
             </FormGroup>
             <FormGroup>
@@ -166,7 +198,6 @@ class Trades extends Component {
           </Form>
         </div>
         <div className="tradetable">
-          {/* if page number == max page number then disable next page button */}
           <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
           <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>
