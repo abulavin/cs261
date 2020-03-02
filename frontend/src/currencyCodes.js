@@ -1,5 +1,5 @@
 // Currency codes provided in the test data
-export const currencyCodes = new Set([
+export const currencyCodes = [
     'AFN',
     'ALL',
     'DZD',
@@ -152,7 +152,7 @@ export const currencyCodes = new Set([
     'YER',
     'ZMK',
     'ZWD'
-]);
+];
 
 // Company codes provided in the test data
 export const companyCodes = new Set([
