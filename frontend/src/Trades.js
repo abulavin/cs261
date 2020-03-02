@@ -13,6 +13,7 @@ class Trades extends Component {
     this.state = {
       tr: [],
       count: 1,
+      maxpage: 0,
       chosen: "",
       searchinput: "",
       filter: {}
@@ -23,40 +24,54 @@ class Trades extends Component {
     this.getProxy.getListOfTrades()
       .then(trades => {
         this.setState({tr: trades.results})
-        console.log(this.state.tr)
+        var maxPages = Math.ceil(trades.count/100);
+        this.setState({maxpage: maxPages})
+        console.log(this.state.tr, maxPages)
       })
       .catch(error => { throw error });
   }
   
   getTradesByPage = () => {
-    this.setState({
-      tr: [],
-      count: this.state.count + 1 })
-    console.log(this.state.count)
-    
-    this.getProxy.getListOfTrades(this.state.count+1)
-        .then(trades => {
-          this.setState({tr: trades.results})
-          console.log(this.state.tr)
-        })
-        .catch(error => {
-          throw error;
-        });
+
+    if (this.state.count!=this.state.maxpage) {
+      this.setState({
+        tr: [],
+        count: this.state.count + 1 })
+      console.log(this.state.count)
+      
+      this.getProxy.getListOfTrades(this.state.count+1)
+          .then(trades => {
+            this.setState({tr: trades.results})
+            console.log(this.state.tr)
+          })
+          .catch(error => {
+            console.log(error)
+            alert("No more pages")
+          });
+    }
+    else {
+      return null
+    }
   }
 
   getPrevPageTrade = () => {
-    this.setState({
-      tr: [],
-      count: this.state.count - 1 })
-    console.log(this.state.count)
-    this.getProxy.getListOfTrades(this.state.count-1)
-        .then(trades => {
-          this.setState({tr: trades.results})
-          console.log(this.state.tr)
-        })
-        .catch(error => {
-          throw error;
-        });
+    if (this.state.count == 1) {
+      return null
+    }
+    else {
+      this.setState({
+        tr: [],
+        count: this.state.count - 1 })
+      console.log(this.state.count)
+      this.getProxy.getListOfTrades(this.state.count-1)
+          .then(trades => {
+            this.setState({tr: trades.results})
+            console.log(this.state.tr)
+          })
+          .catch(error => {
+            throw error;
+          });
+    }
   }
 
   getTradeByID = (tradeID) => {
