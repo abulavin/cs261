@@ -100,13 +100,23 @@ test('TradeValidator returns false on trade with missing attributes', () => {
     expect(TradeValidator.checkTradeHasAllProperties({})).toBeFalsy();
 });
 
-test('TradeValidator identifies a valid a date', () => {
+test('TradeValidator identifies a valid maturity date', () => {
     expect(TradeValidator.dateOfTradeIsValid('2012-02-02')).toBeTruthy();
     expect(TradeValidator.dateOfTradeIsValid('28th July 2000')).toBeFalsy();
     expect(TradeValidator.dateOfTradeIsValid(298572985)).toBeFalsy();
     expect(TradeValidator.dateOfTradeIsValid('298572985')).toBeFalsy();
     expect(TradeValidator.dateOfTradeIsValid('')).toBeFalsy();
     expect(TradeValidator.dateOfTradeIsValid(undefined)).toBeFalsy();
+});
+
+test('TradeValidator identifies a valid date-time', () => {
+    expect(TradeValidator.dateAndTimeOfTradeIsValid('2012-02-02 12:30')).toBeTruthy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid('2012-02-02')).toBeFalsy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid('28th July 2000')).toBeFalsy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid(298572985)).toBeFalsy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid('298572985')).toBeFalsy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid('')).toBeFalsy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid(undefined)).toBeFalsy();
 });
 
 test('TradeValidator correctly identifies valid product prices', () => {
