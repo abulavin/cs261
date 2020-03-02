@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import EditModal from './EditModal.js';
+import { GetTradeProxy} from "../BackendProxy";
 import DeleteModal from './DeleteModal.js';
 
 export default class Table extends Component {
@@ -8,6 +9,7 @@ export default class Table extends Component {
     super(props);
     this.getRowsData = this.getRowsData.bind(this);
     this.getKeys = this.getKeys.bind(this);
+    this.getProxy = new GetTradeProxy();
   }
   // use this function to get the table heading values
   getKeys = function(){
@@ -32,8 +34,6 @@ export default class Table extends Component {
     return (
       <React.Fragment>
         <div className="tradetable">
-            {/* onkeyup search for item function */}
-            <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
             <table id="tableview">
             <thead>
                 <tr>
