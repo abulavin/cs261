@@ -167,6 +167,7 @@ class Trades extends Component {
         </div>
         <div className="tradetable">
           {/* if page number == max page number then disable next page button */}
+          <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
           <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>
           {this.state.tr ? <Table data={this.state.tr}/> : null }
