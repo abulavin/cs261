@@ -142,6 +142,7 @@ export const TradeValidator = {
     tradeIDisValid: function (tradeID) {
         const regex = /^[A-Z]+[0-9]+$/;
         return regex.test(tradeID);
+        
     },
 
     /**

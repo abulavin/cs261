@@ -122,11 +122,30 @@ export class GetTradeProxy extends BackendProxy {
      */
     getListOfTrades(page = 1) {
         const pageParam = '?page=' + page;
+        console.log(pageParam)
         return new Promise((resolve,reject) => {
             this.getRequest(pageParam)
                 .then(response => resolve(response.data))
                 .catch(error => { reject(error) });
         });
+    }
+    // retrieves sorted trades based on attribute given and the direction of sorting (desc/asc)
+    getSortedTrades(heading, direction) {
+        let param="";
+        if (direction == "desc") {
+            param = '?ordering:-' + heading;
+        }
+        if (direction == "asc") {
+            param = '?ordering=' + heading;
+        }
+        console.log(param)
+        return new Promise((resolve,reject) => {
+            this.getRequest(param)
+                .then(response => resolve(response.data))
+                .catch(error => { reject(error) });
+        });
+
+        
     }
 
     /**

@@ -17,7 +17,8 @@ class Trades extends Component {
       maxpage: 0,
       chosen: "",
       searchinput: "",
-      filter: {}
+      filter: {},
+      sorted: []
     }
   }
 
@@ -27,13 +28,12 @@ class Trades extends Component {
         this.setState({tr: trades.results})
         var maxPages = Math.ceil(trades.count/100);
         this.setState({maxpage: maxPages})
-        console.log(this.state.tr, maxPages)
+        console.log(this.state.tr)
       })
       .catch(error => { throw error });
   }
   
   getTradesByPage = () => {
-
     if (this.state.count!=this.state.maxpage) {
       this.setState({
         tr: [],
@@ -117,8 +117,37 @@ class Trades extends Component {
                     console.log(filteredTrades.results) 
                   }
                 })
+  }
+
+  // onSortNum = () => {
+    
+  //   this.setState({tr: sort})
+  //   console.log(this.state.tr)
+  // }
+
+  getSortedTrades = (heading, direction) => {
+    this.getProxy.getSortedTrades("quantity","asc")
+                 .then(sortedTrades => {
+                  if (sortedTrades.results.length == 0) {
+                    alert("No trades found")
+                  }
+                  else {
+                    this.setState({tr: []})
+                    this.setState({tr: sortedTrades.results})
+                    console.log(sortedTrades.results) 
+                  }
+                })
+                  
 }
 
+  handleSort = (event) => {
+    let val = event.target.value;
+    this.setState({sort: val})
+  }
+  handleDir = (event) => {
+    let val = event.target.value;
+    this.setState({dir: val})
+  }
   handleChange = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
@@ -147,6 +176,23 @@ class Trades extends Component {
         </div>
 
         <div className="tradeoptions">
+          <Label>Sort Table By: </Label>
+          <select onChange={this.handleSort}>
+            <option> - </option>
+            <option value="date_of_trade">Date of Trade</option>
+            <option value="notional_value">Notional Value</option>
+            <option value="quantity">Quantity</option>
+            <option value="maturity_date">Maturity Date</option>
+            <option value="underlying_price">Underlying Price</option>
+            <option value="strike_price">Strike Price</option>
+          </select>
+          <Label>Ascending/Descending:</Label>
+          <select onChange={this.handleDir}> 
+            <option> - </option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+          <button onClick={this.getSortedTrades}>Sort by quantity</button>
           <Label>Filter notional currency: </Label>
           <select id="currfilter" name="notional_currency" onChange={this.getFilterCurrency}>
             <option> - </option>
@@ -192,7 +238,8 @@ class Trades extends Component {
                 type="text" 
                 name="searchinput" 
                 placeholder="Search for .."
-                onChange={this.handleChange}/>
+                onChange={this.handleChange}
+              />
               <button onClick={this.handleSubmit}>Apply Search</button>
             </FormGroup>
           </Form>
@@ -201,6 +248,7 @@ class Trades extends Component {
           <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
           <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>
+          {console.log(this.state.tr)}
           {this.state.tr ? <Table data={this.state.tr}/> : null }
           <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>

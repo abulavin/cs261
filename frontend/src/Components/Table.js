@@ -67,6 +67,7 @@ export default class Table extends Component {
 }
 // use this to return individual rows of the table
 const RenderRow = (props) =>{
+  
   return props.keys.map((key, index)=>{
     return <td key={props.data[key]}>{props.data[key]}</td>
     })

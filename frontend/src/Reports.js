@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReportTable from './Components/ReportTable.js';
 import { GetReportProxy } from "./BackendProxy";
-import {Label } from "reactstrap";
+import {Input, Label } from "reactstrap";
 
 
 class Reports extends Component {
@@ -10,7 +10,8 @@ class Reports extends Component {
     this.reportProxy = new GetReportProxy();
     this.state = {
       rep: [],
-      count: 2
+      count: 2,
+      date: ""
     }
   }
 
@@ -27,18 +28,23 @@ class Reports extends Component {
           .then(reports => console.log(reports));
   }
 
-  getReportsAfter = (date) => {
-      this.reportProxy.getReportsAfter("2020-02-28")
+  getReportsAfter = () => {
+      this.reportProxy.getReportsAfter(this.state.date)
           .then(reports => console.log(reports));
   }
 
-  getReportsBefore = (date) => {
-      this.reportProxy.getReportsBefore("2020-02-28")
+  getReportsBefore = () => {
+      this.reportProxy.getReportsBefore(this.state.date)
           .then(reports => console.log(reports))
   }
-  getReportsOn = (date) => {
-      this.reportProxy.getReportsOn("2020-02-28")
+  getReportsOn = () => {
+      this.reportProxy.getReportsOn(this.state.date)
           .then(reports => console.log(reports));
+  }
+
+  handleChange = (event) => {
+    let val = event.target.value
+    this.setState({date: val})
   }
 
   render() {
@@ -46,10 +52,18 @@ class Reports extends Component {
       <React.Fragment>
         <div>
           <h2> Use this page to view and download reports.</h2>
+          <Label>Enter a date: </Label>
+          <Input 
+                id="reportinput"
+                type="date" 
+                name="reportinput" 
+                placeholder="Enter date.."
+                onChange={this.handleChange}
+              />
           <button onClick={this.getListOfReports}>Get reports</button>
-          <button onClick={this.getReportsAfter}>Get After 2020-02-28</button>
-          <button onClick={this.getReportsBefore}>Get reports before 2020-02-28</button>
-          <button onClick={this.getReportsOn}>Get reports on 2020-02-28</button>
+          <button onClick={this.getReportsAfter}>Get Reports After {this.state.date}</button>
+          <button onClick={this.getReportsBefore}>Get Reports Before {this.state.date}</button>
+          <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
         </div>
 
         <div className="reportoptions">
