@@ -75,12 +75,6 @@ class Trades extends Component {
     }
   }
 
-  getTradeByID = (tradeID) => {
-    tradeID = 'TEST101'
-    this.props.getProxy.getTradeByID(tradeID)
-      .then(trade => console.log(trade));
-  }
-
   refreshPage () {
     window.location.reload();
   }

@@ -11,36 +11,30 @@ class Guide extends Component {
             <TabLink to="viewing">Viewing, Editing and Deleting Trades</TabLink>
             <TabLink to="reports">Viewing Reports</TabLink>
             <TabLink to="settings">Changing Settings</TabLink>
-            <TabLink to="feedback">Submitting Feedback</TabLink>
             <TabLink to="error">Error Correction Module</TabLink>
 
             <TabContent for="adding">
               <div className="guidecontents">
-                Hello this is some guide information. 
+                To add a new trade
               </div>
             </TabContent>
             <TabContent for="viewing">
               <div className="guidecontents">
-                Hello this is some guide information. 
+                To view trades
               </div></TabContent>
             <TabContent for="reports">
               <div className="guidecontents">
-                Hello this is some guide information. 
+                To view reports
               </div>
             </TabContent>
             <TabContent for="settings">
               <div className="guidecontents">
-                Hello this is some guide information. 
+                To change settings
               </div> 
-            </TabContent>
-            <TabContent for="feedback"> 
-              <div className="guidecontents">
-                Hello this is some guide information. 
-              </div>
             </TabContent>
             <TabContent for="error">
               <div className="guidecontents">
-                Hello this is some guide information. 
+                The error correction module works by
               </div>
             </TabContent>
           </Tabs>

@@ -24,6 +24,16 @@ export default class ReportTable extends Component {
         </tr>
         })
     }
+
+    openReport = () => {
+
+    }
+
+    downloadReport = () => { 
+
+    }
+
+
     render() {
         if (!this.props.data[0]) return null;
         return (
@@ -40,7 +50,8 @@ export default class ReportTable extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>Rows from backend{this.getRowsData()}
+                            <tr>
+                                {this.getRowsData()}
                                 <td>
                                     <button> View</button>
                                 </td>

@@ -60,19 +60,13 @@ class Reports extends Component {
                 name="reportinput" 
                 placeholder="Enter date.."
                 onChange={this.handleChange}
-              />
+          />
           <button onClick={this.getReportsAfter}>Get Reports After {this.state.date}</button>
           <button onClick={this.getReportsBefore}>Get Reports Before {this.state.date}</button>
           <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
           <button onClick={this.getListOfReports}>Get all reports</button>
         </div>
 
-        <div className="reportoptions">
-          <Label>Filter by: </Label>
-                <select id="heading" name="heading">
-                  <option value="heading">Heading1</option>
-                </select>
-        </div>
         {this.state.rep ? <ReportTable data={this.state.rep}/> : null }
   
     </React.Fragment>
