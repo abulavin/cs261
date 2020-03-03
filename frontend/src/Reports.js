@@ -25,21 +25,22 @@ class Reports extends Component {
 
   getListOfReports = () => {
       this.reportProxy.getListOfReports()
-          .then(reports => console.log(reports));
+          .then(reports => this.setState({rep: reports.results}));
   }
 
   getReportsAfter = () => {
       this.reportProxy.getReportsAfter(this.state.date)
-          .then(reports => console.log(reports));
+          .then(reports => this.setState({rep: reports.results}));
   }
 
   getReportsBefore = () => {
       this.reportProxy.getReportsBefore(this.state.date)
-          .then(reports => console.log(reports))
+          .then(reports => this.setState({rep: reports.results}))
   }
+  
   getReportsOn = () => {
       this.reportProxy.getReportsOn(this.state.date)
-          .then(reports => console.log(reports));
+          .then(reports => this.setState({rep: reports.results}));
   }
 
   handleChange = (event) => {
@@ -60,10 +61,10 @@ class Reports extends Component {
                 placeholder="Enter date.."
                 onChange={this.handleChange}
               />
-          <button onClick={this.getListOfReports}>Get reports</button>
           <button onClick={this.getReportsAfter}>Get Reports After {this.state.date}</button>
           <button onClick={this.getReportsBefore}>Get Reports Before {this.state.date}</button>
           <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
+          <button onClick={this.getListOfReports}>Get all reports</button>
         </div>
 
         <div className="reportoptions">
