@@ -213,9 +213,9 @@ export const TradeValidator = {
 }
 
 export const checkerFunctions = {
-    date_of_trade: TradeValidator.dateOfTradeIsValid,
+    date_of_trade: TradeValidator.dateAndTimeOfTradeIsValid,
     trade_id: TradeValidator.tradeIDisValid,
-    product: TradeValidator.productPriceIsValid,
+    product: TradeValidator.stringLengthIsValid,
     buying_party: TradeValidator.stringLengthIsValid,
     selling_party: TradeValidator.stringLengthIsValid,
     notional_amount: TradeValidator.productPriceIsValid,
