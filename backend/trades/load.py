@@ -17,7 +17,7 @@ def load_data(folder_path):
     """
     company_codes_path = os.path.join(folder_path, 'companyCodes.csv')
     product_sellers_path = os.path.join(folder_path, 'productSellers.csv')
-    trades_path = os.path.join(folder_path, 'derivativeTrades')
+    trades_path = os.path.join(folder_path, 'derivativeTrades', '2019')
 
     print(company_codes_path)
     print(product_sellers_path)
