@@ -119,14 +119,8 @@ class Trades extends Component {
                 })
   }
 
-  // onSortNum = () => {
-    
-  //   this.setState({tr: sort})
-  //   console.log(this.state.tr)
-  // }
-
-  getSortedTrades = (heading, direction) => {
-    this.getProxy.getSortedTrades("quantity","asc")
+  getSortedTrades = () => {
+    this.getProxy.getSortedTrades(this.state.sort,this.state.dir)
                  .then(sortedTrades => {
                   if (sortedTrades.results.length == 0) {
                     alert("No trades found")
@@ -180,7 +174,7 @@ class Trades extends Component {
           <select onChange={this.handleSort}>
             <option> - </option>
             <option value="date_of_trade">Date of Trade</option>
-            <option value="notional_value">Notional Value</option>
+            <option value="notional_amount">Notional Amount</option>
             <option value="quantity">Quantity</option>
             <option value="maturity_date">Maturity Date</option>
             <option value="underlying_price">Underlying Price</option>
@@ -192,7 +186,7 @@ class Trades extends Component {
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
-          <button onClick={this.getSortedTrades}>Sort by quantity</button>
+          <button onClick={this.getSortedTrades}>Sort Table</button>
           <Label>Filter notional currency: </Label>
           <select id="currfilter" name="notional_currency" onChange={this.getFilterCurrency}>
             <option> - </option>
