@@ -38,4 +38,280 @@
 }
 .NavBtns {
   display: flex;
+  position: fixed;
+}
+
+.header {
+  min-height: 100px;
+  min-width: 100%;
+  display: center;
+  background-color: white;
+}
+
+.tradeform {
+  margin-top: 35px;
+  width: 60%;
+  float: left;
+}
+.errorbox{
+  margin-top: 20px;
+  margin-left: 65%;
+  width: 200px;
+  background-color:darkgrey;
+  min-height: 300px;
+}
+
+h3 {
+  margin: 10px;
+}
+
+.tabs {
+  width: 90%;
+  height: 100%;
+  display: inline-block;
+  padding: 15px;
+  vertical-align: top;
+  background-color: darkgrey;
+}
+
+.tab-link {
+  padding: 0 15px;
+  cursor: pointer;
+  border: 1px solid black;
+  background: transparent;
+  display: inline-block;
+  position: relative;
+  height: 40px;
+  line-height: 41px;
+  /* top: -4px;
+  left: -1px; */
+  outline: none;
+  background-color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.tab-link:hover{
+  color: #666464;
+}
+
+.tab-link-active, .tab-link-active:hover, .tab-link-active:focus {
+  color: black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: lightgrey;
+  font-weight: normal;
+}
+
+.tab-content {
+  padding: 15px;
+  border-top: 1px solid transparent;
+}
+
+.NavBtns {
+  margin-left: 30px;
+}
+
+.NavBtns button {
+  text-decoration: none;
+  background-color: #e0e0e0;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+  font: 14px/1 Helvetica, Verdana, sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+ 
+  display: inline-block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 8px;
+  margin-left: 5px;
+}
+
+.NavBtns button:hover {
+  background-color: darkgrey; /* Green */
+  text-decoration: none;
+  box-shadow: 0 8px 10px 0 rgba(0,0,0,0.24), 0 10px 14px 0 rgba(0,0,0,0.19);
+}
+
+.NavBtns button:focus {
+  text-decoration: none;
+}
+
+.guidecontents {
+  padding: 10px;
+}
+
+.tradeoptions, .reportoptions {
+  display: center;
+  padding: 10px;
+}
+
+.tradetable, .reporttable {
+  display: inline-block;
+  background-color: white;
+}
+thead {
+  color:green;
+}
+tbody {
+  color:blue;
+}
+table, th, td {
+ border: 1px solid black;
+}
+td, th{
+ padding: 5px;
+}
+
+#searchinput {
+  background-image: url(./Images/search.png); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 1px 12px 30px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+#tableview {
+  width: 100%; 
+  font-size: 14px;
+}
+
+#tableview thead, #tableview tbody {
+  text-align: left; 
+  padding: 12px;
+  border-bottom: 1px solid black; 
+}
+
+#tableview tr {
+  border-bottom: 1px solid black; 
+}
+
+#tableview thead, #tableview tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #f1f1f1;
+  border-bottom: 1px solid black; 
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-main {
+  position:fixed;
+  background: white;
+  width: 80%;
+  height: auto;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+#dditem{
+  display: block;
+  background-color: white;
+  width: 100%;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 75px;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  text-align: left;
+}
+.toggle-switch-checkbox {
+  display: none;
+}
+.toggle-switch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0 solid #ccc;
+  border-radius: 20px;
+  margin: 0;
+}
+.toggle-switch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.toggle-switch-inner::before, .toggle-switch-inner::after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 34px;
+  padding: 0;
+  line-height: 34px;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.toggle-switch-inner:before {
+  content: "On";
+  text-transform: uppercase;
+  padding-left: 10px;
+  background-color:green;
+  color: #fff;
+}
+.toggle-switch-disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.toggle-switch-disabled::before {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.toggle-switch-inner::after {
+  content: "Off";
+  text-transform: uppercase;
+  padding-right: 10px;
+  background-color: red;
+  color: #fff;
+  text-align: right;
+}
+.toggle-switch-switch {
+  display: block;
+  width: 24px;
+  margin: 5px;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 40px;
+  border: 0 solid #ccc;
+  border-radius: 20px;
+  transition: all 0.3s ease-in 0s;
+}
+.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-inner {
+  margin-left: 0;
+}
+.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {
+  right: 0px;
+}
+
+#settingsname {
+  display: inline-block;
+  padding-right: 10px;
 }

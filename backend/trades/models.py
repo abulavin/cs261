@@ -45,14 +45,14 @@ class DerivativeTrade(models.Model):
     """
     Model to store a Derivative Trade.
     """
-    date_of_trade = models.DateField()
-    trade_id = models.CharField(max_length=200)
+    date_of_trade = models.DateTimeField()
+    trade_id = models.CharField(max_length=200, unique=True)
     product = models.CharField(max_length=200)
     buying_party = models.CharField(max_length=200) 
     selling_party = models.CharField(max_length=200)
-    notational_amount = models.FloatField()
+    notional_amount = models.FloatField()
     quantity = models.FloatField()
-    notational_currency = models.CharField(max_length=200)
+    notional_currency = models.CharField(max_length=200)
     maturity_date = models.DateField()
     underlying_price = models.FloatField()
     underlying_currency = models.CharField(max_length=200)
@@ -87,9 +87,9 @@ class DerivativeTradeHistory(models.Model):
     product = models.CharField(max_length=200)
     buying_party = models.CharField(max_length=200) 
     selling_party = models.CharField(max_length=200)
-    notational_amount = models.FloatField()
+    notional_amount = models.FloatField()
     quantity = models.FloatField()
-    notational_currency = models.CharField(max_length=200)
+    notional_currency = models.CharField(max_length=200)
     maturity_date = models.DateField()
     underlying_price = models.FloatField()
     underlying_currency = models.CharField(max_length=200)
@@ -97,16 +97,3 @@ class DerivativeTradeHistory(models.Model):
     
     class Meta:
         ordering = ['-date_modified', '-id']
-
-class Report(models.Model):
-    """
-    Model to store a report along with the date it was generated.
-    """
-    def get_upload_path(self, filename):
-        return os.path.join('reports/', self.date_generated, self.id, '.pdf')
-
-    date = models.DateField(auto_now_add=True)
-    report = models.FileField(upload_to=get_upload_path)
-
-    class Meta:
-        ordering = ['-date']

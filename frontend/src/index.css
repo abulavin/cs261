@@ -9,16 +9,24 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.content {
+  background-color: grey;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  position: absolute;
+}
+
 .App {
   margin: 0;
 }
 
-ul.header {
+ul.navmenu {
   /* overflow: auto; */
   list-style-type: none;
   display: inline-block;
   background-color: #e0e0e0;
-  padding: 0;
+  padding: 0px;
 }
  
 li {
@@ -26,7 +34,7 @@ li {
   float: left;
   margin-right: 0px;
   border-right: 1px solid #aaa;
-  padding: 25px; 
+  padding: 18px; 
 }
  
 li:last-child {
@@ -56,3 +64,8 @@ li .active {
   color: #111;
   border-bottom: 1px solid currentColor;
 }
+
+button .active {
+  font-weight: bold;
+}
+

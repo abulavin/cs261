@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button, Icon} from 'semantic-ui-react';
-// Just experimenting with button styles 
-// import Settings from "../Settings.js";
+
 import {
     NavLink,
     HashRouter
@@ -9,20 +7,16 @@ import {
 
 const Buttons = () => (
     <HashRouter>
-    <div className = "NavBtns">
-        <Button>
-            <NavLink to="/Settings">Settings</NavLink>            
-        </Button>
+        <div className = "NavBtns">
+            <button>
+                <NavLink to="/Settings">Settings</NavLink>            
+            </button>
 
-        <Button>
-            <NavLink to="/Feedback">Submit Feedback</NavLink>            
-        </Button>
-
-        <Button>
-            <NavLink to="/Guide">User Guide</NavLink>            
-        </Button>
-        
-    </div>
+            <button>
+                <NavLink to="/Guide">User Guide</NavLink>            
+            </button>
+            
+        </div>
     </HashRouter>
   )
   

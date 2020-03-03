@@ -1,14 +1,11 @@
-from rest_framework.generics import (
-    ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
-)
-from django.views.decorators.http import require_POST
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import DerivativeTradeSerializer, ReportSerializer
-from .models import DerivativeTrade, DerivativeTradeHistory, Report
-from .filters import ReportFilter
+from .serializers import DerivativeTradeSerializer
+from .models import DerivativeTrade, DerivativeTradeHistory
+from .helper import check_trade_editable
 
 
 class ListCreateDerivativeTrade(ListCreateAPIView):
@@ -57,9 +54,9 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
             product=trade.product,
             buying_party=trade.buying_party,
             selling_party=trade.selling_party,
-            notational_amount=trade.notational_amount,
+            notional_amount=trade.notional_amount,
             quantity=trade.quantity,
-            notational_currency=trade.notational_currency,
+            notional_currency=trade.notional_currency,
             maturity_date=trade.maturity_date,
             underlying_price=trade.underlying_price,
             underlying_currency=trade.underlying_currency,
@@ -71,7 +68,12 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         PUT and UPDATE requests handled by this method. It will run the Error 
         Detection Module and then log any changes made to the DerivativeTrade.
         """
+        # Check the trade is not more than 7 days old.
+        if not check_trade_editable(self.get_object()):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         # Error Detection Module Called Upon.
+        
         self._log_change('E', self.get_object())
         return super().update(request, *args, **kwargs)
 
@@ -81,20 +83,3 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         """
         self._log_change('D', self.get_object())
         return super().delete(request, *args, **kwargs)
-
-class RetriveReports(ListAPIView):
-    """
-    Retrieve Reports from a given date or given date range.
-    """
-    serializer_class = ReportSerializer
-    queryset = Report.objects.all()
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = ReportFilter
-
-@require_POST
-def generate_report(request):
-    """
-    This view will generat a real time report and return the url of it  to the
-    user. 
-    """
-    pass

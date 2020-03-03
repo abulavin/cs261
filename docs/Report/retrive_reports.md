@@ -14,6 +14,8 @@
 
    You can filter the reports by date by passing params as shown below. You can pass multiple params on the same request.
 
+   The number of trades returned is paginated by 100. This means only 100 objects will be returned per page. You access the first page without the need for any urls params but to access the following pages use the param: `?page=2`.
+
    **Optional:**
  
    `date=2020-01-13` will return all reports generated on 2020-01-13 </br>
@@ -22,21 +24,26 @@
 
 * **Success Response:**
   
-  A successful response will have a status code of 200 and will return a list of json objects in the form the same as below:
+  A successful response will have a status code of 200. The json will be wrapped in a pagination object to give infomation about the results returned and the page number. Make sure to index the `results` to get the list of report objects.
 
   * **Code:** 200 <br />
     **Content:** 
     ``` json
-    [
-        {
-            "date": "2020-02-28",
-            "report": "reports/2020-02-28/2/"
-        },
-        {
-            "date": "2020-02-10",
-            "report": "reports/2020-02-10/3/"
-        },
-    ]
+    {
+        "count": 126,
+        "next": [null](http://127.0.0.1:8000/reports/?page=2),
+        "previous": null,
+        "results": [
+            {
+                "date": "2020-02-28",
+                "report": "reports/2020-02-28/2/"
+            },
+            {
+                "date": "2020-02-10",
+                "report": "reports/2020-02-10/3/"
+            },
+        ]
+    }
     ```
  
 * **Error Response:**
