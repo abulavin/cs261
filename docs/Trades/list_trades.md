@@ -18,6 +18,9 @@
 
    The number of trades returned is paginated by 100. This means only 100 objects will be returned per page. You access the first page without the need for any urls params but to access the following pages use the param: `?page=2`.
 
+   To order the results by a given attribute, use the param: `?ordering=attribute`. For example, to get the trades in ascending order of strike_price use: `?ordering=strike_price` or in descending order use: `?ordering:-strike_price`.
+
+
    **Optional:**
    <br />Examples:
    * `buying_party=google`
