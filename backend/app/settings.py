@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     'trades',
     'report',
-    'core'
+    'core',
+    'error_detection',
 ]
 
 MIDDLEWARE = [
