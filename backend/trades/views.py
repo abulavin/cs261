@@ -1,5 +1,6 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -14,8 +15,9 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
     """
     serializer_class = DerivativeTradeSerializer
     queryset = DerivativeTrade.objects.all()
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = '__all__'
+    ordering_fields  = '__all__'
 
     def create(self, request, *args, **kwargs):
         """
