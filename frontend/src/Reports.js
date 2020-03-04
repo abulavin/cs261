@@ -24,9 +24,10 @@ class Reports extends Component {
   }
 
   generateDailyReport = () => {
-    this.reportProxy.generateDailyReport().then(reports => {
-      console.log(reports);
+    this.reportProxy.generateDailyReport().then(report => {
+      console.log(report);
     })
+    .catch(error => console.log(error.statusText, error.status));
   }
 
   getListOfReports = () => {
@@ -71,6 +72,7 @@ class Reports extends Component {
           <button onClick={this.getReportsBefore}>Get Reports Before {this.state.date}</button>
           <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
           <button onClick={this.getListOfReports}>Get all reports</button>
+          <button onClick={this.generateDailyReport}>Generate report</button>
         </div>
 
         {this.state.rep ? <ReportTable data={this.state.rep}/> : null }

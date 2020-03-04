@@ -260,6 +260,9 @@ export class GetReportProxy extends BackendProxy {
             this.postRequest({}, "generate/").then(response => {
                 resolve(response.data);
             })
+            .catch(error => {
+                reject(error.response);
+            })
         });
     }
 
