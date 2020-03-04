@@ -9,7 +9,6 @@ export default class Table extends Component {
     super(props);
     this.getRowsData = this.getRowsData.bind(this);
     this.getKeys = this.getKeys.bind(this);
-    this.getProxy = new GetTradeProxy();
   }
   // use this function to get the table heading values
   getKeys = function(){
