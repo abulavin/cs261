@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { CreateTradeProxy } from "./BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import {currencyCodes} from './currencyCodes';
 
 class NewTrade extends Component {
 
@@ -149,8 +150,12 @@ class NewTrade extends Component {
             <FormGroup>
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
-                <option value="USD">USD</option>
+                <option> - </option>
+                {currencyCodes.map((text,i) => (
+                <option key={i} value={text}>
+                    {text}
+                </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>
@@ -180,8 +185,12 @@ class NewTrade extends Component {
             <FormGroup>
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
-                <option value="USD">USD</option>                
+                <option> - </option>
+                {currencyCodes.map((text,i) => (
+                <option key={i} value={text}>
+                    {text}
+                </option>
+                ))}               
               </select>
             </FormGroup>
             <FormGroup>

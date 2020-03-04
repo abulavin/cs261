@@ -142,6 +142,7 @@ export const TradeValidator = {
     tradeIDisValid: function (tradeID) {
         const regex = /^[A-Z]+[0-9]+$/;
         return regex.test(tradeID);
+        
     },
 
     /**
@@ -203,7 +204,7 @@ export const TradeValidator = {
      * @alias module:TradeValidator
      */
     currencyCodeIsValid: function (code) {
-        return currencyCodes.has(code);
+        return currencyCodes.includes(code);
     },
 
     throwError: function (message) {
