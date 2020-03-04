@@ -5,34 +5,34 @@ export default class ReportTable extends Component {
     constructor(props){
         super(props);
         this.getRowsData = this.getRowsData.bind(this);
-        this.getKeys = this.getKeys.bind(this);
-    }
-
-    // use this function to get the table heading values
-    getKeys = function() {
-        return Object.keys(this.props.data[0]);
     }
 
     // use this function to iterate through the json and return body part of the table
     getRowsData = function() {
         var items = this.props.data;
-        var keys = this.getKeys();
         return items.map((row, index)=>{
         return <tr key={index}>
-            <RenderRow key={index} data={row} keys={keys}/>
-            <ReportModal/>    
+            {/* <RenderRow key={index} data={row} keys={keys}/> */}
+            <td> {this.props.data[index].date}</td>
+            <td>
+                <button onClick={() => this.openReport(this.props.data[index].report)}> View Report </button> 
+                {/* <ReportModal data={this.props.data[index].report}/>   */}
+            </td>
+            <td>
+                <button onClick={() => this.downloadReport(this.props.data[index].report)}> Download Report </button>
+            </td>
+              
         </tr>
         })
     }
 
-    openReport = () => {
+    openReport = (report) => {
 
     }
 
-    downloadReport = () => { 
+    downloadReport = (report) => { 
 
     }
-
 
     render() {
         if (!this.props.data[0]) return null;
@@ -52,12 +52,6 @@ export default class ReportTable extends Component {
                         <tbody>
                             <tr>
                                 {this.getRowsData()}
-                                <td>
-                                    <button> View</button>
-                                </td>
-                                <td>
-                                    <button> Download</button>
-                                </td>
                             </tr>
                         </tbody>
                     </table>

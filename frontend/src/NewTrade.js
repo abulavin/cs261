@@ -22,7 +22,8 @@ class NewTrade extends Component {
       underlying_price: 0,
       underlying_currency: "GBP",
       strike_price: 0,
-      error_message: ""
+      error_message: "",
+      errors: []
     }
   }
 
@@ -40,6 +41,7 @@ class NewTrade extends Component {
     var underlying_price = this.state.underlying_price
     var underlying_currency = this.state.underlying_currency
     var strike_price = this.state.strike_price
+    
     var date_of_trade = day + " " + (time_of_trade)
 
     console.log(date_of_trade)
@@ -69,6 +71,20 @@ class NewTrade extends Component {
     // if (!Number(age)) {
     //   alert("Your age must be a number");
     // }
+  }
+
+  getErrors = () => {
+
+    this.setState({errors: []})
+  }
+
+  nextTrade = () => {
+    if (this.state.errors.length == 0) {
+      window.location.reload()
+    }
+    else {
+      alert("still errors")
+    }
   }
 
   handleChange = (event) => {
@@ -215,8 +231,10 @@ class NewTrade extends Component {
         </div>
 
         <div className="errorbox">
-          <h3>This is where highlighted errors will be displayed</h3>
-          <Button>Next Trade</Button>
+          <h3>Highlighted Errors:</h3>
+          {this.state.errors}
+
+          <Button onClick={this.nextTrade}>Next Trade</Button>
         </div>
       </React.Fragment>
     );

@@ -248,6 +248,16 @@ export class UpdateTradeProxy extends BackendProxy {
     }
 }
 
+export class CreateReportProxy extends BackendProxy {
+    constructor() {
+        super('/reports/generate');
+    }
+
+    generateReport() {
+        this.postRequest()
+    }
+}
+
 export class GetReportProxy extends BackendProxy {
 
     constructor() {

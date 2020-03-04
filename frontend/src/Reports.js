@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import ReportTable from './Components/ReportTable.js';
-import { GetReportProxy } from "./BackendProxy";
+import { GetReportProxy, CreateReportProxy} from "./BackendProxy";
 import {Input, Label } from "reactstrap";
-
+import moment from 'moment';
 
 class Reports extends Component {
   constructor(props){
     super(props);
     this.reportProxy = new GetReportProxy();
+    this.createReportProxy = new CreateReportProxy();
     this.state = {
       rep: [],
       count: 2,
@@ -21,6 +22,15 @@ class Reports extends Component {
         this.setState({rep: reports.results})
         console.log(reports)
       })
+    
+    let curr = new Date();
+    if (moment(curr).format('hh:mm:ss') == '00:00:00') {
+      this.generateReport();
+    }
+  }
+
+  generateReport = () => {
+    window.location.reload();
   }
 
   getListOfReports = () => {
@@ -66,6 +76,8 @@ class Reports extends Component {
           <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
           <button onClick={this.getListOfReports}>Get all reports</button>
         </div>
+
+        <button onClick={this.generateReport}> Generate Daily Report </button>
 
         {this.state.rep ? <ReportTable data={this.state.rep}/> : null }
   
