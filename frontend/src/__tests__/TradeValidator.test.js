@@ -161,7 +161,7 @@ test('TradeValidator identifies invalid party names', () => {
 });
 
 test('TradeValidator recognises valid currency codes', () => {
-    for (let code in currencyCodes) {
+    for (let code of currencyCodes) {
         expect(TradeValidator.currencyCodeIsValid(code)).toBeTruthy();
     }
     expect(TradeValidator.currencyCodeIsValid("djhfjdhg")).toBeFalsy();
