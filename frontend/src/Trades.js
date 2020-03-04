@@ -18,8 +18,7 @@ class Trades extends Component {
       maxpage: 0,
       chosen: "",
       searchinput: "",
-      filter: {},
-      sorted: []
+      filter: {}
     }
   }
 
@@ -127,7 +126,7 @@ class Trades extends Component {
                   }
                 })
                   
-}
+  }
 
   handleSort = (event) => {
     let val = event.target.value;

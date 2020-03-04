@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import ReportModal from './ReportModal.js';
+import { GetReportProxy} from "./BackendProxy";
 
 export default class ReportTable extends Component {
     constructor(props){
         super(props);
         this.getRowsData = this.getRowsData.bind(this);
+        this.reportProxy = new GetReportProxy();
     }
 
     // use this function to iterate through the json and return body part of the table
@@ -26,8 +27,19 @@ export default class ReportTable extends Component {
         })
     }
 
-    openReport = (report) => {
-
+    openReport = (link) => {
+        this.reportProxy.getReportURL(link).then(report => {
+            const pdf = new Blob(
+              [report], 
+              {type: 'application/pdf'});
+            console.log(report)
+            //Build a URL from the file
+            const fURL = URL.createObjectURL(pdf);
+            //Open the URL on new Window
+            window.open(fURL);
+            // window.location.reload();
+          })
+          .catch(error => console.log(error.statusText, error.status));
     }
 
     downloadReport = (report) => { 
