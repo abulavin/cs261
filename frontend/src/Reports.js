@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReportTable from './Components/ReportTable.js';
-import { GetReportProxy, CreateReportProxy} from "./BackendProxy";
+import { GetReportProxy} from "./BackendProxy";
 import {Input, Label } from "reactstrap";
 import moment from 'moment';
 
@@ -8,11 +8,11 @@ class Reports extends Component {
   constructor(props){
     super(props);
     this.reportProxy = new GetReportProxy();
-    this.createReportProxy = new CreateReportProxy();
     this.state = {
       rep: [],
       count: 2,
-      date: ""
+      date: "",
+      report: ""
     }
   }
 
@@ -29,15 +29,20 @@ class Reports extends Component {
     }
   }
 
-  generateReport = () => {
-    window.location.reload();
-  }
-
   generateDailyReport = () => {
     this.reportProxy.generateDailyReport().then(report => {
-      console.log(report);
+      const pdf = new Blob(
+        [report], 
+        {type: 'application/pdf'});
+      console.log(report)
+      //Build a URL from the file
+      const fURL = URL.createObjectURL(pdf);
+      //Open the URL on new Window
+      window.open(fURL);
+      // window.location.reload();
     })
     .catch(error => console.log(error.statusText, error.status));
+
   }
 
   getListOfReports = () => {
@@ -82,10 +87,9 @@ class Reports extends Component {
           <button onClick={this.getReportsBefore}>Get Reports Before {this.state.date}</button>
           <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
           <button onClick={this.getListOfReports}>Get all reports</button>
-          <button onClick={this.generateDailyReport}>Generate report</button>
         </div>
 
-        <button onClick={this.generateReport}> Generate Daily Report </button>
+        <button onClick={this.generateDailyReport}> Generate Daily Report </button>
 
         {this.state.rep ? <ReportTable data={this.state.rep}/> : null }
   
