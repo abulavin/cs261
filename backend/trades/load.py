@@ -7,10 +7,60 @@ import csv
 
 from datetime import datetime
 
-from .models import DerivativeTrade
+from .models import DerivativeTrade, CompanyCode, ProductSeller
 
 
 def load_data(folder_path):
+    """
+    This method will take the folder path of the dummy data and populate the db 
+    with the data from the dummy data folder.
+    """
+    company_codes_path = os.path.join(folder_path, 'companyCodes.csv')
+    product_sellers_path = os.path.join(folder_path, 'productSellers.csv')
+    trades_path = os.path.join(folder_path, 'derivativeTrades')
+
+    print(company_codes_path)
+    print(product_sellers_path)
+    print(trades_path)
+
+    load_company_codes(company_codes_path)
+    load_product_sellers(product_sellers_path)
+    load_trades(trades_path)
+
+def load_company_codes(file_path):
+    with open(file_path) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            if row[0] == 'companyName':
+                continue
+
+            if CompanyCode.objects.filter(company_trade_id=row[1]).exists():
+                continue
+            
+            try:
+                CompanyCode.objects.create(
+                    company_name=row[0],
+                    company_trade_id=row[1]
+                )
+            except IndexError:
+                pass
+
+def load_product_sellers(file_path):
+    with open(file_path) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            if row[0] == 'product':
+                continue
+            
+            try:
+                ProductSeller.objects.create(
+                    product=row[0],
+                    company_id=row[1]
+                )
+            except IndexError:
+                pass
+
+def load_trades(folder_path):
     """
     This method needs to be passed the path to the folder 'derivativeTrades' in
     the dummy data folder.
