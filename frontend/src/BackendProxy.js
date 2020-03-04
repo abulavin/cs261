@@ -20,7 +20,14 @@ class BackendProxy {
         // the Content-Type header to be set to application/json.
         // Otherwise server will return Bad Request
         const putURL = this.url + parameters;
-        return axios.post(putURL, data ,{
+        return axios.post(putURL, data);
+    }
+
+    postBlobRequest(parameters = "") {
+        const putURL = this.url + parameters;
+        return axios({
+            url: putURL,
+            method: 'post',
             responseType: 'blob'
         });
     }
@@ -38,7 +45,7 @@ class BackendProxy {
     }
 
     getBlobRequest(parameters = "") {
-        let getURL = this.url + parameters;
+        let getURL = this.url + parameters; 
         return axios.get(getURL, {
             responseType: 'blob'
         });
@@ -266,7 +273,7 @@ export class GetReportProxy extends BackendProxy {
 
     generateDailyReport() {
         return new Promise((resolve, reject) => {
-            this.postRequest({}, "generate/").then(response => {
+            this.postBlobRequest("generate/").then(response => {
                 resolve(response.data);
             })
             .catch(error => {
