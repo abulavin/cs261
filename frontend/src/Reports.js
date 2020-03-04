@@ -33,6 +33,13 @@ class Reports extends Component {
     window.location.reload();
   }
 
+  generateDailyReport = () => {
+    this.reportProxy.generateDailyReport().then(report => {
+      console.log(report);
+    })
+    .catch(error => console.log(error.statusText, error.status));
+  }
+
   getListOfReports = () => {
       this.reportProxy.getListOfReports()
           .then(reports => this.setState({rep: reports.results}));
@@ -75,6 +82,7 @@ class Reports extends Component {
           <button onClick={this.getReportsBefore}>Get Reports Before {this.state.date}</button>
           <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
           <button onClick={this.getListOfReports}>Get all reports</button>
+          <button onClick={this.generateDailyReport}>Generate report</button>
         </div>
 
         <button onClick={this.generateReport}> Generate Daily Report </button>
