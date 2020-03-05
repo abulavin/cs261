@@ -29,4 +29,4 @@ class GenerateReport(APIView):
     serializer_class = ReportSerializer
 
     def post(self, request, format=None):
-        return generate_report(date=datetime.now().date(), is_daily_report=False)
+        return generate_report(date=datetime.now(), is_daily_report=False)
