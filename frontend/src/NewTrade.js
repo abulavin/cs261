@@ -60,6 +60,8 @@ class NewTrade extends Component {
       strike_price
     };
     this.createProxy.createTrade(trade);
+    // how to catch errors here, tried reject error didn't work
+    alert("Submitted")
   }
 
   handleSubmit = (event) => {
@@ -74,7 +76,6 @@ class NewTrade extends Component {
   }
 
   getErrors = () => {
-
     this.setState({errors: []})
   }
 

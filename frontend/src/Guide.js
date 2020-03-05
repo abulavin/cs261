@@ -15,7 +15,7 @@ class Guide extends Component {
 
             <TabContent for="adding">
               <div className="guidecontents">
-                To add a new trade
+                To add a new trade, navigate to the NEW TRADE page in the navigation menu
               </div>
             </TabContent>
             <TabContent for="viewing">

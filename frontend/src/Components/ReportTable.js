@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { GetReportProxy} from "./BackendProxy";
+import { GetReportProxy} from "../BackendProxy";
 
 export default class ReportTable extends Component {
     constructor(props){

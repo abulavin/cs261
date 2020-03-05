@@ -22,7 +22,8 @@ class BackendProxy {
         const putURL = this.url + parameters;
         return axios.post(putURL, data ,{
             responseType: 'blob'
-        });
+        })
+        .catch(error => { throw error });
     }
 
     deleteRequest(parameters = "") {
@@ -95,7 +96,7 @@ export class CreateTradeProxy extends BackendProxy {
             console.log(response.status, response.statusText);
             console.log("New trade created: ")
             console.log(response.data);
-        });
+        })
     }
 }
 
