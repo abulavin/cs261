@@ -1,6 +1,8 @@
 """
 This file will handle the generating of reports.
 """
+import os
+
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.utils import timezone
@@ -15,12 +17,16 @@ from .models import Report
 from trades.models import DerivativeTrade, DerivativeTradeHistory
 
 
-def generate_report(date='2013-12-04', is_daily_report=True):
+def generate_report(date, is_daily_report=True, return_filename=False):
     html = render_to_string('report_template.html', {
-        'new_trades': DerivativeTrade.objects.filter(date_of_trade=date),
+        'new_trades': DerivativeTrade.objects.filter(date_of_trade__lte=date)[:50],
         'modified_trades': DerivativeTradeHistory.objects.filter(added_to_report=False)
     })
-    report = HTML(string=html).write_pdf()
-    return HttpResponse(report, content_type='application/pdf')
-
+    if return_filename is False:
+        report = HTML(string=html).write_pdf()
+        return HttpResponse(report, content_type='application/pdf')
+    else:
+        filename = os.path.join('media/reports/', str(date) + '.pdf')
+        HTML(string=html).write_pdf(filename)
+        return filename
 

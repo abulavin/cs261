@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter
@@ -6,7 +8,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import DerivativeTradeSerializer
 from .models import DerivativeTrade, DerivativeTradeHistory
-from .helper import check_trade_editable
+from .helper import check_trade_editable, has_errors, error_list_to_dict
+from error_detection.error_detection import detect_errors
 
 
 class ListCreateDerivativeTrade(ListCreateAPIView):
@@ -28,7 +31,13 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Call the Error Detection Module
+
+        if request.query_params.get('no_check', False) is not True:
+            trade_obj = DerivativeTrade.json_to_obj(serializer.validated_data)
+            errors = detect_errors(trade_obj, datetime.today())
+            if has_errors(errors):
+                errors_dict = error_list_to_dict(errors)
+                return Response(errors_dict, status=status.HTTP_409_CONFLICT)
 
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -70,11 +79,12 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         PUT and UPDATE requests handled by this method. It will run the Error 
         Detection Module and then log any changes made to the DerivativeTrade.
         """
-        # Check the trade is not more than 7 days old.
-        if not check_trade_editable(self.get_object()):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-        # Error Detection Module Called Upon.
+        if request.query_params.get('no_check', False) is not True:
+            errors = detect_errors(self.get_object(), datetime.today())
+            if has_errors(errors):
+                errors_dict = error_list_to_dict(errors)
+                print(errors_dict)
+                return Response(errors_dict, status=status.HTTP_409_CONFLICT)
         
         self._log_change('E', self.get_object())
         return super().update(request, *args, **kwargs)
