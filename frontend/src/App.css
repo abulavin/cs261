@@ -53,7 +53,7 @@ button{
   font-weight:300;
   color:#000000;
   text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
-  background-color:#FFFFFF;
+  background-color: lightgrey;
   text-align: center;
   transition: all 0.15s;
 }
@@ -87,7 +87,7 @@ button{
   margin-left: 65%;
   width: 200px;
   background-color:darkgrey;
-  min-height: 300px;
+  min-height: 450px;
 }
 
 h3 {
@@ -181,16 +181,20 @@ h3 {
   background-color: white;
 }
 thead {
-  color:green;
+ 
+  color:white;
 }
 tbody {
-  color:blue;
+  color:black;
 }
 table, th, td {
- border: 1px solid black;
+ border: 2px solid black;
 }
 td, th{
  padding: 5px;
+}
+th {
+  background-color:rgb(0, 24, 168);
 }
 
 #searchinput {
@@ -348,4 +352,20 @@ td, th{
 select {
   background-color: rgb(230, 184, 99);
   overflow: hidden;
+  font-size: 15px;
 }
+
+.customselect {
+  margin: 10px;
+
+}
+
+.tradeform {
+  text-align: left;
+  background-color: lightgrey;
+  margin-left: 200px;
+  font-family:'Roboto',sans-serif;
+  width: 500px;
+  line-height: 1.5;
+}
+

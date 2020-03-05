@@ -165,7 +165,7 @@ class Trades extends Component {
 
         <div className="tradeoptions">
           <Label>Sort Table By: </Label>
-          <select onChange={this.handleSort}>
+          <select class="customselect" onChange={this.handleSort}>
             <option> - </option>
             <option value="date_of_trade">Date of Trade</option>
             <option value="notional_amount">Notional Amount</option>
@@ -175,14 +175,14 @@ class Trades extends Component {
             <option value="strike_price">Strike Price</option>
           </select>
           <Label>Ascending/Descending:</Label>
-          <select onChange={this.handleDir}> 
+          <select class="customselect" onChange={this.handleDir}> 
             <option> - </option>
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
           <button onClick={this.getSortedTrades}>Sort Table</button>
           <Label>Filter notional currency: </Label>
-          <select id="currfilter" name="notional_currency" onChange={this.getFilterCurrency}>
+          <select class="customselect" id="currfilter" name="notional_currency" onChange={this.getFilterCurrency}>
             <option> - </option>
             {currencyCodes.map((text,i) => (
                 <option key={i} value={text}>
@@ -191,7 +191,7 @@ class Trades extends Component {
             ))}
           </select>
           <Label>Filter underlying currency: </Label>
-          <select id="currfilter" name="underlying_currency" onChange={this.getFilterCurrency}>
+          <select class="customselect" id="currfilter" name="underlying_currency" onChange={this.getFilterCurrency}>
             <option> - </option>
             {currencyCodes.map((text,i) => (
                 <option key={i} value={text}>
@@ -202,9 +202,9 @@ class Trades extends Component {
           <button onClick={this.refreshPage}> Remove Filters </button>
         </div>
         <div>
+          <Label>Search by heading: </Label>
           <Form>
             <FormGroup>
-              <Label>Search by heading: </Label>
               <select id="headingfilter" name="chosen" onChange={this.handleChange}>
                 <option> - </option>
                 <option value="date_of_trade" >Date of Trade</option>
