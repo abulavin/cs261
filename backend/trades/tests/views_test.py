@@ -37,17 +37,17 @@ class ListCreateDerivativeTradeTest(APITestCase):
     def test_create_derivative_trades(self):
         """Test the creation of a trade."""
         trade_data = {
-            'date_of_trade': '2020-02-02 10:10',
+            'date_of_trade': datetime.datetime.now() - datetime.timedelta(days=1),
             'trade_id': '1',
             'product': '1',
             'buying_party': '1',
             'selling_party': '1',
             'notional_amount': 1.0,
             'quantity': 1.0,
-            'notional_currency': '1',
-            'maturity_date': '2020-02-20',
+            'notional_currency': 'GBP',
+            'maturity_date': datetime.datetime.now().date(),
             'underlying_price': 1.0,
-            'underlying_currency': '1',
+            'underlying_currency': 'USD',
             'strike_price': 1.0
         }
         # POST data 
@@ -56,17 +56,17 @@ class ListCreateDerivativeTradeTest(APITestCase):
 
 class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
     def setUp(self):
-        self.today = datetime.datetime.now()
+        self.today = datetime.datetime.now() 
         DerivativeTrade.objects.create(
-            date_of_trade=self.today,
+            date_of_trade=self.today - datetime.timedelta(days=1),
             trade_id=1,
             product='a',
             buying_party='b',
             selling_party='c',
             notional_amount=1,
             quantity=1,
-            notional_currency='GDP',
-            maturity_date='2020-02-20',
+            notional_currency='GBP',
+            maturity_date=self.today.date(),
             underlying_price=1,
             underlying_currency='USD',
             strike_price=1
@@ -84,17 +84,17 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
     def test_put_derivative_trade(self):
         """Test the updating of a derivative trade using UPDATE."""
         updated_data = {
-            'date_of_trade': self.today,
+            'date_of_trade': self.today - datetime.timedelta(days=1),
             'trade_id': '1',
             'product': '3',
             'buying_party': '1',
             'selling_party': '1',
             'notional_amount': 6.0,
             'quantity': 1.0,
-            'notional_currency': '1',
-            'maturity_date': '2020-02-20',
+            'notional_currency': 'GBP',
+            'maturity_date': self.today.date(),
             'underlying_price': 1.0,
-            'underlying_currency': '1',
+            'underlying_currency': 'USD',
             'strike_price': 5.0
         }       
         # PUT updated data 
@@ -109,31 +109,31 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
     def test_editable_trade_pass(self):
         """Test thats a Trade under and equal to 7 days old is editable."""
         DerivativeTrade.objects.create(
-            date_of_trade=self.today,
+            date_of_trade=self.today - datetime.timedelta(days=1),
             trade_id=7,
             product='a',
             buying_party='b',
             selling_party='c',
             notional_amount=1,
             quantity=1,
-            notional_currency='GDP',
-            maturity_date='2020-02-20',
+            notional_currency='GBP',
+            maturity_date=self.today.date(),
             underlying_price=1,
             underlying_currency='USD',
             strike_price=1
         )
         updated_data = {
-            'date_of_trade': self.today,
+            'date_of_trade': self.today - datetime.timedelta(days=1),
             'trade_id': 7,
             'product': '3',
             'buying_party': '1',
             'selling_party': '1',
             'notional_amount': 6.0,
             'quantity': 1.0,
-            'notional_currency': '1',
-            'maturity_date': '2020-02-20',
+            'notional_currency': 'GBP',
+            'maturity_date': self.today.date(),
             'underlying_price': 1.0,
-            'underlying_currency': '1',
+            'underlying_currency': 'USD',
             'strike_price': 5.0
         }       
         response = self.client.put('/trades/7/', data=updated_data)
@@ -149,7 +149,7 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
             selling_party='c',
             notional_amount=1,
             quantity=1,
-            notional_currency='GDP',
+            notional_currency='GBP',
             maturity_date='2020-02-20',
             underlying_price=1,
             underlying_currency='USD',
@@ -163,11 +163,11 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
             'selling_party': '1',
             'notional_amount': 6.0,
             'quantity': 1.0,
-            'notional_currency': '1',
+            'notional_currency': 'GBP',
             'maturity_date': '2020-02-20',
             'underlying_price': 1.0,
-            'underlying_currency': '1',
+            'underlying_currency': 'USD',
             'strike_price': 5.0
         }       
         response = self.client.put('/trades/8/', data=updated_data)
-        self.assertEqual(401, response.status_code)
+        self.assertEqual(409, response.status_code)

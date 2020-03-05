@@ -83,8 +83,26 @@
 
   OR
 
-  * **Code:** TODO: Error Detection Module Codes <br />
-    **Content:** `{ error : "Email Invalid" }`
+  * **Code:** 409 CONFLICT <br />
+    **Content:** 
+    ``` json
+    {
+        "date_of_trade": ["correction value", "message"],
+        "trade_id": ["correction value", "message"],
+        "product": ["correction value", "message"],
+        "buying_party": ["correction value", "message"],
+        "selling_party": ["correction value", "message"],
+        "notional_amount": ["correction value", "message"],
+        "quantity": ["correction value", "message"],
+        "notional_currency": ["correction value", "message"],
+        "maturity_date": ["correction value", "message"],
+        "underlying_price": ["correction value", "message"],
+        "underlying_currency": ["correction value", "message"],
+        "strike_price": ["correction value", "message"]
+    }
+    ```
+    Note that the correction value will be null if there are no corrections for that field. However
+    there may still be a message.
 
 * **Sample Call:**
 
