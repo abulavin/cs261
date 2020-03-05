@@ -37,7 +37,7 @@ class ListCreateDerivativeTradeTest(APITestCase):
     def test_create_derivative_trades(self):
         """Test the creation of a trade."""
         trade_data = {
-            'date_of_trade': '2020-02-02 10:10',
+            'date_of_trade': datetime.datetime.now() - datetime.timedelta(days=1),
             'trade_id': '1',
             'product': '1',
             'buying_party': '1',
@@ -45,7 +45,7 @@ class ListCreateDerivativeTradeTest(APITestCase):
             'notional_amount': 1.0,
             'quantity': 1.0,
             'notional_currency': '1',
-            'maturity_date': '2020-02-20',
+            'maturity_date': datetime.datetime.now().date(),
             'underlying_price': 1.0,
             'underlying_currency': '1',
             'strike_price': 1.0

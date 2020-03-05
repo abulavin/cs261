@@ -8,7 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import DerivativeTradeSerializer
 from .models import DerivativeTrade, DerivativeTradeHistory
-from .helper import check_trade_editable
+from .helper import check_trade_editable, has_errors, error_list_to_dict
 from error_detection.error_detection import detect_errors
 
 
@@ -32,7 +32,11 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
 
         trade_obj = DerivativeTrade.json_to_obj(serializer.validated_data)
-        detect_errors(trade_obj, datetime.today())
+        errors = detect_errors(trade_obj, datetime.today())
+        if has_errors(errors):
+            print(errors)
+            errors_dict = error_list_to_dict(errors)
+            return Response(errors_dict, status=status.HTTP_409_CONFLICT)
 
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
