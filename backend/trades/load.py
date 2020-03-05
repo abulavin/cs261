@@ -78,7 +78,7 @@ def load_trades(folder_path):
                     
                     try:
                         DerivativeTrade.objects.create(
-                            date_of_trade=datetime.strptime(row[0], "%d/%m/%Y %H:%M").date(),
+                            date_of_trade=datetime.strptime(row[0], "%d/%m/%Y %H:%M"),
                             trade_id=row[1],
                             product=row[2],
                             buying_party=row[3],
