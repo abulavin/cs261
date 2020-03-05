@@ -107,12 +107,16 @@ class EditModal extends Component {
     window.location.reload();
   };
 
+  hideModal2 = () => {
+    this.setState({ show: false });
+  };
+
   checkEditable = () => {
     var limit = new Date();
     limit.setDate(limit.getDate()-7);
-    limit = moment(limit).format('MM/DD/YYYY hh:mm:ss')
-    var d = moment(this.props.date).format('MM/DD/YYYY hh:mm:ss');
-
+    limit = moment(limit).format('YYYY/MM/DD')
+    var d = moment(this.props.date).format('YYYY/MM/DD');
+  
     if (d > limit) {
       return true
     }
@@ -127,12 +131,13 @@ class EditModal extends Component {
         <button type="button" onClick={this.showModal}>
           Edit Trade
         </button>
-        <Modal show={this.state.show} handleClose={this.hideModal}>
+        <Modal show={this.state.show} handleClose={this.hideModal2}>
           <h1>In order for a trade to be editable, the trade must be less than a week old.</h1>
-          <h3>This trade was created on {moment(this.props.date).format('MM/DD/YYYY hh:mm:ss')}</h3>
+          <h3>This trade was created on {moment(this.props.date).format('DD/MM/YYYY hh:mm:ss')}</h3>
         </Modal>
       </main>
     )
+    else {
     return (
       <main>
         <Modal show={this.state.show} handleClose={this.hideModal}>
@@ -271,6 +276,7 @@ class EditModal extends Component {
         </button>
       </main>
     );
+    }
   }
 }
 

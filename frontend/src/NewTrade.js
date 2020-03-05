@@ -65,7 +65,8 @@ class NewTrade extends Component {
         console.log(trade);
       })
       .catch(error => {
-        console.error(error);
+        console.log(error);
+        this.setState({errors: this.state.errors.concat(error)})
       });
   }
 
@@ -97,7 +98,20 @@ class NewTrade extends Component {
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({ [nam]: val });
+  }
 
+  displayErrors = () => {
+    console.log("called")
+    // for(let prop in this.state.errors) 
+    //   return <h3> {prop[0]}</h3>
+    return (
+      
+      <div>
+        {this.state.errors.items.map((item, index) => (
+          <item key={index} item={item} />
+        ))}
+      </div>
+    );
   }
 
   render() {
@@ -230,7 +244,7 @@ class NewTrade extends Component {
 
         <div className="errorbox">
           <h3>Highlighted Errors:</h3>
-          {this.state.errors}
+          {this.displayErrors}
 
           <Button onClick={this.nextTrade}>Next Trade</Button>
         </div>

@@ -156,7 +156,7 @@ export class GetTradeProxy extends BackendProxy {
     getSortedTrades(heading, direction) {
         let param="";
         if (direction == "desc") {
-            param = '?ordering:-' + heading;
+            param = '?ordering=-' + heading;
         }
         if (direction == "asc") {
             param = '?ordering=' + heading;
