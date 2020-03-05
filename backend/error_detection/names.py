@@ -1,7 +1,7 @@
 import difflib
-from error_detection.common import Error, currencies
+from error_detection.common import Error
 from .db_import import (
-    company_codes, product_sellers, derivative_trades
+    company_codes, product_sellers
 )
 
 
@@ -16,7 +16,7 @@ def detect_similar(query, corpus):
         return False, None
 
 
-def detect_name_errors(trade, errors):
+def detect_name_errors(trade, errors, currencies):
     products = {seller.product.lower(): seller.product for seller in product_sellers}
     ok, correction = detect_similar(trade.product, products)
     if not ok:
