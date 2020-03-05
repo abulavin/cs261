@@ -349,8 +349,3 @@ select {
   background-color: rgb(230, 184, 99);
   overflow: hidden;
 }
-
-option {
-  overflow: hidden;
-  background-color: rgb(230, 184, 99);
-}
