@@ -22,7 +22,7 @@ def detect_name_errors(trade, errors, currencies):
     if not ok:
         errors.append(Error('product', correction, "Unknown product"))
 
-    companies = {company.company_name.lower(): company.company_name for company in company_codes}
+    companies = {company.company_trade_id.lower(): company.company_trade_id for company in company_codes}
     ok, correction = detect_similar(trade.buying_party, companies)
     if not ok:
         errors.append(Error('buying_party', correction, "Unknown buying party"))
