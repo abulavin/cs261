@@ -17,9 +17,9 @@ from .models import Report
 from trades.models import DerivativeTrade, DerivativeTradeHistory
 
 
-def generate_report(date='2013-12-04', is_daily_report=True, return_filename=False):
+def generate_report(date, is_daily_report=True, return_filename=False):
     html = render_to_string('report_template.html', {
-        'new_trades': DerivativeTrade.objects.filter(date_of_trade=date),
+        'new_trades': DerivativeTrade.objects.filter(date_of_trade__date=date)[:50],
         'modified_trades': DerivativeTradeHistory.objects.filter(added_to_report=False)
     })
     if return_filename is False:
