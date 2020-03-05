@@ -3,7 +3,8 @@ from .db_import import (
     derivative_trades
 )
 
-def correct_to_range(value, min_v, max_v, threshold, need_int=False):
+
+def correct_to_range(value, min_v, max_v, threshold):
     min_t = min_v * threshold
     max_t = max_v / threshold
 
@@ -16,16 +17,14 @@ def correct_to_range(value, min_v, max_v, threshold, need_int=False):
 
     correction = value / 10
     if min_t <= correction <= max_t:
-        if need_int and not correction.is_integer():
-            return False, None
-        else:
-            return False, correction
-    return False, None
+        return False, correction
+    else:
+        return False, None
 
 
-def correct_to_past(value, key, threshold, need_int=False):
+def correct_to_past(value, key, threshold):
     past_values = (key(t) for t in derivative_trades)
-    return correct_to_range(value, min(past_values), max(past_values), threshold, need_int)
+    return correct_to_range(value, min(past_values), max(past_values), threshold)
 
 
 def detect_number_errors(trade, threshold, errors):
