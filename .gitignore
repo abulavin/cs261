@@ -1,6 +1,7 @@
 .idea/
 cs261dummydata.zip
 cs261dummydata/
+backend/db.sqlite3
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
