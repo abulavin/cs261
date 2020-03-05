@@ -26,7 +26,7 @@ def generate_report(date, is_daily_report=True, return_filename=False):
         report = HTML(string=html).write_pdf()
         return HttpResponse(report, content_type='application/pdf')
     else:
-        filename = os.path.join('report/reports/', str(date) + '.pdf')
+        filename = os.path.join('media/reports/', str(date) + '.pdf')
         HTML(string=html).write_pdf(filename)
         return filename
 
