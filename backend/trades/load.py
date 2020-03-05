@@ -4,8 +4,7 @@ dummy data folder given.
 """
 import os
 import csv
-
-from datetime import datetime
+import datetime
 
 from .models import DerivativeTrade, CompanyCode, ProductSeller
 
@@ -17,7 +16,7 @@ def load_data(folder_path):
     """
     company_codes_path = os.path.join(folder_path, 'companyCodes.csv')
     product_sellers_path = os.path.join(folder_path, 'productSellers.csv')
-    trades_path = os.path.join(folder_path, 'derivativeTrades', '2019')
+    trades_path = os.path.join(folder_path, 'derivativeTrades', '2013')
 
     print(company_codes_path)
     print(product_sellers_path)
@@ -65,8 +64,11 @@ def load_trades(folder_path):
     This method needs to be passed the path to the folder 'derivativeTrades' in
     the dummy data folder.
     """
+    count = 0
     for subdir, dirs, files in os.walk(folder_path):
         for file in files:
+            if count == 7: return
+
             with open(os.path.join(subdir, file)) as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
                 for row in csv_reader:
@@ -77,8 +79,13 @@ def load_trades(folder_path):
                         continue
                     
                     try:
+                        today = datetime.datetime.now() + datetime.timedelta(days=count)
+                        date_of_trade = datetime.datetime.strptime(row[0], "%d/%m/%Y %H:%M")
+                        maturity_date = datetime.datetime.strptime(row[8], "%d/%m/%Y").date()
+                        day_diff = (maturity_date - date_of_trade.date()).days
+
                         DerivativeTrade.objects.create(
-                            date_of_trade=datetime.strptime(row[0], "%d/%m/%Y %H:%M"),
+                            date_of_trade=today,
                             trade_id=row[1],
                             product=row[2],
                             buying_party=row[3],
@@ -86,10 +93,11 @@ def load_trades(folder_path):
                             notional_amount=row[5],
                             notional_currency=row[6],
                             quantity=row[7],
-                            maturity_date=datetime.strptime(row[8], "%d/%m/%Y").date(),
+                            maturity_date=today + datetime.timedelta(days=day_diff),
                             underlying_price=row[9],
                             underlying_currency=row[10],
                             strike_price=row[11]
                         )
                     except IndexError:
                         pass
+            count += 1
