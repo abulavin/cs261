@@ -102,9 +102,8 @@ export class CreateTradeProxy extends BackendProxy {
         return new Promise((resolve, reject) => {
             this.postRequest(trade)
                 .then(response => {
-                    console.log(response.status, response.statusText);
-                    console.log("New trade created: ")
-                    console.log(response.data);
+                    console.log("POST", response.status, response.statusText);
+                    resolve(response.data);
                 })
                 .catch(error => {
                     reject(error.response.data);

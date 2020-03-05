@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { CreateTradeProxy } from "./BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import {currencyCodes} from './currencyCodes';
+import { currencyCodes } from './currencyCodes';
 
 class NewTrade extends Component {
 
   constructor() {
     super();
     this.createProxy = new CreateTradeProxy();
-    this.state = { 
+    this.state = {
       date_of_trade: "",
       time_of_trade: "",
       trade_id: "",
@@ -41,7 +41,7 @@ class NewTrade extends Component {
     var underlying_price = this.state.underlying_price
     var underlying_currency = this.state.underlying_currency
     var strike_price = this.state.strike_price
-    
+
     var date_of_trade = day + " " + (time_of_trade)
 
     console.log(date_of_trade)
@@ -59,15 +59,20 @@ class NewTrade extends Component {
       underlying_currency,
       strike_price
     };
-    this.createProxy.createTrade(trade);
-    // how to catch errors here, tried reject error didn't work
-    alert("Submitted")
+    this.createProxy.createTrade(trade)
+      .then(trade => {
+        console.log("New trade created: ")
+        console.log(trade);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     this.sendTrade();
-    alert("You are submitting "+this.state.trade_id+this.state.notional_currency);
+    alert("You are submitting " + this.state.trade_id + this.state.notional_currency);
     // validation
     // let age = this.state.age;
     // if (!Number(age)) {
@@ -76,7 +81,7 @@ class NewTrade extends Component {
   }
 
   getErrors = () => {
-    this.setState({errors: []})
+    this.setState({ errors: [] })
   }
 
   nextTrade = () => {
@@ -91,8 +96,8 @@ class NewTrade extends Component {
   handleChange = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
-    this.setState({[nam]: val});
-    
+    this.setState({ [nam]: val });
+
   }
 
   render() {
@@ -103,7 +108,7 @@ class NewTrade extends Component {
           <h5> Upon entry, all details will be error-checked and any issues will be highlighted.</h5>
         </div>
         <div className="tradeform">
-        <Form>
+          <Form>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input
@@ -160,10 +165,10 @@ class NewTrade extends Component {
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange}>
                 <option> - </option>
-                {currencyCodes.map((text,i) => (
-                <option key={i} value={text}>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
                     {text}
-                </option>
+                  </option>
                 ))}
               </select>
             </FormGroup>
@@ -195,11 +200,11 @@ class NewTrade extends Component {
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange}>
                 <option> - </option>
-                {currencyCodes.map((text,i) => (
-                <option key={i} value={text}>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
                     {text}
-                </option>
-                ))}               
+                  </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>
@@ -218,7 +223,7 @@ class NewTrade extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
-            <input type="reset" value = "Reset all values"/>
+            <input type="reset" value="Reset all values" />
           </Form>
           <button onClick={this.handleSubmit}> Submit</button>
         </div>
