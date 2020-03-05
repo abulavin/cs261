@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { GetReportProxy} from "../BackendProxy";
+import { GetReportProxy } from "../BackendProxy";
 
 export default class ReportTable extends Component {
     constructor(props){
@@ -16,13 +16,13 @@ export default class ReportTable extends Component {
             {/* <RenderRow key={index} data={row} keys={keys}/> */}
             <td> {this.props.data[index].date}</td>
             <td>
-                <button onClick={() => this.openReport(this.props.data[index].report)}> View Report </button> 
+                <button onClick={() => this.openReport(this.props.data[index].report)}> View Report </button>
                 {/* <ReportModal data={this.props.data[index].report}/>   */}
             </td>
             <td>
                 <button onClick={() => this.downloadReport(this.props.data[index].report)}> Download Report </button>
             </td>
-              
+
         </tr>
         })
     }
@@ -30,7 +30,7 @@ export default class ReportTable extends Component {
     openReport = (link) => {
         this.reportProxy.getReportURL(link).then(report => {
             const pdf = new Blob(
-              [report], 
+              [report],
               {type: 'application/pdf'});
             console.log(report)
             //Build a URL from the file
@@ -42,7 +42,7 @@ export default class ReportTable extends Component {
           .catch(error => console.log(error.statusText, error.status));
     }
 
-    downloadReport = (report) => { 
+    downloadReport = (report) => {
 
     }
 
