@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { GetReportProxy, ReportURLProxy } from "../BackendProxy";
+import {download} from "downloadjs";
 
 export default class ReportTable extends Component {
     constructor(props){
@@ -21,7 +22,7 @@ export default class ReportTable extends Component {
                 {/* <ReportModal data={this.props.data[index].report}/>   */}
             </td>
             <td>
-                <button onClick={() => this.downloadReport(this.props.data[index].report)}> Download Report </button>
+                <button onClick={() => this.downloadReport(this.props.data[index])}> Download Report </button>
             </td>
 
         </tr>
@@ -38,13 +39,26 @@ export default class ReportTable extends Component {
             const fURL = URL.createObjectURL(pdf);
             //Open the URL on new Window
             window.open(fURL);
-            // window.location.reload();
           })
           .catch(error => console.log(error.statusText, error.status));
     }
 
-    downloadReport = (report) => {
-
+    downloadReport = (data) => {
+        this.reportURLProxy.getReportURL(data.report).then(report => {
+            const pdf = new Blob(
+              [report],
+              {type: 'application/pdf'});
+            console.log(report)
+            //Build a URL from the file
+            const url = window.URL.createObjectURL(pdf);
+            //Open the URL on new Window
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'report-'+(data.date)+'.pdf');
+            document.body.appendChild(link);
+            link.click();
+          })
+          .catch(error => console.log(error.statusText, error.status));    
     }
 
     render() {
