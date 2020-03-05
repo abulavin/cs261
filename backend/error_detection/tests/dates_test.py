@@ -1,39 +1,14 @@
 import datetime
 from django.test import TestCase
 
-from trades.models import DerivativeTrade, CompanyCode, ProductSeller
+from trades.models import DerivativeTrade
 from error_detection.error_detection import *
+from error_detection.tests.test_data import populate_db, today
 
 
 class ErrorDetectionTest(TestCase):
     def setUp(self):
-        self.today = datetime.datetime(2020, 3, 3)
-
-        CompanyCode.objects.create(
-            company_name = "Pear",
-            company_trade_id = "HWJF09"
-        )
-        CompanyCode.objects.create(
-            company_name = "Large Corporation",
-            company_trade_id = "CMZC67"
-        )
-        CompanyCode.objects.create(
-            company_name = "SoftEng INC.",
-            company_trade_id = "JEOX97"
-        )
-
-        ProductSeller.objects.create(
-            product = "Rocks",
-            company_id = "CMZC67"
-        )
-        ProductSeller.objects.create(
-            product = "Trees",
-            company_id = "JEOX97"
-        )
-        ProductSeller.objects.create(
-            product = "Xylophones",
-            company_id = "HWJF09"
-        )
+        populate_db()
 
     def do_trade_date_test(self, field, date_of_trade, maturity_date):
         trade = DerivativeTrade.objects.create(
@@ -50,7 +25,7 @@ class ErrorDetectionTest(TestCase):
             strike_price = 50
         )
 
-        errors = detect_errors(trade, self.today)
+        errors = detect_errors(trade, today)
 
         if field is None:
             self.assertEqual(errors, [], "No errors")
@@ -59,11 +34,11 @@ class ErrorDetectionTest(TestCase):
             self.assertEqual(errors[0].field, field, "Correct error field")
 
             correction = errors[0].correction
-            week_ago = self.today - datetime.timedelta(weeks=1)
-            century_ahead = self.today + datetime.timedelta(weeks=5200)
+            week_ago = today - datetime.timedelta(weeks=1)
+            century_ahead = today + datetime.timedelta(weeks=5200)
 
             if field == 'date_of_trade':
-                self.assert_(correction is None or week_ago <= correction <= self.today, "Corrected date valid")
+                self.assert_(correction is None or week_ago <= correction <= today, "Corrected date valid")
             elif field == 'maturity_date':
                 self.assert_(correction is None or trade.date_of_trade <= correction <= century_ahead, "Corrected date valid")
             else:
