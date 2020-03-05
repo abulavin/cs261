@@ -271,6 +271,22 @@ export class UpdateTradeProxy extends BackendProxy {
     }
 }
 
+export class ReportURLProxy extends BackendProxy {
+   constructor() {
+       super('');
+   }
+    getReportURL(url) {
+        return new Promise(resolve => {
+            this.getBlobRequest(url)
+                .then(response => {
+                    console.log(response.status + " " + response.statusText);
+                    resolve(response.data);
+                })
+                .catch(error => { throw error });
+        })
+    }
+}
+
 export class GetReportProxy extends BackendProxy {
 
     constructor() {
@@ -323,17 +339,6 @@ export class GetReportProxy extends BackendProxy {
 
         const urlParameters = `?date__lte=${date}&page=${page}`;
         return this.makeGetRequestPromise(urlParameters);
-    }
-
-    getReportURL(url) {
-        return new Promise(resolve => {
-            this.getBlobRequest(url)
-                .then(response => {
-                    console.log(response.status + " " + response.statusText);
-                    resolve(response.data);
-                })
-                .catch(error => { throw error });
-        })
     }
 
     /**
