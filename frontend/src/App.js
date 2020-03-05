@@ -14,7 +14,7 @@ import NavBar from "./NavBar.js";
 import './App.css';
 
 // This can be changed via the dev console so be careful
-window.enableErrorDetection = true;
+window.check = true;
 
 function App() {
   return (

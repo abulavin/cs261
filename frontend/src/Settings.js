@@ -5,13 +5,13 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      on: window.enableErrorDetection
+      on: window.check
     }
   }
 
   toggleErrorDetection = () => {
     this.setState({ on: !this.state.on });
-    window.enableErrorDetection = !this.state.on
+    window.check = !this.state.on
   }
 
   render() {
