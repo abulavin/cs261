@@ -8,7 +8,7 @@ def detect_errors(trade, today):
     """
     # TODO: Move to some one-off initialization area
     with open("currencies.txt", 'r') as file:
-        currencies = {c[:-1].lower(): c for c in file.readlines()}
+        currencies = {c[:-1].lower(): c[:-1] for c in file.readlines()}
 
     errors = []
     detect_date_errors(trade, today, errors)
