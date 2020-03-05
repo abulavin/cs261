@@ -238,6 +238,8 @@ class Trades extends Component {
           <button onClick={this.getTradesByPage}> next page </button>
           {console.log(this.state.tr)}
           {this.state.tr ? <Table data={this.state.tr}/> : null }
+        </div>
+        <div>
           <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>
         </div>
