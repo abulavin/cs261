@@ -51,19 +51,23 @@ class ErrorDetectionTest(TestCase):
         )
 
         errors = detect_errors(trade, self.today)
-        self.assertEqual(len(errors), 1, "Exactly one error")
-        self.assertEqual(errors[0].field, field, "Correct error field")
 
-        correction = errors[0].correction
-        week_ago = self.today - datetime.timedelta(weeks=1)
-        century_ahead = self.today + datetime.timedelta(weeks=5200)
-
-        if field == 'date_of_trade':
-            self.assert_(correction is None or week_ago <= correction <= self.today, "Corrected date valid")
-        elif field == 'maturity_date':
-            self.assert_(correction is None or trade.date_of_trade <= correction <= century_ahead, "Corrected date valid")
+        if field is None:
+            self.assertEqual(errors, [], "No errors")
         else:
-            self.fail("Unknown field")
+            self.assertEqual(len(errors), 1, "Exactly one error")
+            self.assertEqual(errors[0].field, field, "Correct error field")
+
+            correction = errors[0].correction
+            week_ago = self.today - datetime.timedelta(weeks=1)
+            century_ahead = self.today + datetime.timedelta(weeks=5200)
+
+            if field == 'date_of_trade':
+                self.assert_(correction is None or week_ago <= correction <= self.today, "Corrected date valid")
+            elif field == 'maturity_date':
+                self.assert_(correction is None or trade.date_of_trade <= correction <= century_ahead, "Corrected date valid")
+            else:
+                self.fail("Unknown field")
 
     def test_old_trade(self):
         self.do_trade_date_test('date_of_trade', datetime.datetime(2020, 2, 20), datetime.datetime(2000, 9, 3))
@@ -76,3 +80,6 @@ class ErrorDetectionTest(TestCase):
 
     def test_future_maturity(self):
         self.do_trade_date_test('maturity_date', datetime.datetime(2020, 3, 1), datetime.datetime(2120, 3, 3))
+
+    def test_correct_trade(self):
+        self.do_trade_date_test(None, datetime.datetime(2020, 2, 27), datetime.datetime(2050, 9, 3))
