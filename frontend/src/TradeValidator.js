@@ -34,12 +34,8 @@ export const TradeValidator = {
                 this.tradeHasNoUndefinedProperties(trade);
 
                 let errorMessage = '';
-                for (const tradeAttribute in trade) {
-                    const attributeIsCorrect = checkerFunctions[tradeAttribute];
-                    const attributeValue = trade[tradeAttribute];
-                    if (!attributeIsCorrect(attributeValue)) {
-                        errorMessage += `Invalid value for attribute ${tradeAttribute}: ${attributeValue} \n`;
-                    }
+                for (const tradeAttribute in this.filterErroneousFields(trade)) {
+                    errorMessage += `Invalid value for attribute ${tradeAttribute}: ${attributeValue} \n`;
                 }
                 if (errorMessage.length > 0) {
                     errorMessage = "Trade has invalid attributes. \n" + errorMessage;
@@ -52,6 +48,22 @@ export const TradeValidator = {
         } catch (error) {
             throw error;
         }
+    },
+
+    /**
+     * Filter a derivative trade to only have the erroneous attributes.
+     * @param {object} trade Derivative trade object
+     */
+    filterErroneousFields: function(trade) {
+        let errors = {};
+        for (const tradeAttribute in trade) {
+            const attributeIsCorrect = checkerFunctions[tradeAttribute];
+            const attributeValue = trade[tradeAttribute];
+            if (!attributeIsCorrect(attributeValue)) {
+                errors[tradeAttribute] = attributeValue;
+            }
+        }
+        return errors;
     },
 
     /**
