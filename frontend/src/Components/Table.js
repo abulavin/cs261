@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import EditModal from './EditModal.js';
+import { GetTradeProxy} from "../BackendProxy";
 import DeleteModal from './DeleteModal.js';
 
 export default class Table extends Component {
@@ -32,8 +33,6 @@ export default class Table extends Component {
     return (
       <React.Fragment>
         <div className="tradetable">
-            {/* onkeyup search for item function */}
-            <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
             <table id="tableview">
             <thead>
                 <tr>
@@ -67,6 +66,7 @@ export default class Table extends Component {
 }
 // use this to return individual rows of the table
 const RenderRow = (props) =>{
+  
   return props.keys.map((key, index)=>{
     return <td key={props.data[key]}>{props.data[key]}</td>
     })
