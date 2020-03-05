@@ -28,14 +28,18 @@ def correct_to_past(value, key, threshold):
 
 
 def detect_number_errors(trade, threshold, errors):
-    notional_ok, correction = correct_to_past(trade.notional_amount, lambda t: t.notional_amount, threshold)
-    if not notional_ok:
-        errors.append(Error('notional_amount', correction, "Suspicious notional amount"))
+    if len(derivative_trades) > 0:
+        notional_ok, correction = correct_to_past(trade.notional_amount, lambda t: t.notional_amount, threshold)
+        if not notional_ok:
+            errors.append(Error('notional_amount', correction, "Suspicious notional amount"))
 
-    ok, correction = correct_to_past(trade.underlying_price, lambda t: t.underlying_price, threshold)
-    if not ok:
-        errors.append(Error('underlying_price', correction, "Suspicious underlying price"))
+        underlying_ok, correction = correct_to_past(trade.underlying_price, lambda t: t.underlying_price, threshold)
+        if not underlying_ok:
+            errors.append(Error('underlying_price', correction, "Suspicious underlying price"))
     else:
+        notional_ok, underlying_ok = True
+
+    if underlying_ok:
         ok, correction = correct_to_range(trade.strike_price, trade.underlying_price, trade.underlying_price, threshold)
         if not ok:
             errors.append(Error('strike_price', correction, "Suspicious strike price"))
