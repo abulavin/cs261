@@ -1,7 +1,7 @@
 import datetime
 from django.test import TestCase
 
-from trades.models import DerivativeTrade
+from trades.models import DerivativeTrade, CompanyCode, ProductSeller
 from error_detection.error_detection import *
 
 
@@ -9,12 +9,38 @@ class ErrorDetectionTest(TestCase):
     def setUp(self):
         self.today = datetime.datetime(2020, 3, 3)
 
+        CompanyCode.objects.create(
+            company_name = "Pear",
+            company_trade_id = "HWJF09"
+        )
+        CompanyCode.objects.create(
+            company_name = "Large Corporation",
+            company_trade_id = "CMZC67"
+        )
+        CompanyCode.objects.create(
+            company_name = "SoftEng INC.",
+            company_trade_id = "JEOX97"
+        )
+
+        ProductSeller.objects.create(
+            product = "Rocks",
+            company_id = "CMZC67"
+        )
+        ProductSeller.objects.create(
+            product = "Trees",
+            company_id = "JEOX97"
+        )
+        ProductSeller.objects.create(
+            product = "Xylophones",
+            company_id = "HWJF09"
+        )
+
     def do_trade_date_test(self, field, date_of_trade, maturity_date):
         trade = DerivativeTrade.objects.create(
             date_of_trade = date_of_trade,
-            product = "ASDF",
-            buying_party = "ASDF",
-            selling_party = "ASDF",
+            product = "Trees",
+            buying_party = "CMZC67",
+            selling_party = "HWJF09",
             notional_amount = 1000,
             quantity = 1000,
             notional_currency = "USD",
