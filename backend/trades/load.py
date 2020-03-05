@@ -67,7 +67,7 @@ def load_trades(folder_path):
     count = 0
     for subdir, dirs, files in os.walk(folder_path):
         for file in files:
-            if count == 7: return
+            if count == 8: return
 
             with open(os.path.join(subdir, file)) as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -83,6 +83,7 @@ def load_trades(folder_path):
                         date_of_trade = datetime.datetime.strptime(row[0], "%d/%m/%Y %H:%M")
                         maturity_date = datetime.datetime.strptime(row[8], "%d/%m/%Y").date()
                         day_diff = (maturity_date - date_of_trade.date()).days
+                        print(today)
 
                         DerivativeTrade.objects.create(
                             date_of_trade=today,
