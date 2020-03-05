@@ -99,10 +99,16 @@ export class CreateTradeProxy extends BackendProxy {
      */
     createTrade(trade) {
         TradeValidator.validateTrade(trade);
-        this.postRequest(trade).then(response => {
-            console.log(response.status, response.statusText);
-            console.log("New trade created: ")
-            console.log(response.data);
+        return new Promise((resolve, reject) => {
+            this.postRequest(trade)
+                .then(response => {
+                    console.log(response.status, response.statusText);
+                    console.log("New trade created: ")
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    reject(error.response.data);
+                })
         })
     }
 }
