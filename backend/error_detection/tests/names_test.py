@@ -27,8 +27,8 @@ class ErrorDetectionTest(TestCase):
         fields = dict(sample_fields)
         if field is not None:
             fields[field] = value
-        
-        trade = DerivativeTrade.objects.create(**fields)
+
+        trade = DerivativeTrade(**fields)
         errors = detect_errors(trade, today, threshold)
 
         if field is None or not incorrect:
