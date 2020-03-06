@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from trades.models import DerivativeTrade
 from error_detection.error_detection import *
-from error_detection.tests.test_data import populate_db, today
+from error_detection.tests.test_data import populate_db, today, sample_fields
 from error_detection.db_import import (
     company_codes, product_sellers
 )
@@ -24,19 +24,7 @@ class ErrorDetectionTest(TestCase):
         unless either the field is None or incorrect is set to false.
         """
         # Start with a default trade and override the test value.
-        fields = {
-            'date_of_trade': datetime.datetime(2020, 2, 27),
-            'product': "Trees",
-            'buying_party': "CMZC67",
-            'selling_party': "HWJF09",
-            'notional_amount': 1000,
-            'quantity': 1000,
-            'notional_currency': "USD",
-            'maturity_date': datetime.datetime(2050, 9, 3),
-            'underlying_price': 123,
-            'underlying_currency': "USD",
-            'strike_price': 50
-        }
+        fields = dict(sample_fields)
         if field is not None:
             fields[field] = value
         
