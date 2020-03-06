@@ -63,6 +63,14 @@ class NewTrade extends Component {
       strike_price
     };
 
+    function humanise(str) {
+      var i, f = str.split('_');
+      for (i=0; i<f.length; i++) {
+        f[i] = f[i].charAt(0).toUpperCase() + f[i].slice(1);
+      }
+      return f.join(' ');
+    }
+
     if (TradeValidator.filterErroneousFields(trade).length == 0) {
       this.setState({errors: []})
       this.createProxy.createTrade(trade)
@@ -75,7 +83,7 @@ class NewTrade extends Component {
           console.log("true")
           var corrections = error.data;
           var result = Object.keys(corrections).map(function(key) {
-            return [key, corrections[key][0], corrections[key][1]];
+            return [humanise(key), corrections[key][0], corrections[key][1]];
           });
           console.log(result)
           this.setState({corrections: result})
@@ -87,7 +95,6 @@ class NewTrade extends Component {
       console.log(TradeValidator.filterErroneousFields(trade))
       this.setState({errors: TradeValidator.filterErroneousFields(trade)})
     }
-    
   }
 
   handleSubmit = (event) => {

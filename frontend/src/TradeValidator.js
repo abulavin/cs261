@@ -4,6 +4,15 @@
  */
 import {currencyCodes} from './currencyCodes';
 
+function humanise(str) {
+    var i, f = str.split('_');
+    for (i=0; i<f.length; i++) {
+      f[i] = f[i].charAt(0).toUpperCase() + f[i].slice(1);
+    }
+    return f.join(' ');
+  }
+  
+
 export const TradeValidator = {
 
     tradeProperties: [
@@ -62,26 +71,26 @@ export const TradeValidator = {
 
             if (!attributeIsCorrect(attributeValue)) {
                 if (attributeValue=="" || attributeValue==0) {
-                    attributeValue = "Enter Valid Value"
+                    attributeValue = "Enter a Value"
                     if (tradeAttribute == "date_of_trade") {
-                        errors.push(["date_of_trade",attributeValue])
-                        errors.push(["time_of_trade", attributeValue])
+                        errors.push([humanise("date_of_trade"),attributeValue])
+                        errors.push([humanise("time_of_trade"), attributeValue])
                     }
                     else {
-                        errors.push([tradeAttribute, attributeValue]);
+                        errors.push([humanise(tradeAttribute), attributeValue]);
                     }
                 }
                 else {
                     if (tradeAttribute == "date_of_trade") {
                         if (this.timeOfTradeIsNotValid(trade["date_of_trade"])) {
-                            errors.push(["time_of_trade",attributeValue])
+                            errors.push([humanise("time_of_trade"),attributeValue])
                         }
                         if (this.timeOfTradeIsValid(trade["date_of_trade"])) {
-                            errors.push(["date_of_trade",attributeValue])
+                            errors.push([humanise("date_of_trade"),attributeValue])
                         }
                     }
                     else {
-                        errors.push([tradeAttribute, attributeValue]);
+                        errors.push([humanise(tradeAttribute), attributeValue]);
                     }
                 }
                 
