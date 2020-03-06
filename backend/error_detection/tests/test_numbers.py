@@ -55,5 +55,8 @@ class ErrorDetectionTest(TestCase):
     def test_bad_notional(self):
         self.do_number_test('notional_amount', 3300, 3302.76)
 
+    def test_no_history(self):
+        self.do_number_test('product', "Xylophones", incorrect=False)
+
     def test_correct_numbers(self):
         self.do_number_test('strike_price', 70.77, incorrect=False)
