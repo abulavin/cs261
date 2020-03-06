@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from trades.models import DerivativeTrade
 from error_detection.error_detection import *
-from error_detection.tests.test_data import populate_db, today
+from error_detection.tests.test_data import populate_db, today, threshold, sample_fields
 
 
 class ErrorDetectionTest(TestCase):
@@ -11,21 +11,12 @@ class ErrorDetectionTest(TestCase):
         populate_db()
 
     def do_trade_date_test(self, field, date_of_trade, maturity_date):
-        trade = DerivativeTrade.objects.create(
-            date_of_trade = date_of_trade,
-            product = "Trees",
-            buying_party = "CMZC67",
-            selling_party = "HWJF09",
-            notional_amount = 1000,
-            quantity = 1000,
-            notional_currency = "USD",
-            maturity_date = maturity_date,
-            underlying_price = 123,
-            underlying_currency = "USD",
-            strike_price = 50
-        )
+        fields = dict(sample_fields)
+        fields['date_of_trade'] = date_of_trade
+        fields['maturity_date'] = maturity_date
 
-        errors = detect_errors(trade, today)
+        trade = DerivativeTrade(fields)
+        errors = detect_errors(trade, today,threshold)
 
         if field is None:
             self.assertEqual(errors, [], "No errors")
