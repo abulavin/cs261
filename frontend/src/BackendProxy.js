@@ -19,7 +19,7 @@ class BackendProxy {
         // Data must be plain JS object (not a string) in order for
         // the Content-Type header to be set to application/json.
         // Otherwise server will return Bad Request
-        const putURL = this.url + parameters;
+        const putURL = this.url + parameters + (window.check ? '' : '?no_check=true');
         return axios.post(putURL, data);
     }
 
@@ -59,6 +59,7 @@ class BackendProxy {
         else
             putURL = this.url;
 
+        putURL += (window.check ? '' : '?no_check=true/');
         axios.put(putURL, data)
             .then(response => {
                 console.log("Put Status: " + response.status);
