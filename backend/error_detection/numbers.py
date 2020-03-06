@@ -23,7 +23,7 @@ def correct_to_range(value, min_v, max_v, threshold):
 
 
 def correct_to_past(value, trades, key, threshold):
-    past_values = (key(t) for t in trades)
+    past_values = [key(t) for t in trades]
     return correct_to_range(value, min(past_values), max(past_values), threshold)
 
 
