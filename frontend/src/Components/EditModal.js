@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import moment from 'moment';
 import { UpdateTradeProxy } from "../BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import {currencyCodes} from "../currencyCodes";
+import { currencyCodes } from "../currencyCodes";
 
 class EditModal extends Component {
 
@@ -11,7 +11,7 @@ class EditModal extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.updateTrade = this.updateTrade.bind(this)
     this.updateProxy = new UpdateTradeProxy();
-    this.state = { 
+    this.state = {
       show: false,
       date_of_trade: moment(this.props.date).format('YYYY-MM-DD'),
       time_of_trade: moment(this.props.date).format('hh:mm'),
@@ -49,46 +49,35 @@ class EditModal extends Component {
     console.log(date_of_trade)
 
     const trade = {
-        date_of_trade,
-        trade_id,
-        product,
-        buying_party,
-        selling_party,
-        notional_amount,
-        quantity,
-        notional_currency,
-        maturity_date,
-        underlying_price,
-        underlying_currency,
-        strike_price
+      date_of_trade,
+      trade_id,
+      product,
+      buying_party,
+      selling_party,
+      notional_amount,
+      quantity,
+      notional_currency,
+      maturity_date,
+      underlying_price,
+      underlying_currency,
+      strike_price
     };
     this.updateProxy.updateTrade(trade, this.props.data.trade_id);
     console.log(trade);
   }
 
-  partiallyUpdateTrade = (tradeID) => {
-    tradeID = "TEST101"
-    const update = {
-        buying_party: "7",
-        selling_party: "7",
-        date_of_trade: "2020-02-29 12:30"
-    }
-    this.updateProxy.partiallyUpdateTrade(update, tradeID);
-  }
-
   handleChange = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
-    this.setState({[nam]: val});
- 
+    this.setState({ [nam]: val });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     this.updateTrade();
-    alert("You are submitting "+this.state.trade_id+this.state.notional_currency);
+    alert("You are submitting " + this.state.trade_id + this.state.notional_currency);
   }
-  
+
   showModal = () => {
     this.setState({ show: true });
   };
@@ -107,7 +96,7 @@ class EditModal extends Component {
     limit.setDate(limit.getDate()-7);
     limit = moment(limit).format('YYYY/MM/DD')
     var d = moment(this.props.date).format('YYYY/MM/DD');
-  
+
     if (d > limit) {
       return true
     }
@@ -132,7 +121,7 @@ class EditModal extends Component {
     return (
       <main>
         <Modal show={this.state.show} handleClose={this.hideModal}>
-        <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleSubmit}>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input
@@ -196,10 +185,10 @@ class EditModal extends Component {
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange} defaultValue={this.props.data.notional_currency}>
                 <option> - </option>
-                {currencyCodes.map((text,i) => (
-                <option key={i} value={text}>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
                     {text}
-                </option>
+                  </option>
                 ))}
               </select>
             </FormGroup>
@@ -234,10 +223,10 @@ class EditModal extends Component {
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange} defaultValue={this.props.data.underlying_currency}>
                 <option> - </option>
-                {currencyCodes.map((text,i) => (
-                <option key={i} value={text}>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
                     {text}
-                </option>
+                  </option>
                 ))}
               </select>
             </FormGroup>
@@ -259,7 +248,7 @@ class EditModal extends Component {
                 defaultValue={this.props.data.strike_price}
               />
             </FormGroup>
-            <input type="submit" value="Submit for Checking"/>
+            <input type="submit" value="Submit for Checking" />
           </Form>
         </Modal>
         <button type="button" onClick={this.showModal}>
