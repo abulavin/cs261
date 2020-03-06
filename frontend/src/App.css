@@ -64,6 +64,10 @@ button:hover{
   background-color: green;
 }
 
+button:disabled {
+  color: grey;
+}
+
 @media all and (max-width:30em){
 button{
    display: block;

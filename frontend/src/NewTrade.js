@@ -61,24 +61,21 @@ class NewTrade extends Component {
     };
     this.createProxy.createTrade(trade)
       .then(trade => {
-        console.log("New trade created: ")
-        console.log(trade);
+        window.alert("submitted trade.")
+        console.log(trade)
       })
       .catch(error => {
-        console.log(error);
-        this.setState({errors: this.state.errors.concat(error)})
+        this.setState({errors: error})
+        console.log(this.state.errors);
       });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.sendTrade();
-    alert("You are submitting " + this.state.trade_id + this.state.notional_currency);
-    // validation
-    // let age = this.state.age;
-    // if (!Number(age)) {
-    //   alert("Your age must be a number");
-    // }
+    var r = window.confirm("Are you sure you want to submit this trade?");
+    if (r==true) {
+      this.sendTrade();
+    }
   }
 
   getErrors = () => {
@@ -88,9 +85,10 @@ class NewTrade extends Component {
   nextTrade = () => {
     if (this.state.errors.length == 0) {
       window.location.reload()
+      
     }
     else {
-      alert("still errors")
+      alert("There are still errors needed to be corrected")
     }
   }
 
@@ -104,17 +102,13 @@ class NewTrade extends Component {
     console.log("called")
     // for(let prop in this.state.errors) 
     //   return <h3> {prop[0]}</h3>
-    return (
-      
-      <div>
-        {this.state.errors.items.map((item, index) => (
-          <item key={index} item={item} />
-        ))}
-      </div>
-    );
+    return "hello";   
   }
 
+  
+
   render() {
+    const isEnabled = this.state.errors.length == 0;
     return (
       <React.Fragment>
         <div className="tradetitles">
@@ -237,16 +231,18 @@ class NewTrade extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
-            <input type="reset" value="Reset all values" />
+            <input type="reset" value="Reset all Values" />
           </Form>
-          <button onClick={this.handleSubmit}> Submit</button>
+          <button onClick={this.handleSubmit}> Submit for Checking</button>
         </div>
 
         <div className="errorbox">
           <h3>Highlighted Errors:</h3>
-          {this.displayErrors}
-
-          <Button onClick={this.nextTrade}>Next Trade</Button>
+          <div>
+           
+          </div>
+          
+          <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
         </div>
       </React.Fragment>
     );
