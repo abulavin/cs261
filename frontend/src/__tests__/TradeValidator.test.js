@@ -166,3 +166,16 @@ test('TradeValidator recognises valid currency codes', () => {
     }
     expect(TradeValidator.currencyCodeIsValid("djhfjdhg")).toBeFalsy();
 });
+
+test('TradeValidator aggregates erroneous fields', () => {
+    expect(TradeValidator.filterErroneousFields(wrongTrade)).toStrictEqual(
+        {
+            date_of_trade: undefined,
+            trade_id: "1",
+            notional_currency: "1",
+            maturity_date: undefined,
+            underlying_currency: "1"
+        }
+    )
+    expect(TradeValidator.filterErroneousFields(exampleTrade)).toStrictEqual({})
+})
