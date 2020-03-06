@@ -7,19 +7,16 @@ from .db_import import (
 def correct_to_range(value, min_v, max_v, threshold, need_int=False):
     min_t = min_v * threshold
     max_t = max_v / threshold
-    print(value, min_t, max_t)
 
     if min_t <= value <= max_t:
         return True, None
 
-    correction = round(value * 10, 2)
+    correction = round(value * 10, 0 if need_int else 2)
     if min_t <= correction <= max_t:
         return False, correction
 
-    correction = round(value / 10, 2)
+    correction = round(value / 10, 0 if need_int else 2)
     if min_t <= correction <= max_t:
-        if need_int and not correction.is_integer():
-            return False, None
         return False, correction
     else:
         return False, None
