@@ -3,6 +3,8 @@ from trades.models import CompanyCode, ProductSeller, DerivativeTrade
 
 today = datetime.datetime(2020, 3, 3)
 
+threshold = 0.7
+
 sample_fields = {
     'date_of_trade': datetime.datetime(2020, 2, 27),
     'product': "Trees",
@@ -46,6 +48,7 @@ def populate_db():
 
     DerivativeTrade.objects.create(
         date_of_trade=datetime.datetime(2020, 2, 27),
+        trade_id="AEED21",
         product="Trees",
         buying_party="CMZC67",
         selling_party="HWJF09",
@@ -59,6 +62,7 @@ def populate_db():
     )
     DerivativeTrade.objects.create(
         date_of_trade=datetime.datetime(2020, 2, 27),
+        trade_id="ABCD11",
         product="Trees",
         buying_party="CMZC67",
         selling_party="HWJF09",
@@ -72,6 +76,7 @@ def populate_db():
     )
     DerivativeTrade.objects.create(
         date_of_trade=datetime.datetime(2020, 2, 27),
+        trade_id="XKCD01",
         product="Trees",
         buying_party="CMZC67",
         selling_party="HWJF09",
@@ -85,6 +90,7 @@ def populate_db():
     )
     DerivativeTrade.objects.create(
         date_of_trade=datetime.datetime(2020, 2, 27),
+        trade_id="FEGH99",
         product="Rocks",
         buying_party="CMZC67",
         selling_party="HWJF09",
