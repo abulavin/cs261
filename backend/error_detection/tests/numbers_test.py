@@ -1,11 +1,10 @@
-import datetime
 from django.test import TestCase
 
 from trades.models import DerivativeTrade
 from error_detection.error_detection import *
 from error_detection.tests.test_data import populate_db, today, threshold, sample_fields
 from error_detection.db_import import (
-    company_codes, product_sellers
+    derivative_trades
 )
 
 
@@ -13,12 +12,7 @@ class ErrorDetectionTest(TestCase):
     def setUp(self):
         populate_db()
 
-        self.products = {seller.product for seller in product_sellers}
-        self.companies = {company.company_trade_id for company in company_codes}
-        with open("currencies.txt", 'r') as file:
-            self.currencies = {c[:-1] for c in file.readlines()}
-
-    def do_name_test(self, field, value=None, expected=None, incorrect=True):
+    def do_number_test(self, field, value=None, expected=None, incorrect=True):
         """
         Assumes there will be exactly one error, on the specified field,
         unless either the field is None or incorrect is set to false.
@@ -40,26 +34,26 @@ class ErrorDetectionTest(TestCase):
             correction = errors[0].correction
             self.assert_(correction == expected, "Corrected value valid")
 
-    def test_product(self):
-        self.do_name_test('product', "Socks", "Rocks")
+    def test_low_underlying(self):
+        self.do_number_test('underlying_price', 6.03, 60.3)
 
-    def test_buying_party(self):
-        self.do_name_test('buying_party', "CMZ62", "CMZC67")
+    def test_high_underlying(self):
+        self.do_number_test('underlying_price', 700.30, 70.03)
 
-    def test_selling_party(self):
-        self.do_name_test('selling_party', "hwjf 09", "HWJF09")
+    def test_low_quantity(self):
+        self.do_number_test('quantity', 13, None)
 
-    def test_notional_currency(self):
-        self.do_name_test('notional_currency', "Us", "USD")
+    def test_high_quantity(self):
+        self.do_number_test('quantity', 707, 71)
 
-    def test_underlying_currency(self):
-        self.do_name_test('underlying_currency', "GBup", "GBP")
+    def test_low_strike(self):
+        self.do_number_test('strike_price', 45, None)
 
-    def test_case_insensitive(self):
-        self.do_name_test('product', "rocks", incorrect=False)
+    def test_high_strike(self):
+        self.do_number_test('strike_price', 925.1, 92.51)
 
-    def test_empty_currency(self):
-        self.do_name_test('underlying_currency', "")
+    def test_bad_notional(self):
+        self.do_number_test('notional_amount', 3300, 3302.76)
 
-    def test_correct_names(self):
-        self.do_name_test(None)
+    def test_correct_numbers(self):
+        self.do_number_test('strike_price', 70.77, incorrect=False)
