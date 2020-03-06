@@ -34,7 +34,7 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
 
         if request.query_params.get('no_check', False) is not True:
             trade_obj = DerivativeTrade.json_to_obj(serializer.validated_data)
-            errors = detect_errors(trade_obj, datetime.today())
+            errors = detect_errors(trade_obj, datetime.today(), 0.7)
             if has_errors(errors):
                 errors_dict = error_list_to_dict(errors)
                 return Response(errors_dict, status=status.HTTP_409_CONFLICT)
@@ -80,10 +80,9 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         Detection Module and then log any changes made to the DerivativeTrade.
         """
         if request.query_params.get('no_check', False) is not True:
-            errors = detect_errors(self.get_object(), datetime.today())
+            errors = detect_errors(self.get_object(), datetime.today(), 0.7)
             if has_errors(errors):
                 errors_dict = error_list_to_dict(errors)
-                print(errors_dict)
                 return Response(errors_dict, status=status.HTTP_409_CONFLICT)
         
         self._log_change('E', self.get_object())
