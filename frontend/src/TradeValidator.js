@@ -55,12 +55,36 @@ export const TradeValidator = {
      * @param {object} trade Derivative trade object
      */
     filterErroneousFields: function(trade) {
-        let errors = {};
+        let errors = [];
         for (const tradeAttribute in trade) {
             const attributeIsCorrect = checkerFunctions[tradeAttribute];
             const attributeValue = trade[tradeAttribute];
+
             if (!attributeIsCorrect(attributeValue)) {
-                errors[tradeAttribute] = attributeValue;
+                if (attributeValue=="" || attributeValue==0) {
+                    attributeValue = "Enter Valid Value"
+                    if (tradeAttribute == "date_of_trade") {
+                        errors.push(["date_of_trade",attributeValue])
+                        errors.push(["time_of_trade", attributeValue])
+                    }
+                    else {
+                        errors.push([tradeAttribute, attributeValue]);
+                    }
+                }
+                else {
+                    if (tradeAttribute == "date_of_trade") {
+                        if (this.timeOfTradeIsNotValid(trade["date_of_trade"])) {
+                            errors.push(["time_of_trade",attributeValue])
+                        }
+                        if (this.timeOfTradeIsValid(trade["date_of_trade"])) {
+                            errors.push(["date_of_trade",attributeValue])
+                        }
+                    }
+                    else {
+                        errors.push([tradeAttribute, attributeValue]);
+                    }
+                }
+                
             }
         }
         return errors;
@@ -154,7 +178,6 @@ export const TradeValidator = {
     tradeIDisValid: function (tradeID) {
         const regex = /^[A-Z]+[0-9]+$/;
         return regex.test(tradeID);
-        
     },
 
     /**
@@ -176,6 +199,16 @@ export const TradeValidator = {
      */
     dateOfTradeIsValid: function (date) {
         return !! Date.parse(date);
+    },
+
+    timeOfTradeIsNotValid: function (date) {
+        const regex = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/;
+        return regex.test(date);
+    },
+
+    timeOfTradeIsValid: function (date) {
+        const regex = /^([01][0-9]|2[0-3]):([0-5][0-9])$/;
+        return regex.test(date);
     },
 
     /**

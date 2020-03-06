@@ -87,14 +87,9 @@ class NewTrade extends Component {
     }
   }
 
-  getErrors = () => {
-    this.setState({ errors: [] })
-  }
-
   nextTrade = () => {
     if (this.state.errors.length == 0) {
       window.location.reload()
-      
     }
     else {
       alert("There are still errors needed to be corrected")
@@ -107,11 +102,15 @@ class NewTrade extends Component {
     this.setState({ [nam]: val });
   }
 
-  displayErrors = () => {
-    console.log("called")
-    // for(let prop in this.state.errors) 
-    //   return <h3> {prop[0]}</h3>
-    return "hello";   
+
+  getRowsData = function(){
+    var items = this.state.errors;
+    return items.map((row, index)=>{
+      return <tr key={index}>
+        <td>{this.state.errors[index][0]}</td>
+        <td>{this.state.errors[index][1]}</td>
+      </tr>
+    })
   }
 
   render() {
@@ -132,6 +131,7 @@ class NewTrade extends Component {
                 name="date_of_trade"
                 onChange={this.handleChange}
               />
+              <Label>(Must not be past current date)</Label>
             </FormGroup>
             <FormGroup>
               <Label for="time">Time of Trade: </Label>
@@ -150,6 +150,7 @@ class NewTrade extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
+            <Label> (Must be in form of capital letters followed by numbers e.g. FRTT348)</Label>
             <FormGroup>
               <Label for="product">Product: </Label>
               <Input
@@ -203,6 +204,7 @@ class NewTrade extends Component {
                 name="quantity"
                 onChange={this.handleChange}
               />
+              <Label>(Must be greater than 0)</Label>
             </FormGroup>
             <FormGroup>
               <Label for="maturity">Maturity Date: </Label>
@@ -211,6 +213,7 @@ class NewTrade extends Component {
                 name="maturity_date"
                 onChange={this.handleChange}
               />
+              <Label>(Must be past trade creation date)</Label>
             </FormGroup>
             <FormGroup>
               <Label for="underc">Underlying Currency: </Label>
@@ -230,6 +233,7 @@ class NewTrade extends Component {
                 name="underlying_price"
                 onChange={this.handleChange}
               />
+              <Label>(Must be greater than 0)</Label>
             </FormGroup>
             <FormGroup>
               <Label for="strike">Strike Price: </Label>
@@ -238,6 +242,7 @@ class NewTrade extends Component {
                 name="strike_price"
                 onChange={this.handleChange}
               />
+              <Label>(Must be greater than 0)</Label>
             </FormGroup>
             <input type="reset" value="Reset all Values" />
           </Form>
@@ -251,7 +256,7 @@ class NewTrade extends Component {
              <thead>
                <tr>
                   <th>Field</th>
-                  <th>Error Value</th>
+                  <th>Error</th>
                </tr>
              </thead>
              <tbody>
