@@ -7,7 +7,6 @@ def detect_errors(trade, today, threshold):
     """
     Return a list of all detectable errors in the trade entry, with corrections where possible.
     """
-    # TODO: Move to some one-off initialization area
     with open("currencies.txt", 'r') as file:
         currencies = {c[:-1].lower(): c[:-1] for c in file.readlines()}
 

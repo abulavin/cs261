@@ -15,8 +15,8 @@ class ErrorDetectionTest(TestCase):
         fields['date_of_trade'] = date_of_trade
         fields['maturity_date'] = maturity_date
 
-        trade = DerivativeTrade(fields)
-        errors = detect_errors(trade, today,threshold)
+        trade = DerivativeTrade(**fields)
+        errors = detect_errors(trade, today, threshold)
 
         if field is None:
             self.assertEqual(errors, [], "No errors")
