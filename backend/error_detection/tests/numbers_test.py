@@ -1,4 +1,3 @@
-import datetime
 from django.test import TestCase
 
 from trades.models import DerivativeTrade
