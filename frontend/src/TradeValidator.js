@@ -35,7 +35,7 @@ export const TradeValidator = {
 
                 let errorMessage = '';
                 for (const tradeAttribute in this.filterErroneousFields(trade)) {
-                    errorMessage += `Invalid value for attribute ${tradeAttribute}: ${attributeValue} \n`;
+                    errorMessage += `Invalid value for attribute ${tradeAttribute}: ${trade[tradeAttribute]} \n`;
                 }
                 if (errorMessage.length > 0) {
                     errorMessage = "Trade has invalid attributes. \n" + errorMessage;
