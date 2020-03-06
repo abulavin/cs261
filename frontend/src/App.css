@@ -65,7 +65,8 @@ button:hover{
 }
 
 button:disabled {
-  color: grey;
+  color: white;
+  background-color: darkgrey;
 }
 
 @media all and (max-width:30em){
@@ -373,3 +374,7 @@ select {
   line-height: 1.5;
 }
 
+.errortable {
+  margin: 20px;
+  display: center;
+}

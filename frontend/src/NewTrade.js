@@ -3,6 +3,8 @@ import { CreateTradeProxy } from "./BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { currencyCodes } from './currencyCodes';
 import {TradeValidator} from './TradeValidator.js';
+import ErrorTable from './Components/ErrorTable';
+import CorrectionsTable from './Components/CorrectionsTable';
 
 class NewTrade extends Component {
 
@@ -24,7 +26,8 @@ class NewTrade extends Component {
       underlying_currency: "GBP",
       strike_price: 0,
       error_message: "",
-      errors: []
+      errors: [],
+      corrections: []
     }
   }
 
@@ -60,16 +63,24 @@ class NewTrade extends Component {
       strike_price
     };
 
-    if (TradeValidator.filterErroneousFields(trade) == {}) {
+    if (TradeValidator.filterErroneousFields(trade).length == 0) {
+      this.setState({errors: []})
       this.createProxy.createTrade(trade)
       .then(trade => {
         window.alert("submitted trade.")
         console.log(trade)
       })
       .catch(error => {
+        if (error.status == 409) {
+          console.log("true")
+          var corrections = error.data;
+          var result = Object.keys(corrections).map(function(key) {
+            return [key, corrections[key][0], corrections[key][1]];
+          });
+          console.log(result)
+          this.setState({corrections: result})
+        }
         console.log(error)
-        this.setState({errors: error})
-        console.log(this.state.errors);
       });
     }
     else {
@@ -100,17 +111,6 @@ class NewTrade extends Component {
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({ [nam]: val });
-  }
-
-
-  getRowsData = function(){
-    var items = this.state.errors;
-    return items.map((row, index)=>{
-      return <tr key={index}>
-        <td>{this.state.errors[index][0]}</td>
-        <td>{this.state.errors[index][1]}</td>
-      </tr>
-    })
   }
 
   render() {
@@ -250,22 +250,10 @@ class NewTrade extends Component {
         </div>
 
         <div className="errorbox">
-          <h3>Highlighted Errors:</h3>
-          <div>
-           <table>
-             <thead>
-               <tr>
-                  <th>Field</th>
-                  <th>Error</th>
-               </tr>
-             </thead>
-             <tbody>
-               {this.getRowsData()}
-             </tbody>
-           </table>
-          </div>
-          
-          <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
+            <h3>Highlighted Errors:</h3>
+            {this.state.errors ? <ErrorTable errors={this.state.errors}/> : null }
+            {this.state.corrections ? <CorrectionsTable errors={this.state.corrections}/> : null }
+        <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
         </div>
       </React.Fragment>
     );
@@ -273,10 +261,3 @@ class NewTrade extends Component {
 }
 
 export default NewTrade;
-
-// use this to return individual rows of the table
-const RenderRow = (props) =>{
-  return props.keys.map((key, index)=>{
-    return <td key={props.data[key]}>{props.data[key]}</td>
-    })
-}

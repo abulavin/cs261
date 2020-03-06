@@ -107,7 +107,7 @@ export class CreateTradeProxy extends BackendProxy {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    resolve(error.response);
+                    reject(error.response);
                 })
         })
     }
