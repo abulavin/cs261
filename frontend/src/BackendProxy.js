@@ -167,8 +167,6 @@ export class GetTradeProxy extends BackendProxy {
                 .then(response => resolve(response.data))
                 .catch(error => { reject(error) });
         });
-
-        
     }
 
     /**

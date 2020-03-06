@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { CreateTradeProxy } from "./BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { currencyCodes } from './currencyCodes';
+import {TradeValidator} from './TradeValidator.js';
 
 class NewTrade extends Component {
 
@@ -44,7 +45,6 @@ class NewTrade extends Component {
 
     var date_of_trade = day + " " + (time_of_trade)
 
-    console.log(date_of_trade)
     const trade = {
       date_of_trade,
       trade_id,
@@ -59,15 +59,24 @@ class NewTrade extends Component {
       underlying_currency,
       strike_price
     };
-    this.createProxy.createTrade(trade)
+
+    if (TradeValidator.filterErroneousFields(trade) == {}) {
+      this.createProxy.createTrade(trade)
       .then(trade => {
         window.alert("submitted trade.")
         console.log(trade)
       })
       .catch(error => {
+        console.log(error)
         this.setState({errors: error})
         console.log(this.state.errors);
       });
+    }
+    else {
+      console.log(TradeValidator.filterErroneousFields(trade))
+      this.setState({errors: TradeValidator.filterErroneousFields(trade)})
+    }
+    
   }
 
   handleSubmit = (event) => {
@@ -105,10 +114,9 @@ class NewTrade extends Component {
     return "hello";   
   }
 
-  
-
   render() {
-    const isEnabled = this.state.errors.length == 0;
+    const array = this.state.errors;
+    const isEnabled = array.length == 0;
     return (
       <React.Fragment>
         <div className="tradetitles">
@@ -239,7 +247,17 @@ class NewTrade extends Component {
         <div className="errorbox">
           <h3>Highlighted Errors:</h3>
           <div>
-           
+           <table>
+             <thead>
+               <tr>
+                  <th>Field</th>
+                  <th>Error Value</th>
+               </tr>
+             </thead>
+             <tbody>
+               {this.getRowsData()}
+             </tbody>
+           </table>
           </div>
           
           <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
@@ -250,3 +268,10 @@ class NewTrade extends Component {
 }
 
 export default NewTrade;
+
+// use this to return individual rows of the table
+const RenderRow = (props) =>{
+  return props.keys.map((key, index)=>{
+    return <td key={props.data[key]}>{props.data[key]}</td>
+    })
+}
