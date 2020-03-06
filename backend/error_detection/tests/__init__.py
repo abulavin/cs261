@@ -1,2 +1,3 @@
-from .dates_test import *
-from .names_test import *
+from .test_dates import *
+from .test_names import *
+from .test_numbers import *
