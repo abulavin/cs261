@@ -53,10 +53,8 @@ class BackendProxy {
     }
 
     putRequest(data, parameters = "") {
-        let putURL = this.url
-        if (parameters)
-            putURL += parameters;
-        putURL += (window.check ? '' : '?no_check=true/');
+        let putURL = this.url + parameters;
+
         return axios.put(putURL, data);
     }
 
@@ -68,6 +66,15 @@ class BackendProxy {
             putURL = this.url;
 
         return axios.patch(putURL, data);
+    }
+
+    getSettings(override = false) {
+        let parameters = '?'
+        if (override === Settings.OVERRIDE || !window.settings.check) {
+            parameters += 'no_check=true'
+        }
+        parameters += '&t=' + window.settings.tParam;
+        return parameters
     }
 
     getSettings(override = false) {
@@ -269,7 +276,6 @@ export class UpdateTradeProxy extends BackendProxy {
 
         TradeValidator.validateTrade(updatedTrade);
         let parameters = `${tradeID}/${this.getSettings(override)}`
-
         return new Promise((resolve, reject) => {
             this.putRequest(updatedTrade, parameters)
                 .then(response => { resolve(response.data) })
@@ -297,7 +303,6 @@ export class ReportURLProxy extends BackendProxy {
                 })
                 .catch(error => { throw error });
         })
-        
     }
 }
 
