@@ -76,6 +76,15 @@ class BackendProxy {
         parameters += '&t=' + window.settings.tParam;
         return parameters
     }
+
+    getSettings(override = false) {
+        let parameters = '?'
+        if (override === Settings.OVERRIDE || !window.settings.check) {
+            parameters += 'no_check=true'
+        }
+        parameters += '&t=' + window.settings.tParam;
+        return parameters
+    }
 }
 
 export class CreateTradeProxy extends BackendProxy {
