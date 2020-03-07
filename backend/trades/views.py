@@ -80,10 +80,11 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         PUT and UPDATE requests handled by this method. It will run the Error 
         Detection Module and then log any changes made to the DerivativeTrade.
         """
+
         # Check the trade is not more than 7 days old.
         if not check_trade_editable(self.get_object()):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
+
         if not request.query_params.get('no_check', False):
             threshold = float(request.query_params.get('t', 0.7))
             errors = detect_errors(self.get_object(), datetime.today(), threshold)
@@ -96,7 +97,7 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         """
-        This methods handles the logging and deleteing of a DerivativeTrade.
+        This methods handles the logging and deleting of a DerivativeTrade.
         """
         self._log_change('D', self.get_object())
         return super().delete(request, *args, **kwargs)

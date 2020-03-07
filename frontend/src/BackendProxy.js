@@ -1,5 +1,5 @@
 /**
- * @module BackendProxy 
+ * @module BackendProxy
  */
 
 import axios from 'axios';
@@ -53,17 +53,9 @@ class BackendProxy {
     }
 
     putRequest(data, parameters = "") {
-        let putURL = this.url
-        if (parameters)
-            putURL += parameters;
+        let putURL = this.url + parameters;
 
-        axios.put(putURL, data)
-            .then(response => {
-                console.log("Put Status: " + response.status);
-                console.log("Updated Object:");
-                console.log(response.data);
-            })
-            .catch(error => { throw error });
+        return axios.put(putURL, data);
     }
 
     patchRequest(data, parameters = "") {
@@ -73,13 +65,16 @@ class BackendProxy {
         else
             putURL = this.url;
 
-        axios.patch(putURL, data)
-            .then(response => {
-                console.log("Put Status: " + response.status);
-                console.log("Updated Object:");
-                console.log(response.data);
-            })
-            .catch(error => { throw error });
+        return axios.patch(putURL, data);
+    }
+
+    getSettings(override = false) {
+        let parameters = '?'
+        if (override === Settings.OVERRIDE || !window.settings.check) {
+            parameters += 'no_check=true'
+        }
+        parameters += '&t=' + window.settings.tParam;
+        return parameters
     }
 
     getSettings(override = false) {
@@ -102,7 +97,7 @@ export class CreateTradeProxy extends BackendProxy {
      * Send a derivative trade object to the server.
      * Throws an exception if the trade or one of its attributes are invalid.
      * @param {object} trade Object representing a derivative trade
-     * @param {bool} override Set to Settings.override to disable error detection module checks 
+     * @param {bool} override Set to Settings.override to disable error detection module checks
      * @alias module:BackendProxy
      */
     createTrade(trade, override = false) {
@@ -115,7 +110,7 @@ export class CreateTradeProxy extends BackendProxy {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    reject(error.response.data);
+                    reject(error.response);
                 })
         })
     }
@@ -165,7 +160,7 @@ export class GetTradeProxy extends BackendProxy {
     getSortedTrades(heading, direction) {
         let param = "";
         if (direction == "desc") {
-            param = '?ordering:-' + heading;
+            param = '?ordering=-' + heading;
         }
         if (direction == "asc") {
             param = '?ordering=' + heading;
@@ -216,7 +211,7 @@ export class GetTradeProxy extends BackendProxy {
         let urlParameters = '?page=' + page;
         if (filter !== undefined) {
             for (const attribute in filter) {
-                if (TradeValidator.tradeProperties.includes(attribute)) {
+                if (TradeValidator.tradeAttributes.includes(attribute)) {
                     const checkerFunction = checkerFunctions[attribute];
                     const value = filter[attribute];
                     if (!checkerFunction(value)) {
@@ -259,7 +254,11 @@ export class UpdateTradeProxy extends BackendProxy {
             if (!checkerFunction(updates[prop]))
                 throw new Error("Invalid update to property " + prop + ": " + updates[prop]);
         }
-        this.patchRequest(updates, tradeID)
+        return new Promise((resolve, reject) => {
+            this.patchRequest(updates, tradeID)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error.response));
+        });
     }
 
     /**
@@ -274,10 +273,36 @@ export class UpdateTradeProxy extends BackendProxy {
     updateTrade(updatedTrade, tradeID, override = false) {
         if (!TradeValidator.tradeIDisValid(tradeID))
             throw new Error('Invalid trade ID; got: ' + tradeID);
-        TradeValidator.validateTrade(updatedTrade);
 
+        TradeValidator.validateTrade(updatedTrade);
         let parameters = `${tradeID}/${this.getSettings(override)}`
-        this.putRequest(updatedTrade, parameters)
+        return new Promise((resolve, reject) => {
+            this.putRequest(updatedTrade, parameters)
+                .then(response => { resolve(response.data) })
+                .catch(error => {
+                    if (error.response.status === 401 || error.response.status === 409) {
+                        reject(error.response)
+                    } else {
+                        throw error;
+                    }
+                })
+        });
+    }
+}
+
+export class ReportURLProxy extends BackendProxy {
+   constructor() {
+       super('');
+   }
+    getReportURL(url) {
+        return new Promise(resolve => {
+            this.getBlobRequest(url)
+                .then(response => {
+                    console.log(response.status + " " + response.statusText);
+                    resolve(response.data);
+                })
+                .catch(error => { throw error });
+        })
     }
 }
 
@@ -335,20 +360,9 @@ export class GetReportProxy extends BackendProxy {
         return this.makeGetRequestPromise(urlParameters);
     }
 
-    getReportURL(url) {
-        return new Promise(resolve => {
-            this.getBlobRequest(url)
-                .then(response => {
-                    console.log(response.status + " " + response.statusText);
-                    resolve(response.data);
-                })
-                .catch(error => { throw error });
-        })
-    }
-
     /**
      * Get the URLs of reports generated on the same day as `date`
-     * @param {string} date Generation date of report in YYYY-MM-DD format 
+     * @param {string} date Generation date of report in YYYY-MM-DD format
      * @param {number} page Page number of results
      * @alias module:BackendProxy
      */

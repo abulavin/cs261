@@ -64,6 +64,11 @@ button:hover{
   background-color: green;
 }
 
+button:disabled {
+  color: white;
+  background-color: darkgrey;
+}
+
 @media all and (max-width:30em){
 button{
    display: block;
@@ -83,9 +88,9 @@ button{
   float: left;
 }
 .errorbox{
-  margin-top: 20px;
+  margin-top: 35px;
   margin-left: 65%;
-  width: 200px;
+  width: 400px;
   background-color:darkgrey;
   min-height: 450px;
 }
@@ -369,3 +374,7 @@ select {
   line-height: 1.5;
 }
 
+.errortable {
+  margin: 20px;
+  display: center;
+}

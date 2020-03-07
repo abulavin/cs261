@@ -29,6 +29,35 @@ const wrongTrade = {
     underlying_currency: "1"
 };
 
+const completeButWrongTrade = {
+    date_of_trade: "123-02-02 69:420",
+    trade_id: "ye",
+    product: "",
+    buying_party: "1",
+    selling_party: "1",
+    notional_amount: -1.0,
+    quantity: 1.0,
+    notional_currency: "ABC",
+    maturity_date: "2020-02-20",
+    underlying_price: 1.0,
+    underlying_currency: "USD",
+    strike_price: NaN
+}
+const noAttributesFilledIn = {
+    date_of_trade: "",
+    trade_id: "",
+    product: "",
+    buying_party: "",
+    selling_party: "",
+    notional_amount: 0,
+    quantity: 0,
+    notional_currency: "",
+    maturity_date: "",
+    underlying_price: 0,
+    underlying_currency: "",
+    strike_price: 0
+}
+
 const badTrades = [
     {},
     {
@@ -37,7 +66,7 @@ const badTrades = [
         product: "1",
         quantity: undefined
     },
-    wrongTrade
+    wrongTrade,
 ]
 
 test('TradeValidator identifies valid IDs', () => {
@@ -67,11 +96,21 @@ test('TradeValidator identifies an incomplete trade object', () => {
 });
 
 test('TradeValidator rejects an invalid trade object', () => {
-    badTrades.forEach(trade => {
-        expect(() => {
-            TradeValidator.validateTrade(trade);
-        }).toThrow();
-    })
+    expect(() => {
+        TradeValidator.validateTrade(wrongTrade);
+    }).toThrow("Trade has missing attributes: strike_price, ");
+
+    const errorString =  `Trade has invalid attributes.
+Invalid value for attribute date_of_trade: 123-02-02 69:420
+Invalid value for attribute trade_id: ye
+Invalid value for attribute product: 
+Invalid value for attribute notional_amount: -1
+Invalid value for attribute notional_currency: ABC
+Invalid value for attribute strike_price: NaN
+`
+    expect(() => {
+        TradeValidator.validateTrade(completeButWrongTrade);
+    }).toThrow(new Error(errorString));
 });
 
 test('TradeValidator accepts a trade object', () => {
@@ -101,12 +140,12 @@ test('TradeValidator returns false on trade with missing attributes', () => {
 });
 
 test('TradeValidator identifies a valid maturity date', () => {
-    expect(TradeValidator.dateOfTradeIsValid('2012-02-02')).toBeTruthy();
-    expect(TradeValidator.dateOfTradeIsValid('28th July 2000')).toBeFalsy();
-    expect(TradeValidator.dateOfTradeIsValid(298572985)).toBeFalsy();
-    expect(TradeValidator.dateOfTradeIsValid('298572985')).toBeFalsy();
-    expect(TradeValidator.dateOfTradeIsValid('')).toBeFalsy();
-    expect(TradeValidator.dateOfTradeIsValid(undefined)).toBeFalsy();
+    expect(TradeValidator.maturityDateIsValid('2012-02-02')).toBeTruthy();
+    expect(TradeValidator.maturityDateIsValid('28th July 2000')).toBeFalsy();
+    expect(TradeValidator.maturityDateIsValid(298572985)).toBeFalsy();
+    expect(TradeValidator.maturityDateIsValid('298572985')).toBeFalsy();
+    expect(TradeValidator.maturityDateIsValid('')).toBeFalsy();
+    expect(TradeValidator.maturityDateIsValid(undefined)).toBeFalsy();
 });
 
 test('TradeValidator identifies a valid date-time', () => {
@@ -116,6 +155,8 @@ test('TradeValidator identifies a valid date-time', () => {
     expect(TradeValidator.dateAndTimeOfTradeIsValid(298572985)).toBeFalsy();
     expect(TradeValidator.dateAndTimeOfTradeIsValid('298572985')).toBeFalsy();
     expect(TradeValidator.dateAndTimeOfTradeIsValid('')).toBeFalsy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid("123-02-02 12:30")).toBeFalsy();
+    expect(TradeValidator.dateAndTimeOfTradeIsValid('2012-02-02 69:30')).toBeFalsy();
     expect(TradeValidator.dateAndTimeOfTradeIsValid(undefined)).toBeFalsy();
 });
 
@@ -167,8 +208,50 @@ test('TradeValidator recognises valid currency codes', () => {
     expect(TradeValidator.currencyCodeIsValid("djhfjdhg")).toBeFalsy();
 });
 
-test('TradeValidator aggregates erroneous fields', () => {
-    expect(TradeValidator.filterErroneousFields(wrongTrade)).toStrictEqual(
+test('TradeValidator aggregates erroneous fields into a list', () => {
+    expect(TradeValidator.getListOfErrors(wrongTrade)).toEqual(
+        [
+            ["Date Of Trade", "Enter a value"],
+            ["Time Of Trade", "Enter a value"],
+            ["Trade Id", "1"],
+            ["Notional Currency", "1"],
+            ["Maturity Date", "Enter a value"],
+            ["Underlying Currency", "1"]
+        ]
+    )
+    expect(TradeValidator.getListOfErrors(completeButWrongTrade)).toEqual(
+        [
+            ["Date Of Trade", "123-02-02"],
+            ["Time Of Trade", "69:420"],
+            ["Trade Id", "ye"],
+            ["Product", "Enter a value"],
+            ["Notional Amount", -1.0],
+            ["Notional Currency", "ABC"],
+            ["Strike Price", "Enter a value"],
+        ]
+    )
+    expect(TradeValidator.getListOfErrors(noAttributesFilledIn)).toEqual(
+        [
+            ["Date Of Trade", "Enter a value"],
+            ["Time Of Trade", "Enter a value"],
+            ["Trade Id", "Enter a value"],
+            ["Product", "Enter a value"],
+            ["Buying Party", "Enter a value"],
+            ["Selling Party", "Enter a value"],
+            ["Notional Amount", "Enter a value"],
+            ["Quantity", "Enter a value"],
+            ["Notional Currency", "Enter a value"],
+            ["Maturity Date", "Enter a value"],
+            ["Underlying Price", "Enter a value"],
+            ["Underlying Currency", "Enter a value"],
+            ["Strike Price", "Enter a value"]
+        ]
+    )
+    expect(TradeValidator.getListOfErrors(exampleTrade)).toStrictEqual([])
+})
+
+test('TradeValidator correctly filters erroneous fields', () => {
+    expect(TradeValidator.filterErroneousAttributes(wrongTrade)).toStrictEqual(
         {
             date_of_trade: undefined,
             trade_id: "1",
@@ -177,5 +260,22 @@ test('TradeValidator aggregates erroneous fields', () => {
             underlying_currency: "1"
         }
     )
-    expect(TradeValidator.filterErroneousFields(exampleTrade)).toStrictEqual({})
+    expect(TradeValidator.filterErroneousAttributes(completeButWrongTrade)).toStrictEqual(
+        {
+            date_of_trade: "123-02-02 69:420",
+            trade_id: "ye",
+            product: "",
+            notional_amount: -1.0,
+            notional_currency: "ABC",
+            strike_price: NaN
+        }
+    )
+    expect(TradeValidator.filterErroneousAttributes(exampleTrade)).toStrictEqual({})
 })
+
+test('Can Detect valid times', () => {
+    expect(TradeValidator.timeSubstringCorrect('12:30')).toBeTruthy()
+    expect(TradeValidator.timeSubstringCorrect('')).toBeFalsy()
+    expect(TradeValidator.timeSubstringCorrect('wiehkdjhgn')).toBeFalsy()
+    expect(TradeValidator.timeSubstringCorrect('56:89')).toBeFalsy()
+});
