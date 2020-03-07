@@ -60,13 +60,13 @@ class BackendProxy {
             putURL = this.url;
 
         putURL += (window.check ? '' : '?no_check=true/');
-        return axios.put(putURL, data);
-            // .then(response => {
-            //     console.log("Put Status: " + response.status);
-            //     console.log("Updated Object:");
-            //     console.log(response.data);
-            // })
-            // .catch(error => { throw error });
+        axios.put(putURL, data)
+            .then(response => {
+                console.log("Put Status: " + response.status);
+                console.log("Updated Object:");
+                console.log(response.data);
+            })
+            .catch(error => { throw error });
     }
 
     patchRequest(data, parameters = "") {
@@ -267,12 +267,12 @@ export class UpdateTradeProxy extends BackendProxy {
             throw new Error('Invalid trade ID; got: ' + tradeID);
 
         TradeValidator.validateTrade(updatedTrade);
-
-        return new Promise((resolve, reject) => {
-            this.putRequest(updatedTrade, tradeID)
-                .then(response => {resolve(response.data)})
-                .catch(error=>{reject(error)});
-        })
+        this.putRequest(updatedTrade, tradeID);
+        // return new Promise((resolve, reject) => {
+        //     this.putRequest(updatedTrade, tradeID)
+        //         .then(response => {resolve(response.data)})
+        //         .catch(error=>{reject(error)});
+        // })
     }
 }
 
