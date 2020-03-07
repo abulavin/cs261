@@ -170,4 +170,4 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
             'strike_price': 5.0
         }       
         response = self.client.put('/trades/8/', data=updated_data)
-        self.assertEqual(409, response.status_code)
+        self.assertEqual(401, response.status_code)
