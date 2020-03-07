@@ -71,7 +71,6 @@ class EditModal extends Component {
     updateTrade = () => {
         const tr = this.getTrade()
       
-        
         let tradeErrors = TradeValidator.getListOfErrors(tr);
         if (tradeErrors.length === 0) {
           this.setState({errors: []})
@@ -92,7 +91,7 @@ class EditModal extends Component {
         }
         return substrings.join(' ');
       }
-      
+      console.log(tr)
       this.updateProxy.updateTrade(tr, tr["trade_id"])
             .then(trade => {
               window.alert("updated trade.")
@@ -100,7 +99,7 @@ class EditModal extends Component {
             })
             .catch(error => {
               console.log(error)
-              console.log(tr)
+       
               if (error.status == 409) {
                 var corrections = error.data;
                 var result = Object.keys(corrections).map(function(key) {
@@ -119,7 +118,6 @@ class EditModal extends Component {
                 console.log(result)
                 this.setState({errors: result})
               }
-              console.log(error)
           });
     }
 
@@ -286,7 +284,6 @@ class EditModal extends Component {
                                     name="notional_amount"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.notional_amount}
-                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -296,7 +293,6 @@ class EditModal extends Component {
                                     name="quantity"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.quantity}
-                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -326,7 +322,6 @@ class EditModal extends Component {
                                     name="underlying_price"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.underlying_price}
-                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -336,7 +331,7 @@ class EditModal extends Component {
                                     name="strike_price"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.strike_price}
-                                    step="any"
+
                                 />
                             </FormGroup>
                             <input type="submit" value="Submit for Checking" />
