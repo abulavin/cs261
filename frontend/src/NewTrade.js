@@ -110,12 +110,19 @@ class NewTrade extends Component {
     }
   }
 
+  manualOverride = () => {
+
+  }
+
   setColours = (name) => {
     const stylered = {
       backgroundColor: 'red'
     }
     const style = {
       backgroundColor: 'lightgrey'
+    }
+    const styleorange = {
+      backgroundColor: 'orange'
     }
 
     for (let i=0;i<this.state.errors.length;i++) {
@@ -125,6 +132,9 @@ class NewTrade extends Component {
     }
 
     for (let i=0;i<this.state.corrections.length;i++) {
+      if (this.state.corrections[i][1]=="Ensure entry is as intended") {
+        return styleorange
+      }
       if (this.state.corrections[i][0]==(name)) {
         return stylered
       }
@@ -297,6 +307,7 @@ class NewTrade extends Component {
             {this.state.errors ? <ErrorTable errors={this.state.errors}/> : null }
             {this.state.corrections ? <CorrectionsTable errors={this.state.corrections}/> : null }
         <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
+        <button onClick={this.manualOverride}> Manual Override </button>
         </div>
       </React.Fragment>
     );

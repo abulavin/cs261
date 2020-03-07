@@ -1,15 +1,11 @@
 import React, { Component } from "react";
-import { GetReportProxy, ReportURLProxy } from "../BackendProxy";
-import {download} from "downloadjs";
 
 export default class CorrectionsTable extends Component {
     constructor(props){
         super(props);
         this.getRowsData = this.getRowsData.bind(this);
-
     }
 
-    
     getRowsData = function(){
         var items = this.props.errors;
         return items.map((row, index)=>{
