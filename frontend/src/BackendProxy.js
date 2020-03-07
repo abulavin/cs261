@@ -60,13 +60,7 @@ class BackendProxy {
             putURL = this.url;
 
         putURL += (window.check ? '' : '?no_check=true/');
-        axios.put(putURL, data)
-            .then(response => {
-                console.log("Put Status: " + response.status);
-                console.log("Updated Object:");
-                console.log(response.data);
-            })
-            .catch(error => { throw error });
+        return axios.put(putURL, data);
     }
 
     patchRequest(data, parameters = "") {
@@ -76,13 +70,7 @@ class BackendProxy {
         else
             putURL = this.url;
 
-        axios.patch(putURL, data)
-            .then(response => {
-                console.log("Put Status: " + response.status);
-                console.log("Updated Object:");
-                console.log(response.data);
-            })
-            .catch(error => { throw error });
+        return axios.patch(putURL, data);
     }
 }
 
@@ -251,7 +239,11 @@ export class UpdateTradeProxy extends BackendProxy {
             if (!checkerFunction(updates[prop]))
                 throw new Error("Invalid update to property " + prop + ": " + updates[prop]);
         }
-        this.patchRequest(updates, tradeID)
+        return new Promise((resolve, reject) => {
+            this.patchRequest(updates, tradeID)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error.response));
+        });
     }
 
     /**
@@ -267,12 +259,17 @@ export class UpdateTradeProxy extends BackendProxy {
             throw new Error('Invalid trade ID; got: ' + tradeID);
 
         TradeValidator.validateTrade(updatedTrade);
-        this.putRequest(updatedTrade, tradeID);
-        // return new Promise((resolve, reject) => {
-        //     this.putRequest(updatedTrade, tradeID)
-        //         .then(response => {resolve(response.data)})
-        //         .catch(error=>{reject(error)});
-        // })
+        return new Promise((resolve, reject) => {
+            this.putRequest(updatedTrade, tradeID)
+                .then(response => { resolve(response.data) })
+                .catch(error => {
+                    if (error.response.status === 401 || error.response.status === 409) {
+                        reject(error.response.data)
+                    } else {
+                        throw error;
+                    }
+                })
+        });
     }
 }
 

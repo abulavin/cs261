@@ -11,7 +11,6 @@ class Trades extends Component {
     super(props);
     this.getProxy = new GetTradeProxy();
     this.deleteProxy = new DeleteTradeProxy();
-    this.updateProxy = new UpdateTradeProxy();
     this.state = {
       tr: [],
       count: 1,
