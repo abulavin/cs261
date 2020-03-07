@@ -63,12 +63,12 @@ class EditModal extends Component {
       strike_price
     };
     this.updateProxy.updateTrade(trade, this.props.data.trade_id)
-      .catch(error => {
-        console.log(error)
-        if (error.status == 409) {
-          console.log(error)
-        }
-      })
+      // .catch(error => {
+      //   console.log(error)
+      //   if (error.status == 409) {
+      //     console.log(error)
+      //   }
+      // })
   }
 
   handleChange = (event) => {
