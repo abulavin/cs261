@@ -19,8 +19,8 @@ class BackendProxy {
         // Data must be plain JS object (not a string) in order for
         // the Content-Type header to be set to application/json.
         // Otherwise server will return Bad Request
-        const putURL = this.url + parameters + (window.check ? '' : '?no_check=true');
-        return axios.post(putURL, data);
+        const postURL = this.url + parameters;
+        return axios.post(postURL, data);
     }
 
     postBlobRequest(parameters = "") {
@@ -30,7 +30,7 @@ class BackendProxy {
             method: 'post',
             responseType: 'blob'
         })
-        .catch(error => { throw error });
+            .catch(error => { throw error });
     }
 
     deleteRequest(parameters = "") {
@@ -46,20 +46,15 @@ class BackendProxy {
     }
 
     getBlobRequest(parameters = "") {
-        let getURL = this.url + parameters; 
+        let getURL = this.url + parameters;
         return axios.get(getURL, {
             responseType: 'blob'
         });
     }
 
     putRequest(data, parameters = "") {
-        let putURL;
-        if (parameters)
-            putURL = this.url + parameters + '/';
-        else
-            putURL = this.url;
+        let putURL = this.url + parameters;
 
-        putURL += (window.check ? '' : '?no_check=true/');
         return axios.put(putURL, data);
     }
 
@@ -71,6 +66,15 @@ class BackendProxy {
             putURL = this.url;
 
         return axios.patch(putURL, data);
+    }
+
+    getSettings(override = false) {
+        let parameters = '?'
+        if (override === Settings.OVERRIDE || !window.settings.check) {
+            parameters += 'no_check=true'
+        }
+        parameters += '&t=' + window.settings.tParam;
+        return parameters
     }
 }
 
@@ -84,12 +88,14 @@ export class CreateTradeProxy extends BackendProxy {
      * Send a derivative trade object to the server.
      * Throws an exception if the trade or one of its attributes are invalid.
      * @param {object} trade Object representing a derivative trade
+     * @param {bool} override Set to Settings.override to disable error detection module checks 
      * @alias module:BackendProxy
      */
-    createTrade(trade) {
+    createTrade(trade, override = false) {
         TradeValidator.validateTrade(trade);
+        let parameters = this.getSettings(override);
         return new Promise((resolve, reject) => {
-            this.postRequest(trade)
+            this.postRequest(trade, parameters)
                 .then(response => {
                     console.log("POST", response.status, response.statusText);
                     resolve(response.data);
@@ -135,7 +141,7 @@ export class GetTradeProxy extends BackendProxy {
     getListOfTrades(page = 1) {
         const pageParam = '?page=' + page;
         console.log(pageParam)
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             this.getRequest(pageParam)
                 .then(response => resolve(response.data))
                 .catch(error => { reject(error) });
@@ -143,7 +149,7 @@ export class GetTradeProxy extends BackendProxy {
     }
     // retrieves sorted trades based on attribute given and the direction of sorting (desc/asc)
     getSortedTrades(heading, direction) {
-        let param="";
+        let param = "";
         if (direction == "desc") {
             param = '?ordering=-' + heading;
         }
@@ -151,7 +157,7 @@ export class GetTradeProxy extends BackendProxy {
             param = '?ordering=' + heading;
         }
         console.log(param)
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             this.getRequest(param)
                 .then(response => resolve(response.data))
                 .catch(error => { reject(error) });
@@ -252,15 +258,17 @@ export class UpdateTradeProxy extends BackendProxy {
      * An invalid/incomplete trade will throw an error.
      * @param {*} updatedTrade Object representing a complete derivative trade
      * @param {string} tradeID ID of the derivative trade to be edited.
+     * @param {bool} override Set to Settings.OVERRIDE to disable error detection module checks
      * @alias module:BackendProxy
      */
-    updateTrade(updatedTrade, tradeID) {
+    updateTrade(updatedTrade, tradeID, override = false) {
         if (!TradeValidator.tradeIDisValid(tradeID))
             throw new Error('Invalid trade ID; got: ' + tradeID);
 
         TradeValidator.validateTrade(updatedTrade);
+        let parameters = `${tradeID}/${this.getSettings(override)}`
         return new Promise((resolve, reject) => {
-            this.putRequest(updatedTrade, tradeID)
+            this.putRequest(updatedTrade, parameters)
                 .then(response => { resolve(response.data) })
                 .catch(error => {
                     if (error.response.status === 401 || error.response.status === 409) {
@@ -300,9 +308,9 @@ export class GetReportProxy extends BackendProxy {
             this.postBlobRequest("generate/").then(response => {
                 resolve(response.data);
             })
-            .catch(error => {
-                reject(error.response);
-            })
+                .catch(error => {
+                    reject(error.response);
+                })
         });
     }
 
@@ -368,4 +376,8 @@ export class GetReportProxy extends BackendProxy {
         })
     }
 
+}
+
+export const Settings = {
+    OVERRIDE: true,
 }
