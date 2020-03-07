@@ -14,7 +14,10 @@ import NavBar from "./NavBar.js";
 import './App.css';
 
 // This can be changed via the dev console so be careful
-window.check = true;
+window.settings = {
+  check: true,
+  tParam: 0.7
+}
 
 function App() {
   return (
