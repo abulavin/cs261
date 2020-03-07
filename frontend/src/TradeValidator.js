@@ -15,7 +15,7 @@ function humanise(str) {
 
 export const TradeValidator = {
 
-    tradeProperties: [
+    tradeAttributes: [
         'date_of_trade',
         'trade_id',
         'product',
@@ -43,11 +43,11 @@ export const TradeValidator = {
                 this.tradeHasNoUndefinedProperties(trade);
 
                 let errorMessage = '';
-                for (const tradeAttribute in this.filterErroneousFields(trade)) {
-                    errorMessage += `Invalid value for attribute ${tradeAttribute}: ${trade[tradeAttribute]} \n`;
+                for (const tradeAttribute in this.filterErroneousAttributes(trade)) {
+                    errorMessage += `Invalid value for attribute ${tradeAttribute}: ${trade[tradeAttribute]}\n`;
                 }
                 if (errorMessage.length > 0) {
-                    errorMessage = "Trade has invalid attributes. \n" + errorMessage;
+                    errorMessage = "Trade has invalid attributes.\n" + errorMessage;
                     this.throwError(errorMessage);
                 }
                 return true;
@@ -63,37 +63,56 @@ export const TradeValidator = {
      * Filter a derivative trade to only have the erroneous attributes.
      * @param {object} trade Derivative trade object
      */
-    filterErroneousFields: function(trade) {
+    getListOfErrors: function (trade) {
+        let invalidTradeAttributes = this.filterErroneousAttributes(trade)
         let errors = [];
+        for (const tradeAttribute in invalidTradeAttributes) {
+            let attributeValue = trade[tradeAttribute];
+
+            if(tradeAttribute === 'date_of_trade') {
+                this.handleDateError(attributeValue).forEach(error => errors.push(error));
+            } else if (!attributeValue) {
+                errors.push([humanise(tradeAttribute), "Enter a value"]);
+            } else {
+                errors.push([humanise(tradeAttribute), attributeValue]);
+            }
+        }
+        return errors;
+    },
+
+    handleDateError(date) {
+        let errors = []
+        if(this.dateEmpty(date)) {
+            errors.push(["Date Of Trade", "Enter a value"]);
+            errors.push(["Time Of Trade", "Enter a value"]);
+        } else {
+            let dateSubstring = date.split(' ')[0]
+            let timeSubstring = date.split(' ')[1]
+            if (!this.dateSubstringCorrect(dateSubstring)) {
+                errors.push(["Date Of Trade", dateSubstring])  
+            }
+            if (!this.timeSubstringCorrect(timeSubstring)) {
+                errors.push(["Time Of Trade", timeSubstring])
+            }
+        }
+        return errors
+    },
+
+    dateEmpty(date) {
+        return !(date && date.trim());
+    },
+
+    /**
+     * Filter a derivative trade to only have the erroneous attributes.
+     * @param {object} trade Derivative trade object
+     */
+    filterErroneousAttributes: function(trade) {
+        let errors = {};
         for (const tradeAttribute in trade) {
             const attributeIsCorrect = checkerFunctions[tradeAttribute];
             const attributeValue = trade[tradeAttribute];
-
             if (!attributeIsCorrect(attributeValue)) {
-                if (attributeValue=="" || attributeValue==0) {
-                    attributeValue = "Enter a Value"
-                    if (tradeAttribute == "date_of_trade") {
-                        errors.push([humanise("date_of_trade"),attributeValue])
-                        errors.push([humanise("time_of_trade"), attributeValue])
-                    }
-                    else {
-                        errors.push([humanise(tradeAttribute), attributeValue]);
-                    }
-                }
-                else {
-                    if (tradeAttribute == "date_of_trade") {
-                        if (this.timeOfTradeIsNotValid(trade["date_of_trade"])) {
-                            errors.push([humanise("time_of_trade"),attributeValue])
-                        }
-                        if (this.timeOfTradeIsValid(trade["date_of_trade"])) {
-                            errors.push([humanise("date_of_trade"),attributeValue])
-                        }
-                    }
-                    else {
-                        errors.push([humanise(tradeAttribute), attributeValue]);
-                    }
-                }
-                
+                errors[tradeAttribute] = attributeValue;
             }
         }
         return errors;
@@ -106,14 +125,14 @@ export const TradeValidator = {
      * @alias module:TradeValidator
      */
     tradeHasAllNecessaryProperties: function (trade) {
-        let missingProperties = [];
-        this.tradeProperties.forEach(property => {
+        let missingAttribute = [];
+        this.tradeAttributes.forEach(property => {
             if (!trade.hasOwnProperty(property))
-                missingProperties.push(property);
+                missingAttribute.push(property);
         });
-        if (missingProperties.length > 0) {
-            let errorMessage = "Trade has missing properties: ";
-            missingProperties.forEach(property => {
+        if (missingAttribute.length > 0) {
+            let errorMessage = "Trade has missing attributes: ";
+            missingAttribute.forEach(property => {
                 errorMessage += property + ", ";
             });
             throw new Error(errorMessage);
@@ -153,7 +172,7 @@ export const TradeValidator = {
      * @alias module:TradeValidator
      */
     checkTradeHasAllProperties: function (trade) {
-        for (const property in this.tradeProperties) {
+        for (const property in this.tradeAttributes) {
             if (!trade.hasOwnProperty(property)) {
                 return false;
             }
@@ -196,30 +215,32 @@ export const TradeValidator = {
      * @alias module:TradeValidator
      */
     dateAndTimeOfTradeIsValid: function (date) {
-        // return true
-        // Matches strings: YYYY-MM-DD HH:MM
-        const regex = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31) ([01][0-9]|2[0-3]):([0-5][0-9])$/;
-        return !!Date.parse(date) && regex.test(date);
+        if(typeof date === 'string') {
+            let dateSubstring = date.split(' ')[0]
+            let timeSubstring = date.split(' ')[1]
+            let dateCorrect = TradeValidator.dateSubstringCorrect(dateSubstring);
+            let timeCorrect = TradeValidator.timeSubstringCorrect(timeSubstring);
+            return dateCorrect && timeCorrect;
+        }
+        return false
     },
 
-    /**
-     * Check date string matches YYYY-MM-DD format/any other format that can be converted.
-     * @param {string} date date in YYYY-MM-DD format
-     */
-    dateOfTradeIsValid: function (date) {
-        return !! Date.parse(date);
+    maturityDateIsValid: function (date) {
+        return !! Date.parse(date) && TradeValidator.dateSubstringCorrect(date);
     },
 
-    timeOfTradeIsNotValid: function (date) {
+    dateSubstringCorrect: function (date) {
+        // Matches YYYY-MM-DD
         const regex = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/;
         return regex.test(date);
-    },
+    },    
 
-    timeOfTradeIsValid: function (date) {
+    timeSubstringCorrect: function (time) {
+        // Matches HH:MM
         const regex = /^([01][0-9]|2[0-3]):([0-5][0-9])$/;
-        return regex.test(date);
-    },
-
+        return regex.test(time);
+    },    
+    
     /**
      * Returns true if the quantity value can be parsed into an integer
      * and is non-zero.
@@ -275,7 +296,7 @@ export const checkerFunctions = {
     notional_amount: TradeValidator.productPriceIsValid,
     quantity: TradeValidator.productQuantityIsValid,
     notional_currency: TradeValidator.currencyCodeIsValid,
-    maturity_date: TradeValidator.dateOfTradeIsValid,
+    maturity_date: TradeValidator.maturityDateIsValid,
     underlying_price: TradeValidator.productPriceIsValid,
     underlying_currency: TradeValidator.currencyCodeIsValid,
     strike_price: TradeValidator.productPriceIsValid

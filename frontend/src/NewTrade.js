@@ -62,45 +62,45 @@ class NewTrade extends Component {
       underlying_currency,
       strike_price
     };
-
+    console.log(trade);
     function humanise(str) {
-      var i, f = str.split('_');
-      for (i=0; i<f.length; i++) {
-        f[i] = f[i].charAt(0).toUpperCase() + f[i].slice(1);
+      let substrings = str.split('_');
+      for (let i = 0; i < substrings.length; i++) {
+        substrings[i] = substrings[i].charAt(0).toUpperCase() + substrings[i].slice(1);
       }
-      return f.join(' ');
+      return substrings.join(' ');
     }
 
-    if (TradeValidator.filterErroneousFields(trade).length == 0) {
-      this.setState({errors: []})
+    const tradeErrors = TradeValidator.getListOfErrors(trade);
+    if (tradeErrors.length === 0) {
+      this.setState({ errors: [] })
       this.createProxy.createTrade(trade)
-      .then(trade => {
-        window.alert("submitted trade.")
-        console.log(trade)
-      })
-      .catch(error => {
-        if (error.status == 409) {
-          console.log("true")
-          var corrections = error.data;
-          var result = Object.keys(corrections).map(function(key) {
-            return [humanise(key), corrections[key][0], corrections[key][1]];
-          });
-          console.log(result)
-          this.setState({corrections: result})
-        }
-        console.log(error)
-      });
+        .then(trade => {
+          window.alert("Submitted trade")
+          console.log(trade)
+        })
+        .catch(error => {
+          if (error.status == 409) {
+            let corrections = error.data;
+            let result = Object.keys(corrections).map(function (key) {
+              return [humanise(key), corrections[key][0], corrections[key][1]];
+            });
+            console.log(result)
+            this.setState({ corrections: result })
+          }
+          console.log(error)
+        });
     }
     else {
-      console.log(TradeValidator.filterErroneousFields(trade))
-      this.setState({errors: TradeValidator.filterErroneousFields(trade)})
+      console.log(tradeErrors)
+      this.setState({ errors: tradeErrors })
     }
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    var r = window.confirm("Are you sure you want to submit this trade?");
-    if (r==true) {
+    let confirm = window.confirm("Are you sure you want to submit this trade?");
+    if (confirm) {
       this.sendTrade();
     }
   }
