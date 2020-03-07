@@ -63,16 +63,17 @@ class NewTrade extends Component {
       underlying_currency,
       strike_price
     };
-
+    console.log(trade);
     function humanise(str) {
-      var i, f = str.split('_');
-      for (i=0; i<f.length; i++) {
-        f[i] = f[i].charAt(0).toUpperCase() + f[i].slice(1);
+      let substrings = str.split('_');
+      for (let i = 0; i < substrings.length; i++) {
+        substrings[i] = substrings[i].charAt(0).toUpperCase() + substrings[i].slice(1);
       }
-      return f.join(' ');
+      return substrings.join(' ');
     }
 
-    if (TradeValidator.filterErroneousFields(trade).length == 0) {
+    const tradeErrors = TradeValidator.getListOfErrors(trade);
+    if (tradeErrors.length === 0) {
       this.setState({errors: []})
       this.setState({corrections: []})
       this.createProxy.createTrade(trade)
@@ -104,8 +105,8 @@ class NewTrade extends Component {
       });
     }
     else {
-      console.log(TradeValidator.filterErroneousFields(trade))
-      this.setState({errors: TradeValidator.filterErroneousFields(trade)})
+      console.log(tradeErrors)
+      this.setState({ errors: tradeErrors })
     }
   }
 
@@ -134,8 +135,8 @@ class NewTrade extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    var r = window.confirm("Are you sure you want to submit this trade?");
-    if (r==true) {
+    let confirm = window.confirm("Are you sure you want to submit this trade?");
+    if (confirm) {
       this.sendTrade();
     }
   }

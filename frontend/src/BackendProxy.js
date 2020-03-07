@@ -208,7 +208,7 @@ export class GetTradeProxy extends BackendProxy {
         let urlParameters = '?page=' + page;
         if (filter !== undefined) {
             for (const attribute in filter) {
-                if (TradeValidator.tradeProperties.includes(attribute)) {
+                if (TradeValidator.tradeAttributes.includes(attribute)) {
                     const checkerFunction = checkerFunctions[attribute];
                     const value = filter[attribute];
                     if (!checkerFunction(value)) {
