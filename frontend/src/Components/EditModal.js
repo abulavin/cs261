@@ -284,6 +284,7 @@ class EditModal extends Component {
                                     name="notional_amount"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.notional_amount}
+                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -293,6 +294,7 @@ class EditModal extends Component {
                                     name="quantity"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.quantity}
+                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -322,6 +324,7 @@ class EditModal extends Component {
                                     name="underlying_price"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.underlying_price}
+                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -331,6 +334,7 @@ class EditModal extends Component {
                                     name="strike_price"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.strike_price}
+                                    step="any"
 
                                 />
                             </FormGroup>
