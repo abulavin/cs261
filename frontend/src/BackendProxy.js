@@ -82,9 +82,9 @@ class BackendProxy {
             .catch(error => { throw error });
     }
 
-    getSettings(override) {
+    getSettings(override = false) {
         let parameters = '?'
-        if (override === Settings.override || !window.settings.check) {
+        if (override === Settings.OVERRIDE || !window.settings.check) {
             parameters += 'no_check=true'
         }
         parameters += '&t=' + window.settings.tParam;
@@ -374,5 +374,5 @@ export class GetReportProxy extends BackendProxy {
 }
 
 export const Settings = {
-    override: true,
+    OVERRIDE: true,
 }

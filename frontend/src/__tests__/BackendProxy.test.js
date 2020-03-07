@@ -12,6 +12,7 @@ window.settings = {
 test('Creation proxy has the correct URL', () => {
     expect(testCreateTradeProxy.url).toBe(window.location.origin + '/trades/');
 });
+
 test('Creation proxy gets right settings', () => {
     expect(testCreateTradeProxy.getSettings()).toBe('?&t=0.7');
     expect(testCreateTradeProxy.getSettings(Settings.OVERRIDE)).toBe('?no_check=true&t=0.7');
