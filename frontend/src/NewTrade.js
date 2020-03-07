@@ -5,7 +5,6 @@ import { currencyCodes } from './currencyCodes';
 import {TradeValidator} from './TradeValidator.js';
 import ErrorTable from './Components/ErrorTable';
 import CorrectionsTable from './Components/CorrectionsTable';
-import { Redirect } from "react-router-dom";
 
 class NewTrade extends Component {
 
@@ -63,7 +62,7 @@ class NewTrade extends Component {
       underlying_currency,
       strike_price
     };
-    console.log(trade);
+
     function humanise(str) {
       let substrings = str.split('_');
       for (let i = 0; i < substrings.length; i++) {
@@ -132,7 +131,7 @@ class NewTrade extends Component {
     }
 
     for (let i=0;i<this.state.corrections.length;i++) {
-      if (this.state.corrections[i][1]=="Ensure entry is as intended") {
+      if (this.state.corrections[i][1]=="Ensure entry is as intended" && this.state.corrections[i][0]==(name)) {
         return styleorange
       }
       if (this.state.corrections[i][0]==(name)) {
@@ -152,7 +151,7 @@ class NewTrade extends Component {
   }
 
   nextTrade = () => {
-    if (this.state.errors.length == 0) {
+    if (this.state.errors.length == 0 && this.state.corrections.length == 0) {
       window.location.reload()
     }
     else {

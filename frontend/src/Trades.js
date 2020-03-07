@@ -90,7 +90,6 @@ class Trades extends Component {
                       console.log(filteredTrades.results) 
                     }
                   })
-                    
   }
 
   getFilterCurrency = (event,filter) => {

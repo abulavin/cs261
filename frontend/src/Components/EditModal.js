@@ -3,6 +3,9 @@ import moment from 'moment';
 import { UpdateTradeProxy } from "../BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { currencyCodes } from "../currencyCodes";
+import ErrorTable from './ErrorTable';
+import CorrectionsTable from './CorrectionsTable';
+import {TradeValidator} from '../TradeValidator.js';
 
 class EditModal extends Component {
 
@@ -26,11 +29,12 @@ class EditModal extends Component {
             underlying_price: this.props.data.underlying_price,
             underlying_currency: this.props.data.underlying_currency,
             strike_price: this.props.data.strike_price,
-            error_message: ""
+            errors: [],
+            corrections: []
         }
     }
 
-    updateTrade = () => {
+    getTrade = () => {
         var day = this.state.date_of_trade
         var time_of_trade = this.state.time_of_trade
         var trade_id = this.state.trade_id
@@ -47,26 +51,101 @@ class EditModal extends Component {
 
         var date_of_trade = day + " " + (time_of_trade)
         console.log(date_of_trade)
-
         const trade = {
-            date_of_trade,
-            trade_id,
-            product,
-            buying_party,
-            selling_party,
-            notional_amount,
-            quantity,
-            notional_currency,
-            maturity_date,
-            underlying_price,
-            underlying_currency,
-            strike_price
-        };
-        this.updateProxy.updateTrade(trade, this.props.data.trade_id)
-            .then(trade => console.log(trade))
+          date_of_trade,
+          trade_id,
+          product,
+          buying_party,
+          selling_party,
+          notional_amount,
+          quantity,
+          notional_currency,
+          maturity_date,
+          underlying_price,
+          underlying_currency,
+          strike_price
+        }
+        return trade
+    }
+
+    updateTrade = () => {
+        const trade = this.getTrade()
+      
+        function humanise(str) {
+          let substrings = str.split('_');
+          for (let i = 0; i < substrings.length; i++) {
+            substrings[i] = substrings[i].charAt(0).toUpperCase() + substrings[i].slice(1);
+          }
+          return substrings.join(' ');
+        }
+        console.log(trade)
+        const tradeErrors = TradeValidator.getListOfErrors(trade);
+        console.log(tradeErrors)
+        if (tradeErrors.length === 0) {
+          this.setState({errors: []})
+          this.setState({corrections: []})
+          this.updateProxy.updateTrade(trade, this.props.data.trade_id)
+            .then(trade => {
+              window.alert("updated trade.")
+              console.log(trade)
+            })
             .catch(error => {
-                console.log(error);
-            }); 
+              console.log(error)
+              if (error.status == 409) {
+                var corrections = error.data;
+                var result = Object.keys(corrections).map(function(key) {
+                  if (corrections[key][0]==null) {
+                    return [humanise(key), "Ensure entry is as intended", corrections[key][1]];
+                  }
+                  return [humanise(key), corrections[key][0], corrections[key][1]];
+                });
+                console.log(result)
+                this.setState({corrections: result})
+              }
+              if (error.status == 400) {
+                var corrections = error.data;
+                var result = Object.keys(corrections).map(function(key) {
+                  return [humanise(key), corrections[key][0]];
+                });
+                console.log(result)
+                this.setState({errors: result})
+              }
+              console.log(error)
+          });
+        }
+        else {
+          console.log(tradeErrors)
+          this.setState({ errors: tradeErrors })
+        } 
+    }
+
+    setColours = (name) => {
+      const stylered = {
+        backgroundColor: 'red'
+      }
+      const style = {
+        backgroundColor: 'lightgrey'
+      }
+      const styleorange = {
+        backgroundColor: 'orange'
+      }
+  
+      for (let i=0;i<this.state.errors.length;i++) {
+        if (this.state.errors[i][0]==(name)) {
+          return stylered
+        }
+      }
+  
+      for (let i=0;i<this.state.corrections.length;i++) {
+        if (this.state.corrections[i][1]=="Ensure entry is as intended" && this.state.corrections[i][0]==(name)) {
+          return styleorange
+        }
+        if (this.state.corrections[i][0]==(name)) {
+          return stylered
+        }
+      }
+  
+      return style
     }
 
     handleChange = (event) => {
@@ -78,7 +157,6 @@ class EditModal extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.updateTrade();
-        alert("You are submitting " + this.state.trade_id + this.state.notional_currency);
     }
 
     showModal = () => {
@@ -124,9 +202,10 @@ class EditModal extends Component {
             return (
                 <main>
                     <Modal show={this.state.show} handleClose={this.hideModal}>
+                      <div className="tradeform">
                         <Form onSubmit={this.handleSubmit}>
                             <FormGroup>
-                                <Label for="date">Date of Trade: </Label>
+                                <Label style={this.setColours("Date Of Trade")}>Date of Trade: </Label>
                                 <Input
                                     type="date"
                                     name="date_of_trade"
@@ -135,17 +214,18 @@ class EditModal extends Component {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="time">Time of Trade: </Label>
+                                <Label style={this.setColours("Time Of Trade")}>Time of Trade: </Label>
                                 <Input
                                     type="time"
                                     // step="1"
                                     name="time_of_trade"
                                     onChange={this.handleChange}
                                     defaultValue={moment(this.props.date).format('HH:MM:SS')}
+                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="id">Trade ID: </Label>
+                                <Label style={this.setColours("Trade Id")}>Trade ID: </Label>
                                 <Input
                                     type="text"
                                     maxLength="200"
@@ -155,7 +235,7 @@ class EditModal extends Component {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="product">Product: </Label>
+                                <Label style={this.setColours("Product")}>Product: </Label>
                                 <Input
                                     type="text"
                                     name="product"
@@ -165,7 +245,7 @@ class EditModal extends Component {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="buying">Buying Party: </Label>
+                                <Label style={this.setColours("Buying Party")}>Buying Party: </Label>
                                 <Input
                                     type="text"
                                     name="buying_party"
@@ -175,7 +255,7 @@ class EditModal extends Component {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="selling">Selling Party: </Label>
+                                <Label style={this.setColours("Selling Party")}>Selling Party: </Label>
                                 <Input
                                     type="text"
                                     name="selling_party"
@@ -185,7 +265,7 @@ class EditModal extends Component {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="currency">Notional Currency: </Label>
+                                <Label style={this.setColours("Notional Currency")}>Notional Currency: </Label>
                                 <select name="notional_currency" onChange={this.handleChange} defaultValue={this.props.data.notional_currency}>
                                     <option> - </option>
                                     {currencyCodes.map((text, i) => (
@@ -196,25 +276,27 @@ class EditModal extends Component {
                                 </select>
                             </FormGroup>
                             <FormGroup>
-                                <Label for="amount">Notional Amount: </Label>
+                                <Label style={this.setColours("Notional Amount")}>Notional Amount: </Label>
                                 <Input
                                     type="number"
                                     name="notional_amount"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.notional_amount}
+                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="quantity">Quantity: </Label>
+                                <Label style={this.setColours("Quantity")}>Quantity: </Label>
                                 <Input
                                     type="number"
                                     name="quantity"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.quantity}
+                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="maturity">Maturity Date: </Label>
+                                <Label style={this.setColours("Maturity Date")}>Maturity Date: </Label>
                                 <Input
                                     type="date"
                                     name="maturity_date"
@@ -223,7 +305,7 @@ class EditModal extends Component {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="underc">Underlying Currency: </Label>
+                                <Label style={this.setColours("Underlying Currency")}>Underlying Currency: </Label>
                                 <select name="underlying_currency" onChange={this.handleChange} defaultValue={this.props.data.underlying_currency}>
                                     <option> - </option>
                                     {currencyCodes.map((text, i) => (
@@ -234,29 +316,39 @@ class EditModal extends Component {
                                 </select>
                             </FormGroup>
                             <FormGroup>
-                                <Label for="underprice">Underlying Price: </Label>
+                                <Label style={this.setColours("Underlying Price")}>Underlying Price: </Label>
                                 <Input
                                     type="number"
                                     name="underlying_price"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.underlying_price}
+                                    step="any"
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="strike">Strike Price: </Label>
+                                <Label style={this.setColours("Strike Price")}>Strike Price: </Label>
                                 <Input
                                     type="number"
                                     name="strike_price"
                                     onChange={this.handleChange}
                                     defaultValue={this.props.data.strike_price}
+                                    step="any"
                                 />
                             </FormGroup>
                             <input type="submit" value="Submit for Checking" />
+                            <input type="reset" value="Reset to previous values"/>
                         </Form>
+                      </div>
+                      <div className="errorbox">
+                          <h3>Highlighted Errors:</h3>
+                          {this.state.errors ? <ErrorTable errors={this.state.errors}/> : null }
+                          {this.state.corrections ? <CorrectionsTable errors={this.state.corrections}/> : null }
+                          <button onClick={this.manualOverride}> Manual Override </button>
+                      </div>
                     </Modal>
                     <button type="button" onClick={this.showModal}>
                         Edit Trade
-        </button>
+                    </button>
                 </main>
             );
         }
@@ -270,7 +362,7 @@ const Modal = ({ handleClose, show, children }) => {
         <div className={showHideClassName}>
             <section className="modal-main">
                 {children}
-                <button onClick={handleClose}>close</button>
+                <button onClick={handleClose}>Close</button>
             </section>
         </div>
     );

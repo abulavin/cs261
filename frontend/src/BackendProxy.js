@@ -263,11 +263,12 @@ export class UpdateTradeProxy extends BackendProxy {
             this.putRequest(updatedTrade, tradeID)
                 .then(response => { resolve(response.data) })
                 .catch(error => {
-                    if (error.response.status === 401 || error.response.status === 409) {
-                        reject(error.response.data)
-                    } else {
-                        throw error;
-                    }
+                    // if (error.response.status === 401 || error.response.status === 409) {
+                    //     reject(error.response)
+                    // } else {
+                    //     throw error;
+                    // }
+                    reject(error.response)
                 })
         });
     }
