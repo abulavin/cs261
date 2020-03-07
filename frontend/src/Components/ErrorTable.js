@@ -6,9 +6,7 @@ export default class ErrorTable extends Component {
     constructor(props){
         super(props);
         this.getRowsData = this.getRowsData.bind(this);
-
     }
-
     
     getRowsData = function(){
         var items = this.props.errors;

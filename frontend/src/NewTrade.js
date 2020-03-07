@@ -5,6 +5,7 @@ import { currencyCodes } from './currencyCodes';
 import {TradeValidator} from './TradeValidator.js';
 import ErrorTable from './Components/ErrorTable';
 import CorrectionsTable from './Components/CorrectionsTable';
+import { Redirect } from "react-router-dom";
 
 class NewTrade extends Component {
 
@@ -20,10 +21,10 @@ class NewTrade extends Component {
       selling_party: "",
       notional_amount: 0,
       quantity: 0,
-      notional_currency: "GBP",
+      notional_currency: "",
       maturity_date: "",
       underlying_price: 0,
-      underlying_currency: "GBP",
+      underlying_currency: "",
       strike_price: 0,
       error_message: "",
       errors: [],
@@ -73,6 +74,7 @@ class NewTrade extends Component {
 
     if (TradeValidator.filterErroneousFields(trade).length == 0) {
       this.setState({errors: []})
+      this.setState({corrections: []})
       this.createProxy.createTrade(trade)
       .then(trade => {
         window.alert("submitted trade.")
@@ -80,13 +82,23 @@ class NewTrade extends Component {
       })
       .catch(error => {
         if (error.status == 409) {
-          console.log("true")
           var corrections = error.data;
           var result = Object.keys(corrections).map(function(key) {
+            if (corrections[key][0]==null) {
+              return [humanise(key), "Ensure entry is as intended", corrections[key][1]];
+            }
             return [humanise(key), corrections[key][0], corrections[key][1]];
           });
           console.log(result)
           this.setState({corrections: result})
+        }
+        if (error.status == 400) {
+          var corrections = error.data;
+          var result = Object.keys(corrections).map(function(key) {
+            return [humanise(key), corrections[key][0]];
+          });
+          console.log(result)
+          this.setState({errors: result})
         }
         console.log(error)
       });
@@ -95,6 +107,29 @@ class NewTrade extends Component {
       console.log(TradeValidator.filterErroneousFields(trade))
       this.setState({errors: TradeValidator.filterErroneousFields(trade)})
     }
+  }
+
+  setColours = (name) => {
+    const stylered = {
+      backgroundColor: 'red'
+    }
+    const style = {
+      backgroundColor: 'lightgrey'
+    }
+
+    for (let i=0;i<this.state.errors.length;i++) {
+      if (this.state.errors[i][0]==(name)) {
+        return stylered
+      }
+    }
+
+    for (let i=0;i<this.state.corrections.length;i++) {
+      if (this.state.corrections[i][0]==(name)) {
+        return stylered
+      }
+    }
+
+    return style
   }
 
   handleSubmit = (event) => {
@@ -132,7 +167,7 @@ class NewTrade extends Component {
         <div className="tradeform">
           <Form>
             <FormGroup>
-              <Label for="date">Date of Trade: </Label>
+              <Label style={this.setColours("Date Of Trade")}>Date of Trade: </Label>
               <Input
                 type="date"
                 name="date_of_trade"
@@ -141,7 +176,7 @@ class NewTrade extends Component {
               <Label>(Must not be past current date)</Label>
             </FormGroup>
             <FormGroup>
-              <Label for="time">Time of Trade: </Label>
+              <Label style={this.setColours("Time Of Trade")}>Time of Trade: </Label>
               <Input
                 type="time"
                 name="time_of_trade"
@@ -149,7 +184,7 @@ class NewTrade extends Component {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="id">Trade ID: </Label>
+              <Label style={this.setColours("Trade Id")}>Trade ID: </Label>
               <Input
                 type="text"
                 maxLength="200"
@@ -159,7 +194,7 @@ class NewTrade extends Component {
             </FormGroup>
             <Label> (Must be in form of capital letters followed by numbers e.g. FRTT348)</Label>
             <FormGroup>
-              <Label for="product">Product: </Label>
+              <Label style={this.setColours("Product")}>Product: </Label>
               <Input
                 type="text"
                 name="product"
@@ -168,7 +203,7 @@ class NewTrade extends Component {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="buying">Buying Party: </Label>
+              <Label style={this.setColours("Buying Party")}>Buying Party: </Label>
               <Input
                 type="text"
                 name="buying_party"
@@ -177,7 +212,7 @@ class NewTrade extends Component {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="selling">Selling Party: </Label>
+              <Label style={this.setColours("Selling Party")}>Selling Party: </Label>
               <Input
                 type="text"
                 name="selling_party"
@@ -186,7 +221,7 @@ class NewTrade extends Component {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="currency">Notional Currency: </Label>
+              <Label style={this.setColours("Notional Currency")}>Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange}>
                 <option> - </option>
                 {currencyCodes.map((text, i) => (
@@ -197,7 +232,7 @@ class NewTrade extends Component {
               </select>
             </FormGroup>
             <FormGroup>
-              <Label for="amount">Notional Amount: </Label>
+              <Label style={this.setColours("Notional Amount")}>Notional Amount: </Label>
               <Input
                 type="number"
                 name="notional_amount"
@@ -205,7 +240,7 @@ class NewTrade extends Component {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="quantity">Quantity: </Label>
+              <Label style={this.setColours("Quantity")}>Quantity: </Label>
               <Input
                 type="number"
                 name="quantity"
@@ -214,7 +249,7 @@ class NewTrade extends Component {
               <Label>(Must be greater than 0)</Label>
             </FormGroup>
             <FormGroup>
-              <Label for="maturity">Maturity Date: </Label>
+              <Label style={this.setColours("Maturity Date")}>Maturity Date: </Label>
               <Input
                 type="date"
                 name="maturity_date"
@@ -223,7 +258,7 @@ class NewTrade extends Component {
               <Label>(Must be past trade creation date)</Label>
             </FormGroup>
             <FormGroup>
-              <Label for="underc">Underlying Currency: </Label>
+              <Label style={this.setColours("Underlying Currency")}>Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange}>
                 <option> - </option>
                 {currencyCodes.map((text, i) => (
@@ -234,7 +269,7 @@ class NewTrade extends Component {
               </select>
             </FormGroup>
             <FormGroup>
-              <Label for="underprice">Underlying Price: </Label>
+              <Label style={this.setColours("Underlying Price")}>Underlying Price: </Label>
               <Input
                 type="number"
                 name="underlying_price"
@@ -243,7 +278,7 @@ class NewTrade extends Component {
               <Label>(Must be greater than 0)</Label>
             </FormGroup>
             <FormGroup>
-              <Label for="strike">Strike Price: </Label>
+              <Label style={this.setColours("Strike Price")}>Strike Price: </Label>
               <Input
                 type="number"
                 name="strike_price"

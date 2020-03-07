@@ -68,7 +68,7 @@ export const TradeValidator = {
         for (const tradeAttribute in trade) {
             const attributeIsCorrect = checkerFunctions[tradeAttribute];
             const attributeValue = trade[tradeAttribute];
-
+            
             if (!attributeIsCorrect(attributeValue)) {
                 if (attributeValue=="" || attributeValue==0) {
                     attributeValue = "Enter a Value"

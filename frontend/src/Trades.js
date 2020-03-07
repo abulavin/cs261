@@ -28,7 +28,7 @@ class Trades extends Component {
         this.setState({tr: trades.results})
         var maxPages = Math.ceil(trades.count/100);
         this.setState({maxpage: maxPages})
-        console.log(this.state.tr)
+        // console.log(this.state.tr)
       })
       .catch(error => { throw error });
   }
@@ -235,7 +235,7 @@ class Trades extends Component {
           <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
           <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>
-          {console.log(this.state.tr)}
+          {/* {console.log(this.state.tr)} */}
           {this.state.tr ? <Table data={this.state.tr}/> : null }
         </div>
         <div>
