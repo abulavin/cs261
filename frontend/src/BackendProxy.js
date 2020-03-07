@@ -19,8 +19,8 @@ class BackendProxy {
         // Data must be plain JS object (not a string) in order for
         // the Content-Type header to be set to application/json.
         // Otherwise server will return Bad Request
-        const putURL = this.url + parameters + (window.check ? '' : '?no_check=true');
-        return axios.post(putURL, data);
+        const postURL = this.url + parameters;
+        return axios.post(postURL, data);
     }
 
     postBlobRequest(parameters = "") {
@@ -53,13 +53,10 @@ class BackendProxy {
     }
 
     putRequest(data, parameters = "") {
-        let putURL;
+        let putURL = this.url
         if (parameters)
-            putURL = this.url + parameters + '/';
-        else
-            putURL = this.url;
+            putURL += parameters;
 
-        putURL += (window.check ? '' : '?no_check=true/');
         axios.put(putURL, data)
             .then(response => {
                 console.log("Put Status: " + response.status);
@@ -84,6 +81,15 @@ class BackendProxy {
             })
             .catch(error => { throw error });
     }
+
+    getSettings(overRide) {
+        let parameters = '?'
+        if(overRide === Settings.OVERRIDE || !window.settings.check) {
+            parameters += 'no_check=true'
+        }
+        parameters += '&t=' + window.settings.tParam;
+        return parameters
+    }
 }
 
 export class CreateTradeProxy extends BackendProxy {
@@ -98,10 +104,11 @@ export class CreateTradeProxy extends BackendProxy {
      * @param {object} trade Object representing a derivative trade
      * @alias module:BackendProxy
      */
-    createTrade(trade) {
+    createTrade(trade, overRide) {
         TradeValidator.validateTrade(trade);
+        let parameters = this.getSettings(overRide);
         return new Promise((resolve, reject) => {
-            this.postRequest(trade)
+            this.postRequest(trade, parameters)
                 .then(response => {
                     console.log("POST", response.status, response.statusText);
                     resolve(response.data);
@@ -264,11 +271,13 @@ export class UpdateTradeProxy extends BackendProxy {
      * @param {string} tradeID ID of the derivative trade to be edited.
      * @alias module:BackendProxy
      */
-    updateTrade(updatedTrade, tradeID) {
+    updateTrade(updatedTrade, tradeID, overRide) {
         if (!TradeValidator.tradeIDisValid(tradeID))
             throw new Error('Invalid trade ID; got: ' + tradeID);
         TradeValidator.validateTrade(updatedTrade);
-        this.putRequest(updatedTrade, tradeID)
+
+        let parameters = `${tradeID}/${this.getSettings(overRide)}`
+        this.putRequest(updatedTrade, parameters)
     }
 }
 
@@ -362,4 +371,8 @@ export class GetReportProxy extends BackendProxy {
         })
     }
 
+}
+
+export const Settings = {
+    OVERRIDE: true,
 }
