@@ -69,28 +69,38 @@ class EditModal extends Component {
     }
 
     updateTrade = () => {
-        const trade = this.getTrade()
+        const tr = this.getTrade()
       
-        function humanise(str) {
-          let substrings = str.split('_');
-          for (let i = 0; i < substrings.length; i++) {
-            substrings[i] = substrings[i].charAt(0).toUpperCase() + substrings[i].slice(1);
-          }
-          return substrings.join(' ');
-        }
-        console.log(trade)
-        const tradeErrors = TradeValidator.getListOfErrors(trade);
-        console.log(tradeErrors)
+        
+        let tradeErrors = TradeValidator.getListOfErrors(tr);
         if (tradeErrors.length === 0) {
           this.setState({errors: []})
           this.setState({corrections: []})
-          this.updateProxy.updateTrade(trade, this.props.data.trade_id)
+          this.callMethod(tr)
+        }
+        else {
+          console.log(tradeErrors)
+          this.setState({ errors: tradeErrors })
+        } 
+    }
+
+    callMethod(tr) {
+      function humanise(str) {
+        let substrings = str.split('_');
+        for (let i = 0; i < substrings.length; i++) {
+          substrings[i] = substrings[i].charAt(0).toUpperCase() + substrings[i].slice(1);
+        }
+        return substrings.join(' ');
+      }
+      
+      this.updateProxy.updateTrade(tr, tr["trade_id"])
             .then(trade => {
               window.alert("updated trade.")
               console.log(trade)
             })
             .catch(error => {
               console.log(error)
+              console.log(tr)
               if (error.status == 409) {
                 var corrections = error.data;
                 var result = Object.keys(corrections).map(function(key) {
@@ -99,7 +109,6 @@ class EditModal extends Component {
                   }
                   return [humanise(key), corrections[key][0], corrections[key][1]];
                 });
-                console.log(result)
                 this.setState({corrections: result})
               }
               if (error.status == 400) {
@@ -112,11 +121,6 @@ class EditModal extends Component {
               }
               console.log(error)
           });
-        }
-        else {
-          console.log(tradeErrors)
-          this.setState({ errors: tradeErrors })
-        } 
     }
 
     setColours = (name) => {
