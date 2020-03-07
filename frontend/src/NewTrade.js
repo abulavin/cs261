@@ -5,6 +5,7 @@ import { currencyCodes } from './currencyCodes';
 import {TradeValidator} from './TradeValidator.js';
 import ErrorTable from './Components/ErrorTable';
 import CorrectionsTable from './Components/CorrectionsTable';
+import {Settings} from './BackendProxy';
 
 class NewTrade extends Component {
 
@@ -31,7 +32,7 @@ class NewTrade extends Component {
     }
   }
 
-  sendTrade = () => {
+  getTrade = () => {
     var day = this.state.date_of_trade
     var time_of_trade = this.state.time_of_trade
     var trade_id = this.state.trade_id
@@ -62,6 +63,12 @@ class NewTrade extends Component {
       underlying_currency,
       strike_price
     };
+
+    return trade
+  }
+
+  sendTrade = () => {
+    const trade = this.getTrade()
 
     function humanise(str) {
       let substrings = str.split('_');
@@ -110,7 +117,18 @@ class NewTrade extends Component {
   }
 
   manualOverride = () => {
-
+    let confirm = window.confirm("Are you sure you want to submit this trade?");
+      if (confirm) {
+        this.createProxy.createTrade(this.getTrade(), Settings.OVERRIDE)
+          .then(trade => {
+            
+            window.alert("submitted trade.")
+            console.log(trade)
+          })
+          .catch (error => {
+            console.log(error)
+          })
+      }
   }
 
   setColours = (name) => {
@@ -306,7 +324,7 @@ class NewTrade extends Component {
             {this.state.errors ? <ErrorTable errors={this.state.errors}/> : null }
             {this.state.corrections ? <CorrectionsTable errors={this.state.corrections}/> : null }
         <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
-        <button onClick={this.manualOverride}> Manual Override </button>
+        <button onClick={this.manualOverride}> Manually Override All Fields </button>
         </div>
       </React.Fragment>
     );

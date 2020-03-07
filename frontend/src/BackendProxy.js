@@ -275,8 +275,10 @@ export class UpdateTradeProxy extends BackendProxy {
             throw new Error('Invalid trade ID; got: ' + tradeID);
 
         TradeValidator.validateTrade(updatedTrade);
+        let parameters = `${tradeID}/${this.getSettings(override)}`
+
         return new Promise((resolve, reject) => {
-            this.putRequest(updatedTrade, tradeID)
+            this.putRequest(updatedTrade, parameters)
                 .then(response => { resolve(response.data) })
                 .catch(error => {
                     if (error.response.status === 401 || error.response.status === 409) {
@@ -302,8 +304,7 @@ export class ReportURLProxy extends BackendProxy {
                 })
                 .catch(error => { throw error });
         })
-        let parameters = `${tradeID}/${this.getSettings(override)}`
-        this.putRequest(updatedTrade, parameters)
+        
     }
 }
 
