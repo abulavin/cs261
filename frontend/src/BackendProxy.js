@@ -58,13 +58,6 @@ class BackendProxy {
             putURL += parameters;
         putURL += (window.check ? '' : '?no_check=true/');
         return axios.put(putURL, data);
-        axios.put(putURL, data)
-            .then(response => {
-                console.log("Put Status: " + response.status);
-                console.log("Updated Object:");
-                console.log(response.data);
-            })
-            .catch(error => { throw error });
     }
 
     patchRequest(data, parameters = "") {

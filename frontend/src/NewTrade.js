@@ -117,9 +117,12 @@ class NewTrade extends Component {
   }
 
   manualOverride = () => {
+    const trade = this.getTrade()
     let confirm = window.confirm("Are you sure you want to submit this trade?");
       if (confirm) {
-        this.createProxy.createTrade(this.getTrade(), Settings.OVERRIDE)
+        const tradeErrors = TradeValidator.getListOfErrors(trade);
+        if (tradeErrors ==0 ) {
+          this.createProxy.createTrade(trade, Settings.OVERRIDE)
           .then(trade => {
             
             window.alert("submitted trade.")
@@ -128,7 +131,14 @@ class NewTrade extends Component {
           .catch (error => {
             console.log(error)
           })
+        }
+        else {
+          console.log(tradeErrors)
+          this.setState({ errors: tradeErrors })
+        }
+        
       }
+   
   }
 
   setColours = (name) => {
