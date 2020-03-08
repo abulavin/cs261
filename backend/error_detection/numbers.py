@@ -80,7 +80,7 @@ def detect_number_errors(trade, threshold, errors):
 
         # If the underlying price and quantity are correct we can use them to check the notional amount.
         if quantity_ok:
-            expected_notional = trade.quantity * trade.underlying_price
+            expected_notional = round(trade.quantity * trade.underlying_price, 2)
             if trade.notional_amount != expected_notional:
                 errors.append(Error('notional_amount', expected_notional,
                                     "Notional amount does not match quantity and underlying price"))
