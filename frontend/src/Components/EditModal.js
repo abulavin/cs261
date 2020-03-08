@@ -10,28 +10,28 @@ import {TradeValidator} from '../TradeValidator.js';
 class EditModal extends Component {
 
     constructor(props) {
-        super(props)
-        this.handleChange = this.handleChange.bind(this)
-        this.updateTrade = this.updateTrade.bind(this)
-        this.updateProxy = new UpdateTradeProxy();
-        this.state = {
-            show: false,
-            date_of_trade: moment(this.props.date).format('YYYY-MM-DD'),
-            time_of_trade: moment(this.props.date).format('hh:mm'),
-            trade_id: this.props.data.trade_id,
-            product: this.props.data.product,
-            buying_party: this.props.data.buying_party,
-            selling_party: this.props.data.selling_party,
-            notional_amount: this.props.data.notional_amount,
-            quantity: this.props.data.quantity,
-            notional_currency: this.props.data.notional_currency,
-            maturity_date: this.props.data.maturity_date,
-            underlying_price: this.props.data.underlying_price,
-            underlying_currency: this.props.data.underlying_currency,
-            strike_price: this.props.data.strike_price,
-            errors: [],
-            corrections: []
-        }
+      super(props)
+      this.handleChange = this.handleChange.bind(this)
+      this.updateTrade = this.updateTrade.bind(this)
+      this.updateProxy = new UpdateTradeProxy();
+      this.state = {
+          show: false,
+          date_of_trade: moment(this.props.date).format('YYYY-MM-DD'),
+          time_of_trade: moment(this.props.date).format('hh:mm'),
+          trade_id: this.props.data.trade_id,
+          product: this.props.data.product,
+          buying_party: this.props.data.buying_party,
+          selling_party: this.props.data.selling_party,
+          notional_amount: this.props.data.notional_amount,
+          quantity: this.props.data.quantity,
+          notional_currency: this.props.data.notional_currency,
+          maturity_date: this.props.data.maturity_date,
+          underlying_price: this.props.data.underlying_price,
+          underlying_currency: this.props.data.underlying_currency,
+          strike_price: this.props.data.strike_price,
+          errors: [],
+          corrections: []
+      }
     }
 
     getTrade = () => {

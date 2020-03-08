@@ -13,6 +13,11 @@
   }
 }
 
+h2, h3, h4, h5, h6 {
+  font-family:'Roboto',sans-serif;
+  font-weight: lighter;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -88,7 +93,7 @@ button{
   float: left;
 }
 .errorbox{
-  margin-top: 35px;
+  margin-top: 53px;
   margin-left: 65%;
   width: 400px;
   background-color:darkgrey;
@@ -355,7 +360,7 @@ th {
 }
 
 select {
-  background-color: rgb(230, 184, 99);
+  background-color: lightblue;
   overflow: hidden;
   font-size: 15px;
 }
@@ -366,15 +371,63 @@ select {
 }
 
 .tradeform {
+  display: inline-block;
   text-align: left;
   background-color: lightgrey;
   margin-left: 200px;
   font-family:'Roboto',sans-serif;
   width: 500px;
-  line-height: 1.5;
+  line-height: 1.8;
+  font-size: 16px;
 }
 
+.tip {
+  display: inline-block;
+  font-weight: lighter;
+  clear: left;
+  width: 200px;
+  text-align: left;
+  float: left;
+  font-size: 13px;
+  margin-left: 20px;
+}
+
+.tradeform button {
+  display: inline-block;
+  margin-left: 68%;
+  background-color: lightgreen;
+}
+
+.tradeform Label:not(.tip) {
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 200px;
+    text-align: left;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.tradeform input {
+  display: inline-block;
+  float: right;
+  text-align: center;
+  margin-right: 20px;
+}
+.tradeform select {
+  width: 100px;
+  display: inline-block;
+  float: right;
+  text-align: center;
+  margin-right: 30px;
+}
+
+.tradeform input:not(.btn) {
+  width: 200px;
+  height:20px;
+  font-size: 16px;
+}
 .errortable {
   margin: 20px;
-  display: center;
+  display: inline-block;
 }
