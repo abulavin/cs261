@@ -34,7 +34,7 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
 
         if not request.query_params.get('no_check', False):
             trade_obj = DerivativeTrade.json_to_obj(serializer.validated_data)
-            threshold = request.query_params.get('t', 0.7)
+            threshold = float(request.query_params.get('t', 0.7))
             errors = detect_errors(trade_obj, datetime.today(), threshold)
             if has_errors(errors):
                 errors_dict = error_list_to_dict(errors)
@@ -80,11 +80,10 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         PUT and UPDATE requests handled by this method. It will run the Error 
         Detection Module and then log any changes made to the DerivativeTrade.
         """
-
         # Check the trade is not more than 7 days old.
         if not check_trade_editable(self.get_object()):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-
+            
         if not request.query_params.get('no_check', False):
             threshold = float(request.query_params.get('t', 0.7))
             errors = detect_errors(self.get_object(), datetime.today(), threshold)
