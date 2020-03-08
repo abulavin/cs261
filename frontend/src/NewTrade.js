@@ -211,7 +211,7 @@ class NewTrade extends Component {
                 name="date_of_trade"
                 onChange={this.handleChange}
               />
-              <label class="tip">(Must not be past current date)</label>
+              <label class="tip">(Should not be past current date)</label>
             </FormGroup>
             <FormGroup>
               <Label style={this.setColours("Time Of Trade")}>Time of Trade: </Label>

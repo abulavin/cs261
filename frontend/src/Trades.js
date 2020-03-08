@@ -178,7 +178,9 @@ class Trades extends Component {
             <option value="desc">Descending</option>
           </select>
           <button onClick={this.getSortedTrades}>Sort Table</button>
-          <Label>Filter notional currency: </Label>
+        </div>
+        <div className = "filterbox">
+          <Label>Filter Notional Currency: </Label>
           <select class="customselect" id="currfilter" name="notional_currency" onChange={this.getFilterCurrency}>
             <option> - </option>
             {currencyCodes.map((text,i) => (
@@ -187,7 +189,7 @@ class Trades extends Component {
                 </option>
             ))}
           </select>
-          <Label>Filter underlying currency: </Label>
+          <Label>Filter Underlying Currency: </Label>
           <select class="customselect" id="currfilter" name="underlying_currency" onChange={this.getFilterCurrency}>
             <option> - </option>
             {currencyCodes.map((text,i) => (
@@ -198,10 +200,10 @@ class Trades extends Component {
           </select>
           <button onClick={this.refreshPage}> Remove Filters </button>
         </div>
-        <div>
-          <Label>Search by heading: </Label>
+        <div className="searchbox">
           <Form>
             <FormGroup>
+              <Label>Search by Heading: </Label>
               <select id="headingfilter" name="chosen" onChange={this.handleChange}>
                 <option> - </option>
                 <option value="date_of_trade" >Date of Trade</option>
@@ -231,14 +233,14 @@ class Trades extends Component {
         </div>
         <div className="tradetable">
           <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
-          <button onClick={this.getPrevPageTrade}> previous page </button>
-          <button onClick={this.getTradesByPage}> next page </button>
+          <button onClick={this.getPrevPageTrade}> Previous Page </button>
+          <button onClick={this.getTradesByPage}> Next Page </button>
           {/* {console.log(this.state.tr)} */}
           {this.state.tr ? <Table data={this.state.tr}/> : null }
         </div>
         <div>
-          <button onClick={this.getPrevPageTrade}> previous page </button>
-          <button onClick={this.getTradesByPage}> next page </button>
+          <button onClick={this.getPrevPageTrade}> Previous Page </button>
+          <button onClick={this.getTradesByPage}> Next Page </button>
         </div>
        
       </React.Fragment>
