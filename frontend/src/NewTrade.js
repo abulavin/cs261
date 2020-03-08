@@ -200,9 +200,9 @@ class NewTrade extends Component {
       <React.Fragment>
         <div className="tradetitles">
           <h2> Use this page to enter details of a derivative trade.</h2>
-          <h5> Upon entry, all details will be error-checked and any issues will be highlighted.</h5>
         </div>
         <div className="tradeform">
+          <button onClick={this.handleSubmit}> Submit for Checking</button>
           <Form>
             <FormGroup>
               <Label style={this.setColours("Date Of Trade")}>Date of Trade: </Label>
@@ -211,7 +211,7 @@ class NewTrade extends Component {
                 name="date_of_trade"
                 onChange={this.handleChange}
               />
-              <Label>(Must not be past current date)</Label>
+              <label class="tip">(Should not be past current date)</label>
             </FormGroup>
             <FormGroup>
               <Label style={this.setColours("Time Of Trade")}>Time of Trade: </Label>
@@ -230,7 +230,7 @@ class NewTrade extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
-            <Label> (Must be in form of capital letters followed by numbers e.g. FRTT348)</Label>
+            <label class="tip"> (Capital letters followed by numbers e.g. FRTT348)</label>
             <FormGroup>
               <Label style={this.setColours("Product")}>Product: </Label>
               <Input
@@ -284,7 +284,7 @@ class NewTrade extends Component {
                 name="quantity"
                 onChange={this.handleChange}
               />
-              <Label>(Must be greater than 0)</Label>
+              <label class="tip">(Must be greater than 0)</label>
             </FormGroup>
             <FormGroup>
               <Label style={this.setColours("Maturity Date")}>Maturity Date: </Label>
@@ -293,7 +293,7 @@ class NewTrade extends Component {
                 name="maturity_date"
                 onChange={this.handleChange}
               />
-              <Label>(Must be past trade creation date)</Label>
+              <label class="tip">(Must be past trade creation date)</label>
             </FormGroup>
             <FormGroup>
               <Label style={this.setColours("Underlying Currency")}>Underlying Currency: </Label>
@@ -313,7 +313,7 @@ class NewTrade extends Component {
                 name="underlying_price"
                 onChange={this.handleChange}
               />
-              <Label>(Must be greater than 0)</Label>
+              <label class="tip">(Must be greater than 0)</label>
             </FormGroup>
             <FormGroup>
               <Label style={this.setColours("Strike Price")}>Strike Price: </Label>
@@ -322,11 +322,10 @@ class NewTrade extends Component {
                 name="strike_price"
                 onChange={this.handleChange}
               />
-              <Label>(Must be greater than 0)</Label>
+              <label class="tip">(Must be greater than 0)</label>
             </FormGroup>
-            <input type="reset" value="Reset all Values" />
+            <input class="btn" type="reset" value="Reset all Values" />
           </Form>
-          <button onClick={this.handleSubmit}> Submit for Checking</button>
         </div>
 
         <div className="errorbox">

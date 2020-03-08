@@ -13,6 +13,11 @@
   }
 }
 
+h2, h3, h4, h5, h6 {
+  font-family:'Roboto',sans-serif;
+  font-weight: lighter;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -88,7 +93,7 @@ button{
   float: left;
 }
 .errorbox{
-  margin-top: 35px;
+  margin-top: 53px;
   margin-left: 65%;
   width: 400px;
   background-color:darkgrey;
@@ -206,11 +211,14 @@ th {
   background-image: url(./Images/search.png); /* Add a search icon to input */
   background-position: 10px 12px; /* Position the search icon */
   background-repeat: no-repeat; /* Do not repeat the icon image */
-  width: 100%; /* Full-width */
-  font-size: 16px; /* Increase font-size */
-  padding: 12px 1px 12px 30px; /* Add some padding */
-  border: 1px solid #ddd; /* Add a grey border */
-  margin-bottom: 12px; /* Add some space below the input */
+  width: 80%; /* Full-width */
+  font-size: 16px;
+  font-family:'Roboto',sans-serif;
+  padding: 12px 10px 12px 30px; 
+  border: 1px solid #ddd; 
+  margin-bottom: 12px; 
+  margin-right: 15px;
+  height: 10px;
 }
 
 #tableview {
@@ -355,7 +363,7 @@ th {
 }
 
 select {
-  background-color: rgb(230, 184, 99);
+  background-color: lightblue;
   overflow: hidden;
   font-size: 15px;
 }
@@ -366,15 +374,88 @@ select {
 }
 
 .tradeform {
+  display: inline-block;
   text-align: left;
   background-color: lightgrey;
   margin-left: 200px;
   font-family:'Roboto',sans-serif;
   width: 500px;
-  line-height: 1.5;
+  line-height: 1.8;
+  font-size: 16px;
 }
 
+.tip {
+  display: inline-block;
+  font-weight: lighter;
+  clear: left;
+  width: 200px;
+  text-align: left;
+  float: left;
+  font-size: 13px;
+  margin-left: 20px;
+}
+
+.tradeform button {
+  display: inline-block;
+  margin-left: 68%;
+  background-color: lightgreen;
+}
+
+.tradeform Label:not(.tip) {
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 200px;
+    text-align: left;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.tradeform input {
+  display: inline-block;
+  float: right;
+  text-align: center;
+  margin-right: 20px;
+}
+.tradeform select {
+  width: 100px;
+  display: inline-block;
+  float: right;
+  text-align: center;
+  margin-right: 30px;
+}
+
+.tradeform input:not(.btn) {
+  width: 200px;
+  height:20px;
+  font-size: 16px;
+}
 .errortable {
   margin: 20px;
-  display: center;
+  display: inline-block;
+}
+.tradeoptions{
+  display: inline-block;
+  float: center;
+  width: 100%;
+
+}
+.filterbox {
+  display: inline-block;
+  float: center;
+}
+
+.filterbox select {
+  width: 150px;
+}
+
+.searchbox {
+  padding: 13px;
+}
+
+.reportbtns {
+  padding: 10px;
+}
+.reportbtns button {
+  display: inline-block;
 }
