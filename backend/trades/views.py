@@ -32,9 +32,9 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
 
 
-        if request.query_params.get('no_check', False) is not True:
+        if not request.query_params.get('no_check', False):
             trade_obj = DerivativeTrade.json_to_obj(serializer.validated_data)
-            threshold = request.query_params.get('t', 0.7)
+            threshold = float(request.query_params.get('t', 0.7))
             errors = detect_errors(trade_obj, datetime.today(), threshold)
             if has_errors(errors):
                 errors_dict = error_list_to_dict(errors)
@@ -80,9 +80,9 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         PUT and UPDATE requests handled by this method. It will run the Error 
         Detection Module and then log any changes made to the DerivativeTrade.
         """
-        if request.query_params.get('no_check', False) is not True:
+        if not request.query_params.get('no_check', False):
             trade_obj = DerivativeTrade.json_to_obj(request.data)
-            threshold = request.query_params.get('t', 0.7)
+            threshold = float(request.query_params.get('t', 0.7))
             errors = detect_errors(trade_obj, datetime.today(), threshold)
             if has_errors(errors):
                 errors_dict = error_list_to_dict(errors)
@@ -93,7 +93,7 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         """
-        This methods handles the logging and deleteing of a DerivativeTrade.
+        This methods handles the logging and deleting of a DerivativeTrade.
         """
         self._log_change('D', self.get_object())
         return super().delete(request, *args, **kwargs)

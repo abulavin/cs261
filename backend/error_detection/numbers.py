@@ -70,8 +70,7 @@ def detect_number_errors(trade, threshold, errors):
         if not underlying_ok:
             errors.append(Error('underlying_price', correction, "Suspicious underlying price"))
     else:
-        quantity_ok = True 
-        underlying_ok = True
+        quantity_ok, underlying_ok = True, True
 
     # If the underlying price is correct we can use it to check the strike price and notional amount.
     if underlying_ok:
@@ -81,7 +80,7 @@ def detect_number_errors(trade, threshold, errors):
 
         # If the underlying price and quantity are correct we can use them to check the notional amount.
         if quantity_ok:
-            expected_notional = trade.quantity * trade.underlying_price
+            expected_notional = round(trade.quantity * trade.underlying_price, 2)
             if trade.notional_amount != expected_notional:
                 errors.append(Error('notional_amount', expected_notional,
                                     "Notional amount does not match quantity and underlying price"))

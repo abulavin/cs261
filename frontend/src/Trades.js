@@ -11,7 +11,6 @@ class Trades extends Component {
     super(props);
     this.getProxy = new GetTradeProxy();
     this.deleteProxy = new DeleteTradeProxy();
-    this.updateProxy = new UpdateTradeProxy();
     this.state = {
       tr: [],
       count: 1,
@@ -28,7 +27,7 @@ class Trades extends Component {
         this.setState({tr: trades.results})
         var maxPages = Math.ceil(trades.count/100);
         this.setState({maxpage: maxPages})
-        console.log(this.state.tr)
+        // console.log(this.state.tr)
       })
       .catch(error => { throw error });
   }
@@ -91,7 +90,6 @@ class Trades extends Component {
                       console.log(filteredTrades.results) 
                     }
                   })
-                    
   }
 
   getFilterCurrency = (event,filter) => {
@@ -159,7 +157,6 @@ class Trades extends Component {
         <div className = "tradetitle">
           <h3 className = "datetime"> Use this page to edit, delete and view trades. Current Date and Time (GMT):
             <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true}/>
-            {/* timezone={} */}
           </h3>
         </div>
 
@@ -236,7 +233,7 @@ class Trades extends Component {
           <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
           <button onClick={this.getPrevPageTrade}> previous page </button>
           <button onClick={this.getTradesByPage}> next page </button>
-          {console.log(this.state.tr)}
+          {/* {console.log(this.state.tr)} */}
           {this.state.tr ? <Table data={this.state.tr}/> : null }
         </div>
         <div>

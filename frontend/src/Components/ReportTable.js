@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { GetReportProxy } from "../BackendProxy";
+import { GetReportProxy, ReportURLProxy } from "../BackendProxy";
+import {download} from "downloadjs";
 
 export default class ReportTable extends Component {
     constructor(props){
         super(props);
         this.getRowsData = this.getRowsData.bind(this);
         this.reportProxy = new GetReportProxy();
+        this.reportURLProxy = new ReportURLProxy();
     }
 
     // use this function to iterate through the json and return body part of the table
@@ -20,7 +22,7 @@ export default class ReportTable extends Component {
                 {/* <ReportModal data={this.props.data[index].report}/>   */}
             </td>
             <td>
-                <button onClick={() => this.downloadReport(this.props.data[index].report)}> Download Report </button>
+                <button onClick={() => this.downloadReport(this.props.data[index])}> Download Report </button>
             </td>
 
         </tr>
@@ -28,7 +30,7 @@ export default class ReportTable extends Component {
     }
 
     openReport = (link) => {
-        this.reportProxy.getReportURL(link).then(report => {
+        this.reportURLProxy.getReportURL(link).then(report => {
             const pdf = new Blob(
               [report],
               {type: 'application/pdf'});
@@ -37,13 +39,26 @@ export default class ReportTable extends Component {
             const fURL = URL.createObjectURL(pdf);
             //Open the URL on new Window
             window.open(fURL);
-            // window.location.reload();
           })
           .catch(error => console.log(error.statusText, error.status));
     }
 
-    downloadReport = (report) => {
-
+    downloadReport = (data) => {
+        this.reportURLProxy.getReportURL(data.report).then(report => {
+            const pdf = new Blob(
+              [report],
+              {type: 'application/pdf'});
+            console.log(report)
+            //Build a URL from the file
+            const url = window.URL.createObjectURL(pdf);
+            //Open the URL on new Window
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'report-'+(data.date)+'.pdf');
+            document.body.appendChild(link);
+            link.click();
+          })
+          .catch(error => console.log(error.statusText, error.status));    
     }
 
     render() {
@@ -51,8 +66,6 @@ export default class ReportTable extends Component {
         return (
             <React.Fragment>
                 <div className="reporttable">
-                    {/* onkeyup search for item function */}
-                    <input type="text" id="searchinput" onkeyup="" placeholder="Search for .."></input>
                     <table id="tableview">
                         <thead>
                             <tr>
@@ -62,21 +75,11 @@ export default class ReportTable extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                {this.getRowsData()}
-                            </tr>
+                            {this.getRowsData()}
                         </tbody>
                     </table>
                 </div>
-
             </React.Fragment>
         );
     }
 }
-
-// use this to return individual rows of the table
-const RenderRow = (props) =>{
-    return props.keys.map((key, index)=>{
-      return <td key={props.data[key]}>{props.data[key]}</td>
-      })
-  }
