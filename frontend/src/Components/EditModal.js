@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import moment from 'moment';
 import { UpdateTradeProxy } from "../BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { currencyCodes } from "../currencyCodes";
 
 class EditModal extends Component {
 
@@ -10,10 +11,10 @@ class EditModal extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.updateTrade = this.updateTrade.bind(this)
     this.updateProxy = new UpdateTradeProxy();
-    this.state = { 
+    this.state = {
       show: false,
-      date_of_trade: this.props.data.date_of_trade,
-      time_of_trade: this.props.data.time_of_trade,
+      date_of_trade: moment(this.props.date).format('YYYY-MM-DD'),
+      time_of_trade: moment(this.props.date).format('hh:mm'),
       trade_id: this.props.data.trade_id,
       product: this.props.data.product,
       buying_party: this.props.data.buying_party,
@@ -48,73 +49,48 @@ class EditModal extends Component {
     console.log(date_of_trade)
 
     const trade = {
-        date_of_trade,
-        trade_id,
-        product,
-        buying_party,
-        selling_party,
-        notional_amount,
-        quantity,
-        notional_currency,
-        maturity_date,
-        underlying_price,
-        underlying_currency,
-        strike_price
+      date_of_trade,
+      trade_id,
+      product,
+      buying_party,
+      selling_party,
+      notional_amount,
+      quantity,
+      notional_currency,
+      maturity_date,
+      underlying_price,
+      underlying_currency,
+      strike_price
     };
-    this.updateProxy.updateTrade(trade);
+    this.updateProxy.updateTrade(trade, this.props.data.trade_id);
     console.log(trade);
-  }
-
-  partiallyUpdateTrade = (tradeID) => {
-    tradeID = "TEST101"
-    const update = {
-        buying_party: "7",
-        selling_party: "7",
-        date_of_trade: "2020-02-29 12:30"
-    }
-    this.updateProxy.partiallyUpdateTrade(update, tradeID);
   }
 
   handleChange = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
-    this.setState({[nam]: val});
-    
-    // let err = '';
-    // if (nam === "age") {
-    //   if (val !="" && !Number(val)) {
-    //     err = <strong>Your age must be a number</strong>;
-    //   }
-    // }
-    // this.setState({errormessage: err});
-    // 
- 
+    this.setState({ [nam]: val });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     this.updateTrade();
-    alert("You are submitting "+this.state.trade_id+this.state.notional_currency);
-    // validation
-    // let age = this.state.age;
-    // if (!Number(age)) {
-    //   alert("Your age must be a number");
-    // }
+    alert("You are submitting " + this.state.trade_id + this.state.notional_currency);
   }
-  
+
   showModal = () => {
     this.setState({ show: true });
   };
 
   hideModal = () => {
     this.setState({ show: false });
+    window.location.reload();
   };
 
   checkEditable = () => {
     var limit = new Date();
-    limit.setDate(limit.getDate()-7);
+    limit.setDate(limit.getDate() - 7);
     limit = moment(limit).format('MM/DD/YYYY hh:mm:ss')
-    // console.log("limit "+limit);
     var d = moment(this.props.date).format('MM/DD/YYYY hh:mm:ss');
 
     if (d > limit) {
@@ -140,13 +116,14 @@ class EditModal extends Component {
     return (
       <main>
         <Modal show={this.state.show} handleClose={this.hideModal}>
-        <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleSubmit}>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input
                 type="date"
                 name="date_of_trade"
                 onChange={this.handleChange}
+                defaultValue={moment(this.props.date).format('YYYY-MM-DD')}
               />
             </FormGroup>
             <FormGroup>
@@ -156,6 +133,7 @@ class EditModal extends Component {
                 // step="1"
                 name="time_of_trade"
                 onChange={this.handleChange}
+                defaultValue={moment(this.props.date).format('HH:MM:SS')}
               />
             </FormGroup>
             <FormGroup>
@@ -165,6 +143,7 @@ class EditModal extends Component {
                 maxLength="200"
                 name="trade_id"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.trade_id}
               />
             </FormGroup>
             <FormGroup>
@@ -174,6 +153,7 @@ class EditModal extends Component {
                 name="product"
                 maxLength="200"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.product}
               />
             </FormGroup>
             <FormGroup>
@@ -183,6 +163,7 @@ class EditModal extends Component {
                 name="buying_party"
                 maxLength="200"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.buying_party}
               />
             </FormGroup>
             <FormGroup>
@@ -192,12 +173,18 @@ class EditModal extends Component {
                 name="selling_party"
                 maxLength="200"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.selling_party}
               />
             </FormGroup>
             <FormGroup>
               <Label for="currency">Notional Currency: </Label>
-              <select name="notional_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
+              <select name="notional_currency" onChange={this.handleChange} defaultValue={this.props.data.notional_currency}>
+                <option> - </option>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
+                    {text}
+                  </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>
@@ -206,6 +193,7 @@ class EditModal extends Component {
                 type="number"
                 name="notional_amount"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.notional_amount}
               />
             </FormGroup>
             <FormGroup>
@@ -214,6 +202,7 @@ class EditModal extends Component {
                 type="number"
                 name="quantity"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.quantity}
               />
             </FormGroup>
             <FormGroup>
@@ -222,13 +211,18 @@ class EditModal extends Component {
                 type="date"
                 name="maturity_date"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.maturity_date}
               />
             </FormGroup>
             <FormGroup>
               <Label for="underc">Underlying Currency: </Label>
-              <select name="underlying_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
-                
+              <select name="underlying_currency" onChange={this.handleChange} defaultValue={this.props.data.underlying_currency}>
+                <option> - </option>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
+                    {text}
+                  </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>
@@ -237,6 +231,7 @@ class EditModal extends Component {
                 type="number"
                 name="underlying_price"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.underlying_price}
               />
             </FormGroup>
             <FormGroup>
@@ -245,10 +240,10 @@ class EditModal extends Component {
                 type="number"
                 name="strike_price"
                 onChange={this.handleChange}
+                defaultValue={this.props.data.strike_price}
               />
             </FormGroup>
-            <input type="submit" value="Submit for Checking"/>
-            <input type="reset" value = "Reset all values"/>
+            <input type="submit" value="Submit for Checking" />
           </Form>
         </Modal>
         <button type="button" onClick={this.showModal}>

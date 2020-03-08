@@ -3,7 +3,6 @@ import {
   Route,
   HashRouter
 } from "react-router-dom";
-import Home from "./Home";
 import NewTrade from "./NewTrade";
 import Trades from "./Trades";
 import Reports from "./Reports";
@@ -14,6 +13,9 @@ import NavBar from "./NavBar.js";
 
 import './App.css';
 
+// This can be changed via the dev console so be careful
+window.check = true;
+
 function App() {
   return (
     <HashRouter>
@@ -23,9 +25,8 @@ function App() {
           <NavBar/>
         </div>
         <div className = "content">
-          <Route exact path="/" component={Home}/>
+          <Route exact path="/" component={Trades}/>
           <Route path="/NewTrade" component={NewTrade}/>
-          <Route path="/Trades" component={Trades}/>
           <Route path="/Reports" component={Reports}/>
           <Route path="/Settings" component={Settings}/>
           <Route path="/Guide" component={Guide}/>

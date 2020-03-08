@@ -9,10 +9,9 @@ const NavBar = () => (
         <div className = "NavBar">
             <h1 id="title">Derivative Trade Monitoring System</h1>
             <ul className = "navmenu">
-                <li><NavLink exact to="/">Home</NavLink></li>
                 <li><NavLink to="/NewTrade">New Trade</NavLink></li>
-                <li><NavLink to="/Trades">Edit/Delete/View Trades</NavLink></li>
-                <li><NavLink to="/Reports">View Reports</NavLink></li>
+                <li><NavLink exact to="/">Edit/Delete/View Trades</NavLink></li>
+                <li><NavLink to="/Reports">Reports</NavLink></li>
             </ul>
         </div>
     </HashRouter>

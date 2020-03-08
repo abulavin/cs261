@@ -15,15 +15,22 @@ class BackendProxy {
         this.url = window.location.origin + url + "/";
     }
 
-    postRequest(data) {
+    postRequest(data, parameters = "") {
         // Data must be plain JS object (not a string) in order for
         // the Content-Type header to be set to application/json.
         // Otherwise server will return Bad Request
-        axios.post(this.url, data)
-            .then(response => {
-                console.log("Trade ID: " + response.data.trade_id + " created.");
-            })
-            .catch(error => { throw error });
+        const putURL = this.url + parameters + (window.check ? '' : '?no_check=true');
+        return axios.post(putURL, data);
+    }
+
+    postBlobRequest(parameters = "") {
+        const putURL = this.url + parameters;
+        return axios({
+            url: putURL,
+            method: 'post',
+            responseType: 'blob'
+        })
+        .catch(error => { throw error });
     }
 
     deleteRequest(parameters = "") {
@@ -38,6 +45,13 @@ class BackendProxy {
         return axios.get(getURL);
     }
 
+    getBlobRequest(parameters = "") {
+        let getURL = this.url + parameters; 
+        return axios.get(getURL, {
+            responseType: 'blob'
+        });
+    }
+
     putRequest(data, parameters = "") {
         let putURL;
         if (parameters)
@@ -45,6 +59,7 @@ class BackendProxy {
         else
             putURL = this.url;
 
+        putURL += (window.check ? '' : '?no_check=true/');
         axios.put(putURL, data)
             .then(response => {
                 console.log("Put Status: " + response.status);
@@ -85,7 +100,16 @@ export class CreateTradeProxy extends BackendProxy {
      */
     createTrade(trade) {
         TradeValidator.validateTrade(trade);
-        this.postRequest(trade);
+        return new Promise((resolve, reject) => {
+            this.postRequest(trade)
+                .then(response => {
+                    console.log("POST", response.status, response.statusText);
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    reject(error.response.data);
+                })
+        })
     }
 }
 
@@ -122,11 +146,30 @@ export class GetTradeProxy extends BackendProxy {
      */
     getListOfTrades(page = 1) {
         const pageParam = '?page=' + page;
-        return new Promise((resolve) => {
+        console.log(pageParam)
+        return new Promise((resolve,reject) => {
             this.getRequest(pageParam)
                 .then(response => resolve(response.data))
-                .catch(error => { throw error });
+                .catch(error => { reject(error) });
         });
+    }
+    // retrieves sorted trades based on attribute given and the direction of sorting (desc/asc)
+    getSortedTrades(heading, direction) {
+        let param="";
+        if (direction == "desc") {
+            param = '?ordering:-' + heading;
+        }
+        if (direction == "asc") {
+            param = '?ordering=' + heading;
+        }
+        console.log(param)
+        return new Promise((resolve,reject) => {
+            this.getRequest(param)
+                .then(response => resolve(response.data))
+                .catch(error => { reject(error) });
+        });
+
+        
     }
 
     /**
@@ -235,6 +278,17 @@ export class GetReportProxy extends BackendProxy {
         super('/reports');
     }
 
+    generateDailyReport() {
+        return new Promise((resolve, reject) => {
+            this.postBlobRequest("generate/").then(response => {
+                resolve(response.data);
+            })
+            .catch(error => {
+                reject(error.response);
+            })
+        });
+    }
+
     /**
      * Get a list of most recently generated reports
      * @param {number} page Page number, default 1
@@ -270,6 +324,17 @@ export class GetReportProxy extends BackendProxy {
 
         const urlParameters = `?date__lte=${date}&page=${page}`;
         return this.makeGetRequestPromise(urlParameters);
+    }
+
+    getReportURL(url) {
+        return new Promise(resolve => {
+            this.getBlobRequest(url)
+                .then(response => {
+                    console.log(response.status + " " + response.statusText);
+                    resolve(response.data);
+                })
+                .catch(error => { throw error });
+        })
     }
 
     /**

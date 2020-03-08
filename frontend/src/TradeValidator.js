@@ -34,12 +34,8 @@ export const TradeValidator = {
                 this.tradeHasNoUndefinedProperties(trade);
 
                 let errorMessage = '';
-                for (const tradeAttribute in trade) {
-                    const attributeIsCorrect = checkerFunctions[tradeAttribute];
-                    const attributeValue = trade[tradeAttribute];
-                    if (!attributeIsCorrect(attributeValue)) {
-                        errorMessage += `Invalid value for attribute ${tradeAttribute}: ${attributeValue} \n`;
-                    }
+                for (const tradeAttribute in this.filterErroneousFields(trade)) {
+                    errorMessage += `Invalid value for attribute ${tradeAttribute}: ${trade[tradeAttribute]} \n`;
                 }
                 if (errorMessage.length > 0) {
                     errorMessage = "Trade has invalid attributes. \n" + errorMessage;
@@ -52,6 +48,22 @@ export const TradeValidator = {
         } catch (error) {
             throw error;
         }
+    },
+
+    /**
+     * Filter a derivative trade to only have the erroneous attributes.
+     * @param {object} trade Derivative trade object
+     */
+    filterErroneousFields: function(trade) {
+        let errors = {};
+        for (const tradeAttribute in trade) {
+            const attributeIsCorrect = checkerFunctions[tradeAttribute];
+            const attributeValue = trade[tradeAttribute];
+            if (!attributeIsCorrect(attributeValue)) {
+                errors[tradeAttribute] = attributeValue;
+            }
+        }
+        return errors;
     },
 
     /**
@@ -142,6 +154,7 @@ export const TradeValidator = {
     tradeIDisValid: function (tradeID) {
         const regex = /^[A-Z]+[0-9]+$/;
         return regex.test(tradeID);
+        
     },
 
     /**
@@ -203,7 +216,7 @@ export const TradeValidator = {
      * @alias module:TradeValidator
      */
     currencyCodeIsValid: function (code) {
-        return currencyCodes.has(code);
+        return currencyCodes.includes(code);
     },
 
     throwError: function (message) {
@@ -212,9 +225,9 @@ export const TradeValidator = {
 }
 
 export const checkerFunctions = {
-    date_of_trade: TradeValidator.dateOfTradeIsValid,
+    date_of_trade: TradeValidator.dateAndTimeOfTradeIsValid,
     trade_id: TradeValidator.tradeIDisValid,
-    product: TradeValidator.productPriceIsValid,
+    product: TradeValidator.stringLengthIsValid,
     buying_party: TradeValidator.stringLengthIsValid,
     selling_party: TradeValidator.stringLengthIsValid,
     notional_amount: TradeValidator.productPriceIsValid,

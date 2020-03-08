@@ -46,7 +46,7 @@ def detect_date_errors(trade, today, errors):
     a century into the future.
     """
     trade_date = trade.date_of_trade
-    maturity_date = trade.maturity_date
+    maturity_date = datetime.datetime.combine(trade.maturity_date, datetime.datetime.min.time())
 
     week_ago = today - datetime.timedelta(weeks=1)
     century_ahead = today + datetime.timedelta(weeks=5200)

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -27,5 +29,4 @@ class GenerateReport(APIView):
     serializer_class = ReportSerializer
 
     def post(self, request, format=None):
-        return generate_report(is_daily_report=False)
-        
+        return generate_report(date=datetime.now(), is_daily_report=False)

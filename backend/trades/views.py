@@ -1,11 +1,15 @@
+from datetime import datetime
+
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import DerivativeTradeSerializer
 from .models import DerivativeTrade, DerivativeTradeHistory
-from .helper import check_trade_editable
+from .helper import check_trade_editable, has_errors, error_list_to_dict
+from error_detection.error_detection import detect_errors
 
 
 class ListCreateDerivativeTrade(ListCreateAPIView):
@@ -14,8 +18,9 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
     """
     serializer_class = DerivativeTradeSerializer
     queryset = DerivativeTrade.objects.all()
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = '__all__'
+    ordering_fields  = '__all__'
 
     def create(self, request, *args, **kwargs):
         """
@@ -26,7 +31,14 @@ class ListCreateDerivativeTrade(ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Call the Error Detection Module
+
+        if request.query_params.get('no_check', False) is not True:
+            trade_obj = DerivativeTrade.json_to_obj(serializer.validated_data)
+            threshold = request.query_params.get('t', 0.7)
+            errors = detect_errors(trade_obj, datetime.today(), threshold)
+            if has_errors(errors):
+                errors_dict = error_list_to_dict(errors)
+                return Response(errors_dict, status=status.HTTP_409_CONFLICT)
 
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -72,7 +84,12 @@ class RetrieveUpdateDestroyDerivativeTrade(RetrieveUpdateDestroyAPIView):
         if not check_trade_editable(self.get_object()):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        # Error Detection Module Called Upon.
+        if request.query_params.get('no_check', False) is not True:
+            threshold = request.query_params.get('t', 0.7)
+            errors = detect_errors(self.get_object(), datetime.today(), threshold)
+            if has_errors(errors):
+                errors_dict = error_list_to_dict(errors)
+                return Response(errors_dict, status=status.HTTP_409_CONFLICT)
         
         self._log_change('E', self.get_object())
         return super().update(request, *args, **kwargs)

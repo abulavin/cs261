@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { CreateTradeProxy } from "./BackendProxy";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { currencyCodes } from './currencyCodes';
 
 class NewTrade extends Component {
 
   constructor() {
     super();
     this.createProxy = new CreateTradeProxy();
-    this.state = { 
+    this.state = {
       date_of_trade: "",
       time_of_trade: "",
       trade_id: "",
@@ -21,7 +22,8 @@ class NewTrade extends Component {
       underlying_price: 0,
       underlying_currency: "GBP",
       strike_price: 0,
-      error_message: ""
+      error_message: "",
+      errors: []
     }
   }
 
@@ -39,6 +41,7 @@ class NewTrade extends Component {
     var underlying_price = this.state.underlying_price
     var underlying_currency = this.state.underlying_currency
     var strike_price = this.state.strike_price
+
     var date_of_trade = day + " " + (time_of_trade)
 
     console.log(date_of_trade)
@@ -56,13 +59,20 @@ class NewTrade extends Component {
       underlying_currency,
       strike_price
     };
-    this.createProxy.createTrade(trade);
+    this.createProxy.createTrade(trade)
+      .then(trade => {
+        console.log("New trade created: ")
+        console.log(trade);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     this.sendTrade();
-    alert("You are submitting "+this.state.trade_id+this.state.notional_currency);
+    alert("You are submitting " + this.state.trade_id + this.state.notional_currency);
     // validation
     // let age = this.state.age;
     // if (!Number(age)) {
@@ -70,19 +80,24 @@ class NewTrade extends Component {
     // }
   }
 
+  getErrors = () => {
+    this.setState({ errors: [] })
+  }
+
+  nextTrade = () => {
+    if (this.state.errors.length == 0) {
+      window.location.reload()
+    }
+    else {
+      alert("still errors")
+    }
+  }
+
   handleChange = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
-    this.setState({[nam]: val});
-    
-    // let err = '';
-    // if (nam === "age") {
-    //   if (val !="" && !Number(val)) {
-    //     err = <strong>Your age must be a number</strong>;
-    //   }
-    // }
-    // this.setState({errormessage: err});
-    // 
+    this.setState({ [nam]: val });
+
   }
 
   render() {
@@ -93,7 +108,7 @@ class NewTrade extends Component {
           <h5> Upon entry, all details will be error-checked and any issues will be highlighted.</h5>
         </div>
         <div className="tradeform">
-        <Form>
+          <Form>
             <FormGroup>
               <Label for="date">Date of Trade: </Label>
               <Input
@@ -149,8 +164,12 @@ class NewTrade extends Component {
             <FormGroup>
               <Label for="currency">Notional Currency: </Label>
               <select name="notional_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
-                <option value="USD">USD</option>
+                <option> - </option>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
+                    {text}
+                  </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>
@@ -180,8 +199,12 @@ class NewTrade extends Component {
             <FormGroup>
               <Label for="underc">Underlying Currency: </Label>
               <select name="underlying_currency" onChange={this.handleChange}>
-                <option value="GBP" selected>GBP</option>
-                <option value="USD">USD</option>                
+                <option> - </option>
+                {currencyCodes.map((text, i) => (
+                  <option key={i} value={text}>
+                    {text}
+                  </option>
+                ))}
               </select>
             </FormGroup>
             <FormGroup>
@@ -200,14 +223,16 @@ class NewTrade extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
-            <input type="reset" value = "Reset all values"/>
+            <input type="reset" value="Reset all values" />
           </Form>
           <button onClick={this.handleSubmit}> Submit</button>
         </div>
 
         <div className="errorbox">
-          <h3>This is where highlighted errors will be displayed</h3>
-          <Button>Next Trade</Button>
+          <h3>Highlighted Errors:</h3>
+          {this.state.errors}
+
+          <Button onClick={this.nextTrade}>Next Trade</Button>
         </div>
       </React.Fragment>
     );
