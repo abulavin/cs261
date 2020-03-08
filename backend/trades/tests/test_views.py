@@ -150,13 +150,13 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
             notional_amount=1,
             quantity=1,
             notional_currency='GBP',
-            maturity_date='2020-02-20',
+            maturity_date=self.today.date(),
             underlying_price=1,
             underlying_currency='USD',
             strike_price=1
         )
         updated_data = {
-            'date_of_trade': self.today,
+            'date_of_trade': self.today - datetime.timedelta(days=1),
             'trade_id': 8,
             'product': '3',
             'buying_party': '1',
@@ -164,10 +164,10 @@ class RetrieveUpdateDestroyDerivativeTradeTest(APITestCase):
             'notional_amount': 6.0,
             'quantity': 1.0,
             'notional_currency': 'GBP',
-            'maturity_date': '2020-02-20',
+            'maturity_date': self.today.date(),
             'underlying_price': 1.0,
             'underlying_currency': 'USD',
             'strike_price': 5.0
-        }       
+        }            
         response = self.client.put('/trades/8/', data=updated_data)
         self.assertEqual(401, response.status_code)
