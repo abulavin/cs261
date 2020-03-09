@@ -370,7 +370,11 @@ th {
 select {
   background-color: lightblue;
   overflow: hidden;
-  font-size: 15px;
+  font-size: 18px;
+  border: 0;
+  outline: 3px inset white; 
+  outline-offset:-1px;
+
 }
 
 .customselect {
@@ -456,6 +460,7 @@ select {
 .tradeoptions {
   float: left;
   margin-left: 40px;
+  font-weight: bold;
 }
 .tradeoptions input, Label, button{
   display: block;
@@ -473,6 +478,7 @@ select {
 .filterbox Label, input {
   display: block;
   text-align: left;
+  font-weight: bold;
 }
 .filterbox button {
   margin-left: 20px;
@@ -493,6 +499,7 @@ select {
 }
 .searchbox Label {
   margin-bottom: 10px;
+  font-weight: bold;
 }
 .searchbox button {
   float: center;
