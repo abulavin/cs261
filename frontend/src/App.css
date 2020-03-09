@@ -406,6 +406,19 @@ select {
   background-color: lightgreen;
 }
 
+.newtradebtn button {
+  background-color: lightgreen;
+}
+
+.manualbtn button {
+  background-color: lightblue;
+}
+
+.newtradebtn button:disabled {
+  background-color: grey;
+}
+
+
 .tradeform Label:not(.tip) {
     display: inline-block;
     float: left;
