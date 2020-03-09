@@ -190,6 +190,11 @@ h3 {
   display: inline-block;
   background-color: white;
 }
+
+.tradetable button {
+  display: inline-block;
+  float: center;
+}
 thead {
  
   color:white;
@@ -211,7 +216,7 @@ th {
   background-image: url(./Images/search.png); /* Add a search icon to input */
   background-position: 10px 12px; /* Position the search icon */
   background-repeat: no-repeat; /* Do not repeat the icon image */
-  width: 80%; /* Full-width */
+  width: 600px; /* Full-width */
   font-size: 16px;
   font-family:'Roboto',sans-serif;
   padding: 12px 10px 12px 30px; 
@@ -434,28 +439,72 @@ select {
   margin: 20px;
   display: inline-block;
 }
-.tradeoptions{
-  display: inline-block;
-  float: center;
-  width: 100%;
 
+.tradeoptions {
+  float: left;
+  margin-left: 40px;
 }
+.tradeoptions input, Label, button{
+  display: block;
+}
+.tradeoptions button {
+  margin-left: 10px;
+}
+
 .filterbox {
-  display: inline-block;
-  float: center;
+  float: left;
+  margin-left: 90px;
+  margin-top: 10px;
 }
 
-.filterbox select {
+.filterbox Label, input {
+  display: block;
+  text-align: left;
+}
+.filterbox button {
+  margin-left: 20px;
+}
+
+.filterbox select, .tradeoptions select{
   width: 150px;
 }
 
 .searchbox {
   padding: 13px;
+  display: inline-block;
+  float: right;
+}
+
+.searchbox select {
+  margin-bottom: 10px;
+}
+.searchbox Label {
+  margin-bottom: 10px;
+}
+.searchbox button {
+  float: center;
+  margin-right: 10px;
 }
 
 .reportbtns {
   padding: 10px;
 }
+.reportdate{
+  display: inline-block;
+}
 .reportbtns button {
   display: inline-block;
+}
+.reportbtns2 button {
+  display: inline-block;
+}
+
+.tableinfo{
+  font-size: 24px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.info {
+  background-color: lightgrey;
 }
