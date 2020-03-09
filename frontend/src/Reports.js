@@ -75,21 +75,26 @@ class Reports extends Component {
       <React.Fragment>
         <div>
           <h2> Use this page to view and download reports.</h2>
-          <Label>Enter a date: </Label>
-          <Input 
-                id="reportinput"
-                type="date" 
-                name="reportinput" 
-                placeholder="Enter date.."
-                onChange={this.handleChange}
-          />
+          <div className="reportdate">
+            <Label>Enter Date: </Label>
+            <Input 
+                  id="reportinput"
+                  type="date" 
+                  name="reportinput" 
+                  placeholder="Enter date.."
+                  onChange={this.handleChange}
+            />
+          </div>
           <div className="reportbtns">
             <button onClick={this.getReportsAfter}>Get Reports After {this.state.date}</button>
             <button onClick={this.getReportsBefore}>Get Reports Before {this.state.date}</button>
             <button onClick={this.getReportsOn}>Get Reports On {this.state.date}</button>
           </div>
-          <button onClick={this.getListOfReports}>Get all reports</button>
-          <button onClick={this.generateDailyReport}> Generate Daily Report </button>
+          <div className="reportbtns2"> 
+            <button onClick={this.getListOfReports}>Get all reports</button>
+            <button onClick={this.generateDailyReport}> Generate Daily Report </button>
+          </div>
+          
         </div>
 
        

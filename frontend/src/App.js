@@ -21,6 +21,7 @@ window.settings = {
 
 function App() {
   return (
+    
     <HashRouter>
       <div className="App">
         <div className = "header">
@@ -35,8 +36,10 @@ function App() {
           <Route path="/Guide" component={Guide}/>
         </div>
       </div>
+      
     </HashRouter>
   );
 }
+
 
 export default App;
