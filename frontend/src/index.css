@@ -13,6 +13,7 @@ body {
   width: 100%;
   margin: 0;
   position: absolute;
+  overflow: scroll;
   font-family:'Roboto',sans-serif;
 }
 

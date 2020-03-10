@@ -41,6 +41,7 @@ h2, h3, h4, h5, h6 {
     transform: rotate(360deg);
   }
 }
+
 .NavBtns {
   display: flex;
   position: fixed;
@@ -85,19 +86,6 @@ button{
   min-width: 100%;
   display: center;
   background-color: white;
-}
-
-.tradeform {
-  margin-top: 35px;
-  width: 60%;
-  float: left;
-}
-.errorbox{
-  margin-top: 53px;
-  margin-left: 65%;
-  width: 400px;
-  background-color:darkgrey;
-  min-height: 450px;
 }
 
 h3 {
@@ -190,13 +178,16 @@ h3 {
   display: inline-block;
   background-color: white;
 }
+.tradetable{
+  overflow: scroll;
+  height: 3000px;
+}
 
 .tradetable button {
   display: inline-block;
   float: center;
 }
 thead {
- 
   color:white;
 }
 tbody {
@@ -386,11 +377,18 @@ select {
   display: inline-block;
   text-align: left;
   background-color: lightgrey;
-  margin-left: 200px;
   font-family:'Roboto',sans-serif;
   width: 500px;
   line-height: 1.8;
   font-size: 16px;
+}
+
+.errorbox{
+  display: inline-block;
+  width: 400px;
+  background-color:darkgrey;
+  min-height: 450px;
+  margin-left: 20px;
 }
 
 .tip {
