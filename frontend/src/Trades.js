@@ -4,6 +4,7 @@ import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import Clock from 'react-live-clock';
 import Table from './Components/Table.js';
 import { currencyCodes } from "./currencyCodes";
+import { Ripple, Zoom } from 'react-preloaders';
 
 class Trades extends Component {
 
@@ -11,14 +12,14 @@ class Trades extends Component {
     super(props);
     this.getProxy = new GetTradeProxy();
     this.deleteProxy = new DeleteTradeProxy();
-    this.updateProxy = new UpdateTradeProxy();
     this.state = {
       tr: [],
       count: 1,
       maxpage: 0,
       chosen: "",
       searchinput: "",
-      filter: {}
+      filter: {},
+      loading: true
     }
   }
 
@@ -28,7 +29,7 @@ class Trades extends Component {
         this.setState({tr: trades.results})
         var maxPages = Math.ceil(trades.count/100);
         this.setState({maxpage: maxPages})
-        console.log(this.state.tr)
+        this.setState({loading: false})
       })
       .catch(error => { throw error });
   }
@@ -91,7 +92,6 @@ class Trades extends Component {
                       console.log(filteredTrades.results) 
                     }
                   })
-                    
   }
 
   getFilterCurrency = (event,filter) => {
@@ -125,7 +125,6 @@ class Trades extends Component {
                     console.log(sortedTrades.results) 
                   }
                 })
-                  
   }
 
   handleSort = (event) => {
@@ -144,7 +143,6 @@ class Trades extends Component {
   }
 
   handleSubmit = (event) => {
-    // this.setState({tr: []})
     event.preventDefault();
     console.log(this.state.chosen, this.state.searchinput)
     console.log(this.state.filter)
@@ -155,18 +153,20 @@ class Trades extends Component {
 
   render() {
     return (
+      
       <React.Fragment>
+        {this.state.loading ? <Zoom/> : null}
+        
         <div className = "tradetitle">
           <h3 className = "datetime"> Use this page to edit, delete and view trades. Current Date and Time (GMT):
             <Clock format=" dddd, DD MMMM YYYY, HH:mm:ss" interval={1000} ticking={true}/>
-            {/* timezone={} */}
           </h3>
         </div>
 
         <div className="tradeoptions">
           <Label>Sort Table By: </Label>
           <select class="customselect" onChange={this.handleSort}>
-            <option> - </option>
+            <option>  </option>
             <option value="date_of_trade">Date of Trade</option>
             <option value="notional_amount">Notional Amount</option>
             <option value="quantity">Quantity</option>
@@ -176,23 +176,26 @@ class Trades extends Component {
           </select>
           <Label>Ascending/Descending:</Label>
           <select class="customselect" onChange={this.handleDir}> 
-            <option> - </option>
+            <option>  </option>
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
           <button onClick={this.getSortedTrades}>Sort Table</button>
-          <Label>Filter notional currency: </Label>
+        </div>
+        
+        <div className = "filterbox">
+          <Label>Filter Notional Currency: </Label>
           <select class="customselect" id="currfilter" name="notional_currency" onChange={this.getFilterCurrency}>
-            <option> - </option>
+            <option>  </option>
             {currencyCodes.map((text,i) => (
                 <option key={i} value={text}>
                     {text}
                 </option>
             ))}
           </select>
-          <Label>Filter underlying currency: </Label>
+          <Label>Filter Underlying Currency: </Label>
           <select class="customselect" id="currfilter" name="underlying_currency" onChange={this.getFilterCurrency}>
-            <option> - </option>
+            <option>  </option>
             {currencyCodes.map((text,i) => (
                 <option key={i} value={text}>
                     {text}
@@ -201,12 +204,12 @@ class Trades extends Component {
           </select>
           <button onClick={this.refreshPage}> Remove Filters </button>
         </div>
-        <div>
-          <Label>Search by heading: </Label>
+        <div className="searchbox">
           <Form>
             <FormGroup>
+              <Label>Search by Heading: </Label>
               <select id="headingfilter" name="chosen" onChange={this.handleChange}>
-                <option> - </option>
+                <option>  </option>
                 <option value="date_of_trade" >Date of Trade</option>
                 <option value="trade_id" >Trade ID</option>
                 <option value="product" >Product</option>
@@ -233,17 +236,18 @@ class Trades extends Component {
           </Form>
         </div>
         <div className="tradetable">
-          <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
-          <button onClick={this.getPrevPageTrade}> previous page </button>
-          <button onClick={this.getTradesByPage}> next page </button>
-          {console.log(this.state.tr)}
+          <div className="info">
+            <h4> Current page: {this.state.count} / {this.state.maxpage}</h4>
+            <button onClick={this.getPrevPageTrade}> Previous Page </button>
+            <button onClick={this.getTradesByPage}> Next Page </button>
+          </div>
+          {/* {console.log(this.state.tr)} */}
           {this.state.tr ? <Table data={this.state.tr}/> : null }
         </div>
         <div>
-          <button onClick={this.getPrevPageTrade}> previous page </button>
-          <button onClick={this.getTradesByPage}> next page </button>
+          <button onClick={this.getPrevPageTrade}> Previous Page </button>
+          <button onClick={this.getTradesByPage}> Next Page </button>
         </div>
-       
       </React.Fragment>
     );
   }

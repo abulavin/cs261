@@ -31,8 +31,12 @@ class DeleteModal extends Component {
         <Modal show={this.state.show} handleClose={this.hideModal}>
           <p>Reason for deletion?</p>
     
+          <label> Reason for deletion: </label>
+          <select>
+            <option> Erroneous Trade </option>
+            <option> Termination of Trade </option>
+          </select>
           <button onClick={this.deleteTrade}> Delete this trade</button>
-          <p>Data</p>
         </Modal>
         <button type="button" onClick={this.showModal}>
           Delete Trade

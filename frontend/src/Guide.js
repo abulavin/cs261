@@ -42,21 +42,37 @@ class Guide extends Component {
             </TabContent>
             <TabContent for="viewing">
               <div className="guidecontents">
-                To view trades, navigate to the EDIT/DELETE/VIEW TRADES
+                To view trades, navigate to the EDIT/DELETE/VIEW TRADES page where you will be presented with the table of trades
+                <p> Sorting is done with the drop down menu to select the heading, and then whether it is ascending/descending order.</p>
+                <p> Searching is done with the search by and the drop down menu to select the heading to search within.</p>
+                <p> Filter can be done by Notional Currency and Underlying Currency with the drop down menu.</p>
+                <p> To edit a trade, click on the EDIT button (trades older than a week old cannot be edited)</p>
+                <p> To delete a trade, click on the DELETE button and then specify the reason for deletion</p>
+                <p> Navigating through pages is done through the PREVIOUS PAGE and NEXT PAGE buttons, with the counter at the top of the table. </p>
               </div></TabContent>
             <TabContent for="reports">
               <div className="guidecontents">
-                To view reports
+                To view reports, navigate to the REPORTS page where you will be presented with the table of reports.
+                <p> Searching by date is done using the date picker.</p>
+                <p> Once a date is selected, choose whether to get reports BEFORE, ON or AFTER that date.</p>
+                <p> Remove your filter by clicking GET ALL TRADES</p>
+                <p> A daily report can be generated on demand with the button GENERATE DAILY REPORT. This will not be stored in the database.</p>
+                <p> Clicking on VIEW REPORT will open a PDF in a new window.</p>
+                <p> Clicking on DOWNLOAD REPORT will download the PDF file to your default downloads folder, which can be changed within the browser.</p>
               </div>
             </TabContent>
             <TabContent for="settings">
               <div className="guidecontents">
-                To change settings
+                To change settings, navigate to the SETTINGS page.
+                <p> Here you will be able to turn the error correction module ON and OFF.</p>
+                <p> Turning it off will mean all new trades and edited trades will not be subject to error checking.</p>
+                <p> Do so at your own risk! </p>
               </div> 
             </TabContent>
             <TabContent for="error">
               <div className="guidecontents">
-                The error correction module works by
+                The error correction module works by comparing values that you enter, to previous trends and data patterns.
+                <p> We use sophisticated machine learning techniques to ensure 100% accuracy and sensible suggestions.</p>
               </div>
             </TabContent>
           </Tabs>
