@@ -225,6 +225,15 @@ export const TradeValidator = {
         return false
     },
 
+    dateOfTradeIsValid: function (date) {
+        if(typeof date === 'string') {
+            let dateSubstring = date.split(' ')[0]
+            let dateCorrect = TradeValidator.dateSubstringCorrect(dateSubstring);
+            return dateCorrect;
+        }
+        return false
+    },
+
     maturityDateIsValid: function (date) {
         return !! Date.parse(date) && TradeValidator.dateSubstringCorrect(date);
     },

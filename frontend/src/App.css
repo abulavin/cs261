@@ -41,6 +41,7 @@ h2, h3, h4, h5, h6 {
     transform: rotate(360deg);
   }
 }
+
 .NavBtns {
   display: flex;
   position: fixed;
@@ -85,19 +86,6 @@ button{
   min-width: 100%;
   display: center;
   background-color: white;
-}
-
-.tradeform {
-  margin-top: 35px;
-  width: 60%;
-  float: left;
-}
-.errorbox{
-  margin-top: 53px;
-  margin-left: 65%;
-  width: 400px;
-  background-color:darkgrey;
-  min-height: 450px;
 }
 
 h3 {
@@ -190,13 +178,16 @@ h3 {
   display: inline-block;
   background-color: white;
 }
+.tradetable{
+  overflow: scroll;
+  height: 3000px;
+}
 
 .tradetable button {
   display: inline-block;
   float: center;
 }
 thead {
- 
   color:white;
 }
 tbody {
@@ -370,7 +361,11 @@ th {
 select {
   background-color: lightblue;
   overflow: hidden;
-  font-size: 15px;
+  font-size: 18px;
+  border: 0;
+  outline: 3px inset white; 
+  outline-offset:-1px;
+
 }
 
 .customselect {
@@ -382,11 +377,23 @@ select {
   display: inline-block;
   text-align: left;
   background-color: lightgrey;
-  margin-left: 200px;
   font-family:'Roboto',sans-serif;
   width: 500px;
   line-height: 1.8;
   font-size: 16px;
+  position:relative; 
+  top:10px;
+}
+
+.errorbox{
+  display: inline-block;
+  float: right;
+  width: 400px;
+  background-color:darkgrey;
+  min-height: 400px;
+  margin-left: 20px;
+  position: relative;
+  top: 25px;
 }
 
 .tip {
@@ -405,6 +412,19 @@ select {
   margin-left: 68%;
   background-color: lightgreen;
 }
+
+.newtradebtn button {
+  background-color: lightgreen;
+}
+
+.manualbtn button {
+  background-color: lightblue;
+}
+
+.newtradebtn button:disabled {
+  background-color: grey;
+}
+
 
 .tradeform Label:not(.tip) {
     display: inline-block;
@@ -443,12 +463,13 @@ select {
 .tradeoptions {
   float: left;
   margin-left: 40px;
+  font-weight: bold;
 }
 .tradeoptions input, Label, button{
   display: block;
 }
 .tradeoptions button {
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .filterbox {
@@ -460,9 +481,10 @@ select {
 .filterbox Label, input {
   display: block;
   text-align: left;
+  font-weight: bold;
 }
 .filterbox button {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 
 .filterbox select, .tradeoptions select{
@@ -480,6 +502,7 @@ select {
 }
 .searchbox Label {
   margin-bottom: 10px;
+  font-weight: bold;
 }
 .searchbox button {
   float: center;

@@ -62,7 +62,7 @@ export default class ReportTable extends Component {
     }
 
     render() {
-        if (!this.props.data[0]) return null;
+        if (!this.props.data[0]) return <h1> No Reports Found</h1>;
         return (
             <React.Fragment>
                 <div className="reporttable">

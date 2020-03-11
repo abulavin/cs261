@@ -23,6 +23,7 @@ class DeleteModal extends Component {
   deleteTrade = () => {
     console.log("delete "+this.props.id)
     this.deleteProxy.deleteTrade(this.props.id)
+    alert("Trade Deleted.")
   }
 
   render() {

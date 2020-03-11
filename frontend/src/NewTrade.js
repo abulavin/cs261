@@ -124,9 +124,10 @@ class NewTrade extends Component {
         if (tradeErrors ==0 ) {
           this.createProxy.createTrade(trade, Settings.OVERRIDE)
           .then(trade => {
-            
             window.alert("submitted trade.")
             console.log(trade)
+            this.setState({errors: []})
+            this.setState({corrections: []})
           })
           .catch (error => {
             console.log(error)
@@ -136,7 +137,6 @@ class NewTrade extends Component {
           console.log(tradeErrors)
           this.setState({ errors: tradeErrors })
         }
-        
       }
    
   }
@@ -196,11 +196,11 @@ class NewTrade extends Component {
   render() {
     const array = this.state.errors;
     const isEnabled = array.length == 0;
+
+    const array2 = this.state.corrections;
+    const isEnabled2 = array2.length > 0;
     return (
       <React.Fragment>
-        <div className="tradetitles">
-          <h2> Use this page to enter details of a derivative trade.</h2>
-        </div>
         <div className="tradeform">
           <button onClick={this.handleSubmit}> Submit for Checking</button>
           <Form>
@@ -332,8 +332,12 @@ class NewTrade extends Component {
             <h3>Highlighted Errors:</h3>
             {this.state.errors ? <ErrorTable errors={this.state.errors}/> : null }
             {this.state.corrections ? <CorrectionsTable errors={this.state.corrections}/> : null }
-        <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
-        <button onClick={this.manualOverride}> Manually Override All Fields </button>
+        <div className="newtradebtn">
+          <button disabled={!isEnabled} onClick={this.nextTrade}>New Trade</button>
+        </div>
+        <div className="manualbtn">
+          <button disabled={!isEnabled2} onClick={this.manualOverride}> Manually Override All Fields </button>
+        </div>
         </div>
       </React.Fragment>
     );

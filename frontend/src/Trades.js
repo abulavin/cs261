@@ -35,6 +35,7 @@ class Trades extends Component {
   }
   
   getTradesByPage = () => {
+    this.setState({loading:true})
     if (this.state.count!=this.state.maxpage) {
       this.setState({
         tr: [],
@@ -45,10 +46,12 @@ class Trades extends Component {
           .then(trades => {
             this.setState({tr: trades.results})
             console.log(this.state.tr)
+            this.setState({loading:false})
           })
           .catch(error => {
             console.log(error)
             alert("No more pages")
+            this.setState({loading:false})
           });
     }
     else {

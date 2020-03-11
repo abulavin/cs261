@@ -216,6 +216,7 @@ export class GetTradeProxy extends BackendProxy {
                     const value = filter[attribute];
                     if (!checkerFunction(value)) {
                         console.error(`Invalid filter value for attribute ${attribute}: ${value}. Ignoring`);
+                        alert('invalid filter value for attribute ' + attribute)
                     } else {
                         urlParameters += `&${attribute}=${value}`;
                     }
