@@ -6,6 +6,7 @@ import { currencyCodes } from "../currencyCodes";
 import ErrorTable from './ErrorTable';
 import CorrectionsTable from './CorrectionsTable';
 import {TradeValidator} from '../TradeValidator.js';
+import {Settings} from '../BackendProxy';
 
 class EditModal extends Component {
 
@@ -173,6 +174,31 @@ class EditModal extends Component {
     hideModal2 = () => {
         this.setState({ show: false });
     };
+
+    manualOverride = () => {
+        const trade = this.getTrade()
+        let confirm = window.confirm("Are you sure you want to submit this trade?");
+          if (confirm) {
+            const tradeErrors = TradeValidator.getListOfErrors(trade);
+            if (tradeErrors ==0 ) {
+              this.updateProxy.updateTrade(trade, trade["trade_id"], Settings.OVERRIDE)
+              .then(trade => {
+                window.alert("updated trade.")
+                console.log(trade)
+                this.setState({errors: []})
+                this.setState({corrections: []})
+              })
+              .catch (error => {
+                console.log(error)
+              })
+            }
+            else {
+              console.log(tradeErrors)
+              this.setState({ errors: tradeErrors })
+            }
+          }
+       
+      }
 
     checkEditable = () => {
         var limit = new Date();
