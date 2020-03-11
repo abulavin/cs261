@@ -35,6 +35,8 @@ def detect_name_errors(trade, errors, currencies):
     """
 
     products = {seller.product.lower(): seller.product for seller in product_sellers}
+    # "Stocks" is not listed as a product but must still be considered valid.
+    products["stocks"] = "Stocks"
     ok, correction = detect_similar(trade.product, products)
     if not ok:
         errors.append(Error('product', correction, "Unknown product"))

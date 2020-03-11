@@ -41,7 +41,7 @@ class ErrorDetectionTest(TestCase):
             self.assert_(correction == expected, "Corrected value valid")
 
     def test_product(self):
-        self.do_name_test('product', "Socks", "Rocks")
+        self.do_name_test('product', "Socks", "Stocks")
 
     def test_buying_party(self):
         self.do_name_test('buying_party', "CMZ62", "CMZC67")
@@ -60,6 +60,9 @@ class ErrorDetectionTest(TestCase):
 
     def test_empty_currency(self):
         self.do_name_test('underlying_currency', "")
+
+    def test_stocks(self):
+        self.do_name_test('product', "Stocks", "Stocks", incorrect=False)
 
     def test_correct_names(self):
         self.do_name_test(None)
