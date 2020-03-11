@@ -29,7 +29,7 @@ export default class Table extends Component {
   }
   
   render() {
-    if (!this.props.data[0]) return null;
+    if (!this.props.data[0]) return <h1> No Trades Found </h1>;
     return (
       <React.Fragment>
         <div className="tradetable">

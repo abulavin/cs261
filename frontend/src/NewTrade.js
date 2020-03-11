@@ -201,9 +201,6 @@ class NewTrade extends Component {
     const isEnabled2 = array2.length > 0;
     return (
       <React.Fragment>
-        <div className="tradetitles">
-          <h2> Use this page to enter details of a derivative trade.</h2>
-        </div>
         <div className="tradeform">
           <button onClick={this.handleSubmit}> Submit for Checking</button>
           <Form>

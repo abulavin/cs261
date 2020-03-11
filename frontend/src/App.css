@@ -381,14 +381,19 @@ select {
   width: 500px;
   line-height: 1.8;
   font-size: 16px;
+  position:relative; 
+  top:10px;
 }
 
 .errorbox{
   display: inline-block;
+  float: right;
   width: 400px;
   background-color:darkgrey;
-  min-height: 450px;
+  min-height: 400px;
   margin-left: 20px;
+  position: relative;
+  top: 25px;
 }
 
 .tip {
@@ -464,7 +469,7 @@ select {
   display: block;
 }
 .tradeoptions button {
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .filterbox {
@@ -479,7 +484,7 @@ select {
   font-weight: bold;
 }
 .filterbox button {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 
 .filterbox select, .tradeoptions select{
