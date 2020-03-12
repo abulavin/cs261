@@ -1,6 +1,6 @@
 import os
 
-from datetime import datetime
+import datetime
 
 from django.db import models
 
@@ -66,18 +66,18 @@ class DerivativeTrade(models.Model):
     @classmethod
     def json_to_obj(cls, data):
         return cls(
-            date_of_trade=data['date_of_trade'],
+            date_of_trade=datetime.datetime.strptime(data['date_of_trade'], "%Y-%m-%d %H:%M"),
             trade_id=data['trade_id'],
             product=data['product'],
             buying_party=data['buying_party'],
             selling_party=data['selling_party'],
-            notional_amount=data['notional_amount'],
-            quantity=data['quantity'],
+            notional_amount=float(data['notional_amount']),
+            quantity=int(data['quantity']),
             notional_currency=data['notional_currency'],
-            maturity_date=data['maturity_date'],
-            underlying_price=data['underlying_price'],
+            maturity_date=datetime.datetime.strptime(data['maturity_date'], "%Y-%m-%d").date(),
+            underlying_price=float(data['underlying_price']),
             underlying_currency=data['underlying_currency'],
-            strike_price=data['strike_price']
+            strike_price=float(data['strike_price'])
         )
 
 class DerivativeTradeHistory(models.Model):
