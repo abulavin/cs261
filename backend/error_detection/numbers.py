@@ -14,6 +14,8 @@ def correct_to_range(value, min_v, max_v, threshold, need_int=False):
     :returns whether or not the original value was in the range,
     and the correction, if any.
     """
+    value = float(value)
+    threshold = float(threshold)
     min_t = min_v * threshold
     max_t = max_v / threshold
 
