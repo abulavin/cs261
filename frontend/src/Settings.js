@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Input} from 'reactstrap';
 
 class Settings extends Component {
 
@@ -14,6 +15,12 @@ class Settings extends Component {
     window.settings.check = !this.state.on
   }
 
+  handleChange = (event) => {
+    document.getElementById('textInput').value = event.target.value;
+    window.settings.tParam = event.target.value;
+    console.log(window.settings.tParam);
+  }
+
   render() {
     console.log(this.state.on);
     return (
@@ -27,6 +34,13 @@ class Settings extends Component {
               <span class="toggle-switch-inner"></span>
               <span class="toggle-switch-switch"></span>
             </label>
+          </div>
+          <div>
+            <h4 id="settingsname">Threshold Parameter:</h4>
+            <div class='toggle-switch'>
+              <input onChange={this.handleChange} type="range" class='param-input' min='0.1' max='1' step='0.1' defaultValue={window.settings.tParam} /> 
+            </div>
+              <input type='text' id="textInput" value={window.settings.tParam}/>
           </div>
         </div>
       </React.Fragment>
